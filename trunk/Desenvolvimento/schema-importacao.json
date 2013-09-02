@@ -1,0 +1,55 @@
+{
+	"type":"object",
+	"$schema": "http://json-schema.org/draft-03/schema",
+	"id": "http://jsonschema.net",
+	"required":true,
+	"properties":{
+		"bensPatrimoniais": {
+			"type":"array",
+			"id": "http://jsonschema.net/bensPatrimoniais",
+			"required":true,
+			"items":
+				{
+					"type":"object",
+					"id": "http://jsonschema.net/bensPatrimoniais/0",
+					"required":false,
+					"properties":{
+						"codigoSicop": {
+							"type":"number",
+							"id": "http://jsonschema.net/bensPatrimoniais/0/codigoSicop",
+							"required":true
+						},
+						"descricao": {
+							"type":"string",
+							"id": "http://jsonschema.net/bensPatrimoniais/0/descricao",
+							"required":true
+						},
+						"subLocal": {
+							"type":"object",
+							"id": "http://jsonschema.net/bensPatrimoniais/0/subLocal",
+							"required":true,
+							"properties":{
+								"id": {
+									"type":"number",
+									"id": "http://jsonschema.net/bensPatrimoniais/0/subLocal/id",
+									"required":true
+								},
+								"nome": {
+									"type":"string",
+									"id": "http://jsonschema.net/bensPatrimoniais/0/subLocal/nome",
+									"required":true
+								}
+							}
+						}
+					}
+				}
+			
+
+		},
+		"idInventario": {
+			"type":"number",
+			"id": "http://jsonschema.net/idInventario",
+			"required":true
+		}
+	}
+}
