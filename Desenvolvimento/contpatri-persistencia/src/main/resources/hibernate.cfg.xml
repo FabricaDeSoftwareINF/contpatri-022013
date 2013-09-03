@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/contpatri</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.format_sql">true</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">root</property>
+    <property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <mapping resource="br/ufg/inf/es/fs/contpatri/persistencia/Agente.hbm.xml"/>
+    <mapping resource="br/ufg/inf/es/fs/contpatri/persistencia/Analise.hbm.xml"/>
+    <mapping resource="br/ufg/inf/es/fs/contpatri/persistencia/BemPatrimonial.hbm.xml"/>
+    <mapping resource="br/ufg/inf/es/fs/contpatri/persistencia/Coleta.hbm.xml"/>
+    <mapping resource="br/ufg/inf/es/fs/contpatri/persistencia/Gestor.hbm.xml"/>
+    <mapping resource="br/ufg/inf/es/fs/contpatri/persistencia/Inventario.hbm.xml"/>
+    <mapping resource="br/ufg/inf/es/fs/contpatri/persistencia/Origem.hbm.xml"/>
+    <mapping resource="br/ufg/inf/es/fs/contpatri/persistencia/SubLocal.hbm.xml"/>
+    <mapping resource="br/ufg/inf/es/fs/contpatri/persistencia/Tombamento.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

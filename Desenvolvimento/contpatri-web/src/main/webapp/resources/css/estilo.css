@@ -1,0 +1,157 @@
+/* 
+    Document   : estilo
+    Created on : 24/05/2013, 13:25:14
+    Author     : Guilherme de Paula
+    Description:
+        Estilo geral da aplicação.
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font-family: 'Open Sans', sans-serif;
+    text-decoration: none;
+}
+
+body {
+    line-height: 1;
+    background: #d8d6d8 url("#{resource['img:background-pat.png']}");
+    min-width: 320px;
+}
+
+html, body {
+    min-height: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+a {
+    outline: 0;
+}
+
+.cabecalho{
+    padding: 7px 0;
+    margin-left: 3%;
+    font-size: 300%;
+    font-weight: 400;
+    color: #393939;
+    text-shadow: 0 1px 0 #fff;
+}
+
+#logado{
+    position: absolute;
+    right: 10px;
+    top: 40px;
+}
+
+#menu-superior{
+    height: 80px;
+    background: #404040;
+    border-top: 1px solid #515151;
+    border-bottom: 1px solid #222;
+}
+
+
+#lista-menu{
+    margin: 10px 3%;
+}
+
+.item-menu{
+    height: 60px;
+    float: left;
+    margin-left: 8px;
+}
+
+
+.item-menu img {
+    width: 30px;
+    height: 30px;
+    padding: 8px 25px 4px;
+}
+
+.item-menu p {
+    font-size: 11px;
+    text-align: center;
+}
+
+#menu-superior a{
+    color: #9e9e9e;
+    font-size: 10px;
+    text-shadow: 0px 1px 0px #222;
+}
+
+.item-menu:hover {
+    border-radius: 3px;
+    background-color: #505050;
+}
+
+.item-menu:active {
+    border-radius: 3px;
+    box-shadow: inset 1px 1px 1px 1px #000;
+    background-color: #505050;
+    padding:4px 2px 2px 4px;
+    margin:1px;
+    text-decoration:none;
+}
+
+.item-menu.selecionado{
+    border-radius: 3px;
+    box-shadow: inset 1px 1px 1px 1px #000;
+}
+
+#gestores{
+    float: right;
+    margin-right: 3%;
+}
+
+.container{
+    margin: 30px;
+}
+
+.container-centro{
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 600px;
+}
+.titulo-painel{
+    background: #393939;
+    border-radius: 2px;
+    max-height: 40px;
+}
+
+.titulo-painel h2{
+    padding: 10px 10px;
+    color: #ddd;
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: 0 1px 0 #222;
+}
+
+.painel{
+    background: #eee;
+    border: 1px solid #bbb;
+    border-top: none;
+}
+
+.icone-adicionar{
+    background-image: url("#{resource['img:adicionar.png']}")
+}
