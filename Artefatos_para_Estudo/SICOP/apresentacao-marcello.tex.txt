@@ -1,0 +1,75 @@
+\documentclass[xcolor=pdftex,dvipsnames,table,hyperref={pdfpagemode=FullScreen}]{beamer}
+% Outras classes: [notes], [notes=only], [trans], [handout],
+% [red], [compress], [draft], [class=article]
+
+\mode<handout>{\beamertemplatesolidbackgroundcolor{black!5}}
+
+\usepackage[brazil]{varioref}
+\usepackage[brazil,english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx,url}
+\usepackage{pslatex}
+\usepackage{amsmath,amssymb}
+\usepackage{beamerthemeshadow}
+\usepackage{pgf}
+\usepackage{pgfpages}
+
+%\setbeamertemplate{footline}[frame number]
+%\setbeamertemplate{footline}[default]
+\beamertemplatetransparentcovereddynamic
+
+\title[SGP]{Sistema de Gerenciamento Patrimonial}
+
+\author[Marcello Henrique Dias de Moura]{Marcello Henrique Dias de Moura\\e-mail: \href{mailto:faraohh@gmail.com}{faraohh@gmail.com}}
+
+\institute{Sistemas de Informação - FASAM}
+
+% Se comentar a linha abaixo, ira aparecer a data quando foi compilada a apresentacao
+\date{Goiânia, 11 de Dezembro 2007}
+
+%\pgfdeclareimage[height=0.4cm]{das}{figs/logodas}
+%\pgfdeclareimage[height=1cm]{ufsc}{figs/logo_ufsc}
+
+% pode-se colocar o LOGO assim
+%\logo{\pgfuseimage{das}}
+% ou...
+%\logo{\vbox{\hbox to 1cm{\hfil\pgfuseimage{ufsc}}\vskip0.1cm\hbox{\pgfuseimage{das}}}}
+
+\begin{document}
+
+\frame
+{
+	\titlepage
+}
+
+\section{Sumário}
+\frame[allowframebreaks,t]
+{
+	\frametitle{Sumário}
+	\tableofcontents
+}
+
+\section{Introdução}
+\subsection{Introdução}
+\frame
+{
+	\frametitle{Introdução}
+
+}
+
+\frame
+{
+    \frametitle{Definição do problema}
+	\framezoom<1><1>[border](0cm,0cm)(5cm,5cm)
+	\pgfimage[height=5cm]{../../fig/ataDeReuniao-SGP.pdf}
+}
+
+\section{Conclusão}
+\subsection{Conclusão}
+\frame
+{
+	\frametitle{Conclusão}
+	Para que o sistema seja grandioso, de qualidade e alcance seus ideais, não e nescessário apenas bons programadores, a qualidades do software está na aquisição e processamento dos dados, na interação da equipe e principalmente no bom planejamento.\\
+	Buscamos levar ao usuário uma boa interação, agilizando o cadastro, melhorando o tempo gasto entre o envio e o recebimento dos dados, interface simples e lógica, dentre outros uma ajuda em tempo real para facilitar a usabilidade.\\
+}
+\end{document}

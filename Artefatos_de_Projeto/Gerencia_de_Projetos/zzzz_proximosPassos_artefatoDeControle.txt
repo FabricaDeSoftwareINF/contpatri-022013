@@ -1,0 +1,19 @@
+plano de custo (prioridade 1)
+
+analise de riscos (prioridade 7)
+
+documento de cronograma (prioridade 5)
+
+plano de gerencia de projetos (prioridade 8) 
+
+	~> Não será tão trabalhoso, já que os planos de comunicação, riscos e tempo, bem como o termo de abertura, já foram definidos. 
+
+
+
+
+próximos passos:
+
+plano de gerencia de projetos
+analise de riscos
+cronograma
+plano de custo

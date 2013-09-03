@@ -1,0 +1,289 @@
+\documentclass[compress,dvipsnames,table,hyperref={pdfpagemode=FullScreen}]{beamer}
+% Outras classes: [notes], [notes=only], [trans], [handout],
+% [red], [compress], [draft], [class=article]
+\mode<handout>{\beamertemplatesolidbackgroundcolor{black!5}}
+
+\usepackage[brazil]{varioref}
+\usepackage[brazil,english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{pslatex}
+\usepackage{beamerthemeshadow}
+%\usepackage{pgf}
+%\usepackage{pgfpages}
+
+%\setbeamertemplate{footline}[frame number]
+%\setbeamertemplate{footline}[default]
+\useoutertheme[subsection=false]{smoothbars}
+\beamertemplatetransparentcovereddynamic
+
+\title[SGP]{Sistema de Gerenciamento Patrimonial}
+\author[Marcello Henrique Dias de Moura]{Marcello Henrique Dias de Moura}
+%\institute{Sistemas de Informação - FASAM}
+
+% Se comentar a linha abaixo, ira aparecer a data quando foi compilada a apresentacao
+\date{Goiânia, 11 de Dezembro 2007}
+
+%\pgfdeclareimage[height=0.4cm]{das}{figs/logodas}
+%\pgfdeclareimage[height=1cm]{ufsc}{figs/logo_ufsc}
+
+% pode-se colocar o LOGO assim
+%\logo{\pgfuseimage{das}}
+% ou...
+%\logo{\vbox{\hbox to 1cm{\hfil\pgfuseimage{ufsc}}\vskip0.1cm\hbox{\pgfuseimage{das}}}}
+
+\begin{document}
+
+\frame
+{
+	\titlepage
+}
+
+\section{Estatísticas}
+\subsection{Estatística geral}
+\frame
+{
+	\frametitle{Estatística geral}
+	Estatísticas do desenvolvimento de: /trunk\\
+	Período de trabalho: 01-06-2007 até 10-12-2007\\
+	Total de desenvolvedores: 3
+	\begin{table}[!htp]
+		\begin{tabular}[c]{|l|l|l|}
+			\hline
+			\textbf{Desenvolvedores} & \textbf{Mudanças} &\textbf{Linhas de Código}\\
+			\hline
+			marcello & 439 (44.3\%) & 12097 (63.7\%)\\
+			\hline
+			kleuber & 468 (47.2\%) & 6075 (32.0\%)\\
+			\hline
+			leonardo & 84 (8.5\%) & 832 (4.4\%)\\
+			\hline
+			Total & 991 (100.0\%) & 19004 (100.0\%) \\
+			\hline
+		\end{tabular}
+	\end{table}
+}
+
+\subsection{Contribuição por autor}
+\frame
+{
+	\frametitle{Contribuição por autor}
+	\begin{figure}[!htp]
+		\includegraphics[scale=0.4]{../../fig/contribPorAutor} 
+	\end{figure}
+}
+
+\subsection{Atividade do desenvolvedor}
+\frame
+{
+	\frametitle{Atividade por commit}
+	\begin{figure}[!htp]
+		\includegraphics[scale=0.42]{../../fig/ativDev} 
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{Atividade adicionado e modificado}
+	\begin{figure}[!htp]
+		\includegraphics[scale=0.6]{../../fig/atividade} 
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{Atividade por hora}
+	\begin{figure}[!htp]
+		\includegraphics[scale=0.55]{../../fig/ativHora} 
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{Atividade por semana}
+	\begin{figure}[!htp]
+		\includegraphics[scale=0.55]{../../fig/ativSemana} 
+	\end{figure}
+}
+
+\subsection{Linhas de código}
+\frame
+{
+	\frametitle{Linhas de Código}
+	Total de linhas de código: 9515\\
+	\begin{figure}[!htp]
+		\includegraphics[scale=0.5]{../../fig/linesOfCode} 
+	\end{figure}
+}
+
+\subsection{Quantidade e tamanho de arquivos}
+\frame
+{
+	\frametitle{Quantidade e tamanho de arquivos}
+	Total de arquivos: 94\\
+	\begin{figure}[!htp]
+		\includegraphics[scale=0.37]{../../fig/fileCount} 
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{Média do tamanho de arquivos}
+	Média do tamanho de arquivos: 101,2 linhas\\
+	\begin{figure}[!htp]
+		\includegraphics[scale=0.37]{../../fig/avFileSize} 
+	\end{figure}
+}
+
+\subsection{Tipos de arquivos}
+\frame
+{
+	\frametitle{Tipos de arquivos}
+	\begin{table}[!htp]
+		\begin{tabular}[c]{|l|l|l|l|}
+			\hline
+			\textbf{Tipo} & \textbf{Arquivos} & \textbf{LOC} & \textbf{LOC/File}\\
+			\hline
+			*.php &	57 (60.6\%) & 4643 (48.8\%) & 81.4\\
+			\hline
+			*.js &	6 (6.4\%) &	4051 (42.6\%) &	675.1\\
+			\hline
+			*.css &	4 (4.3\%) &	581 (6.1\%) & 145.2\\
+			\hline
+			*.sql &	1 (1.1\%) &	240 (2.5\%) & 240.0\\
+			\hline
+			Non-Code Files & 26 (27.7\%) &	0 (0.0\%) &	0.0\\
+			\hline
+			Total & 94 (100.0\%) &	9515 (100.0\%) & 101.2\\
+			\hline
+		\end{tabular}
+	\end{table}
+}
+
+\subsection{Arquivos com mais revisões}
+\frame
+{
+	\frametitle{Arquivos com mais revisões}
+	\begin{table}[!htp]
+		\begin{scriptsize}		
+		\begin{tabular}[c]{|l|l|}
+			\hline
+			\textbf{Arquivos} & \textbf{Revisões}\\
+			\hline
+			class/Persistencia.sgp.class.php & 93\\
+			\hline
+			class/Controle.sgp.class.php & 80\\
+			\hline
+			incluirPatrimonio.php & 31\\
+			\hline
+			localizarCor.php & 30\\
+			\hline
+			localizarUsuario.php & 27\\
+			\hline
+			incluirTipo.php & 27\\
+			\hline
+			localizarTipo.php & 24\\
+			\hline
+			localizarUnidade.php & 23\\
+			\hline
+			localizarSituacao.php & 23\\
+			\hline
+			localizarBloco.php & 20\\
+			\hline
+			incluirBloco.php & 20\\
+			\hline
+			incluirCor.php & 20\\
+			\hline
+			incluirDepartamento.php & 19\\
+			\hline
+			incluirSituacao.php & 19\\
+			\hline
+			incluirUnidade.php & 19\\
+			\hline
+			incluirSala.php & 18\\
+			\hline
+			localizarSala.php & 18\\
+			\hline
+			localizarPatrimonio.php & 17\\
+			\hline
+			index.php & 16\\
+			\hline
+		\end{tabular}
+		\end{scriptsize}
+	\end{table}
+}
+
+\subsection{Diretórios}
+\frame
+{
+	\frametitle{Diretórios}
+	Total de diretórios: 8
+	\begin{figure}[!htp]
+		\includegraphics[scale=0.37]{../../fig/linesCodPerDir} 
+	\end{figure}
+}
+
+\subsection{Estatística dos diretórios}
+\frame
+{
+	\frametitle{Estatística dos diretórios}
+	\begin{table}[!htp]
+		\begin{tabular}[c]{|l|l|l|l|}
+			\hline
+			\textbf{Diretório} & \textbf{Mudanças} & \textbf{Linha de Código}\\
+			\hline
+			js/ & 9 (0.9\%) & 4051 (42.6\%)\\
+			\hline
+			/ 	& 490 (49.4\%) & 2472 (26.0\%)\\
+			\hline
+			class\/ & 251 (25.3\%) & 1680 (17.7\%)\\
+			\hline
+			css/ &	18 (1.8\%) & 581 (6.1\%)\\
+			\hline
+			ajuda/ & 152 (15.3\%) & 491 (5.2\%)\\
+			\hline
+			bd/ & 6 (0.6\%) & 240 (2.5\%)\\
+			\hline
+			imagens/ &	65 (1.5\%) & 0 (0.0\%)\\
+			\hline
+			Total & 991 (100.0\%) &	9515 (100.0\%)\\
+			\hline
+		\end{tabular}
+	\end{table}
+}
+
+\subsection{Tamanho dos diretórios}
+\frame
+{
+	\frametitle{Tamanho dos diretórios}
+	\begin{figure}[!htp]
+		\includegraphics[scale=0.37]{../../fig/directorySizes} 
+	\end{figure}
+}
+
+\section{Finalização}
+\subsection{Conclusão}
+\frame
+{
+	\frametitle{Conclusão}
+	\begin{block}{}
+	Buscamos levar ao usuário uma boa interação, agilizando o cadastro, melhorando o tempo gasto entre o envio e o recebimento dos dados, interface simples e lógica, dentre outros uma ajuda em tempo real para facilitar a usabilidade e tornar o sistema mais agradável.
+	\end{block}
+}
+
+\subsection{Agradecimentos}
+\frame
+{
+	\frametitle{Agradecimentos}
+		\begin{Huge}Obrigado!\end{Huge}
+}
+
+\subsection{Contato}
+\frame
+{
+	\frametitle{Contato}
+	\framesubtitle{Marcello Henrique Dias de Moura}
+	\begin{LARGE}e-mail: \href{mailto:faraohh@gmail.com}{faraohh@gmail.com}\end{LARGE}
+}
+
+\end{document}

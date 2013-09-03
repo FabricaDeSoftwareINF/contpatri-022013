@@ -1,0 +1,250 @@
+\documentclass[xcolor=pdftex,dvipsnames,table,hyperref={pdfpagemode=FullScreen}]{beamer}
+% Outras classes: [notes], [notes=only], [trans], [handout],
+% [red], [compress], [draft], [class=article]
+\mode<handout>{\beamertemplatesolidbackgroundcolor{black!5}}
+
+\usepackage[brazil]{varioref}
+\usepackage[brazil,english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx,url}
+\usepackage{pslatex}
+\usepackage{beamerthemeshadow}
+%\usepackage{pdfpages}
+
+%\setbeamertemplate{footline}[frame number]
+%\setbeamertemplate{footline}[default]
+\beamertemplatetransparentcovereddynamic
+
+\title[SGP]{Sistema de Gerenciamento Patrimonial}
+\author[Leonardo Pereira de Almeida]{Leonardo Pereira de Almeida}
+%\institute{Sistemas de Informação - FASAM}
+
+% Se comentar a linha abaixo, ira aparecer a data quando foi compilada a apresentacao
+\date{Goiânia, 11 de Dezembro 2007}
+
+%\pgfdeclareimage[height=0.4cm]{das}{figs/logodas}
+%\pgfdeclareimage[height=1cm]{ufsc}{figs/logo_ufsc}
+
+% pode-se colocar o LOGO assim
+%\logo{\pgfuseimage{das}}
+% ou...
+%\logo{\vbox{\hbox to 1cm{\hfil\pgfuseimage{ufsc}}\vskip0.1cm\hbox{\pgfuseimage{das}}}}
+
+\begin{document}
+
+\frame
+{
+	\titlepage
+}
+
+\section{Sumário}
+\frame[allowframebreaks,t]
+{
+	\frametitle{Sumário}
+	\tableofcontents
+}
+
+\section{Introdução}
+\frame
+{
+	\frametitle{Introdução}
+	\begin{block}<+->{}
+	É uma área do conhecimento da informática voltada para a especificação, desenvolvimento e manutenção de sistemas.\\
+	Os fundamentos científicos para a engenharia de software envolvem o uso de modelos abstratos e precisos que permitem ao engenheiro especificar, projetar, implementar e manter sistemas de software, avaliando e garantindo suas qualidades.
+	\end{block}
+}
+
+\section{Doc. de Eng. de Software}
+\subsection{Especificação Suplementar}
+\frame
+{
+	\frametitle{Especificação Suplementar}
+	\begin{itemize}[<+-| alert@+>]
+		\item Interface
+		\item Idioma
+		\item Disponibilidade
+		\item Ajuda em tempo real
+		\item Requisitos de performance
+		\item Requisitos de Portabilidade
+	\end{itemize}
+}
+
+%\subsection{Requisitos de Suportabilidade}
+%\frame
+%{
+%	\frametitle{Requisitos de Suportabilidade}
+%	\begin{itemize}
+%		\item Reutilização dos componentes
+%		\item Estabilidade
+%	\end{itemize}
+%}
+
+%\subsection{Requisitos de Performance}
+%\frame
+%{
+%	\frametitle{Requisitos de Performance}
+%	\begin{itemize}
+%		\item Números de usuários
+%		\item Capacidade de armazenamento
+%	\end{itemize}
+%}
+
+%\subsection{Requisitos de Portabilidade}
+%\frame
+%{
+%   \frametitle{Requisitos de Portabilidade}
+%	\begin{itemize}
+%		\item Flexibilidade
+%		\item Portabilidade
+%	\end{itemize}
+%}
+
+%\subsection{Requisitos de Segurança e Restrições}
+%\frame
+%{
+%	\frametitle{Requisitos de Segurança}
+%	\begin{itemize}
+%		\item Controle de acesso
+%	\end{itemize}
+%}
+
+%\frame
+%{
+%	\frametitle{Restrições do Projeto}
+%	\begin{itemize}
+%		\item Restrições de negócio
+%		\item Restrições de arquitetura
+%		\item Restrições legais
+%	\end{itemize}
+%}
+
+\subsection{Documento Visão}
+\frame
+{
+	\frametitle{Documento Visão}
+    \framesubtitle{Definição do problema}
+	\begin{footnotesize}
+	\begin{tabular}{|p{3cm}|p{7cm}|}
+		\hline
+			\textbf{O problema de} & Não ter um sistema adequado, dificulta o controle administrativo e financeiro de patrimônio.\\
+		\hline
+			\textbf{Afeta} & Funcionários e administração.\\
+		\hline
+			\textbf{Cujo impacto é} & Má organização, má administração, mau controle e aproveitamento.\\
+		\hline
+			\textbf{Uma solução de sucesso seria} & Um sistema adequando para resolver estas necessidades/falhas à fim de alcançar os objetivos almejados, que são: controle e gerenciamento de patrimônio, estatísticas para controle estratégico e aprimoramento das informações administrativas.\\
+		\hline
+	\end{tabular}
+	\end{footnotesize}
+}
+
+\frame
+{
+	\frametitle{Documento Visão}
+	\framesubtitle{Sentenças de Posicionamento do Produto}
+	\begin{footnotesize}
+	\begin{tabular}{|p{4cm}|p{6cm}|}
+		\hline
+			\textbf{Para} & Faculdades ou Universidades.\\
+		\hline
+			\textbf{O Sistema de Gerenciamento de Patrimônio} & É um sistemas computacional de controle e gerenciamento de patrimônio.\\
+		\hline
+			\textbf{Que} & Organiza, controla, gerencia os bens patrimoniais da empresa gerando informações estratégicas, buscando dar um visão macro do passivo, bem como suas depreciações, localizações e outras informações relavantes ao adminstrador.\\
+		\hline
+			\textbf{Diferente de} & Produtos que não informam adequadamente aos administradores as necessidades atuais, com ferramentas ultrapassadas que geram confusão e dificultam o trabalho\ldots \\
+		\hline
+			\textbf{Nosso produto} & Qualidade, sofisticação adotando padrões de alta tecnologia, precisão nas informações geridas, rapidez das buscas ao sistema\ldots\\
+		\hline
+	\end{tabular}
+	\end{footnotesize}
+}
+
+\frame
+{
+	\frametitle{Documento Visão}
+	\framesubtitle{Necessidades dos Usuários}
+	\begin{footnotesize}
+	\begin{tabular}{|p{2cm}|p{8cm}|}
+		\hline
+			\textbf{Descrição} & Gerir informações sobre o patrimônio da empresa em um sistema de informação gerecial.\\
+		\hline
+			\textbf{Solução Atual} & Sistema lento, sem manutenção e descontinuado.\\
+		\hline
+			\textbf{Solução Proposta} & Sistema rápido, usufruindo de tecnologias inovadoras e usabilidade adequada, com manutenção da aplicação de dase de dados, continuas versões e módulos em desenvolvimento \ldots \\
+		\hline
+			\textbf{Prioridade} & Rapidez e integridade.\\
+		\hline
+	\end{tabular}
+	\end{footnotesize}
+}
+
+\frame
+{
+	\frametitle{Documento Visão}
+	\framesubtitle{Dependências do produto}
+	\begin{footnotesize}
+	\begin{tabular}{|p{5cm}|p{5cm}|}
+		\hline
+			\textbf{Para o seu desenvolvimento} & \textbf{Para o seu uso}\\
+		\hline
+			Servidor de páginas web (Apache)
+
+			Servidor de banco de dados (MySQL)
+
+			Linguagem de programação (PHP)
+			& 
+			Navegador de internet (Firefox ou Internet Explorer\copyright )\\
+		\hline
+	\end{tabular}
+	\end{footnotesize}
+}
+
+%\section{Documentos de Caso de Uso}
+\subsection{Caso de Uso}
+\frame
+{
+    \frametitle{Documento de Caso de Uso}
+	\includegraphics[width=.55\textwidth]{/home/marcello/arquivos/faculdade/7periodo/EngSoftware/casoUso/CU-SGP.jpg}
+}
+
+\subsection{Ficha de espeficação}
+\frame
+{
+    \frametitle{Ficha de especificação de caso e uso}
+	\framesubtitle{do caso de uso gerenciar cor}
+		\includegraphics[scale=0.7,bb=75 670 0 0]{/home/marcello/arquivos/faculdade/7periodo/EngSoftware/casoUso/CU-cadastrarCor.pdf}
+}
+	
+\subsection{Diagramas}
+\frame
+{
+    \frametitle{Diagrama de atividades}
+	\framesubtitle{do caso de uso gerenciar cor}
+	\includegraphics[width=0.9\textwidth]{imagens/diagramaCor}
+}
+
+%\section{Diagrama de classe}
+\frame
+{
+    \frametitle{Diagrama de classe}
+	\includegraphics[width=0.9\textwidth]{imagens/diaClasseContraido.png}
+}
+
+\section{Conclusão}
+\frame
+{
+	\frametitle{Conclusão}
+	\begin{block}<+->{}
+	Para que o sistema seja grandioso, de qualidade e alcance seus ideais, não e nescessário apenas bons programadores, a qualidades do software está na aquisição e processamento dos dados, na interação da equipe e principalmente no bom planejamento.
+	\end{block}
+}
+
+\frame
+{
+	\frametitle{Contato}
+	\begin{LARGE}
+		e-mail: \href{mailto:leonardoalmeyda@gmail.com}{leonardoalmeyda@gmail.com}
+	\end{LARGE}
+}
+
+\end{document}
