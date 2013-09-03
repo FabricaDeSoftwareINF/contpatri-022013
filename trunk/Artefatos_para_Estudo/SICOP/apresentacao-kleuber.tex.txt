@@ -1,0 +1,159 @@
+\documentclass[xcolor=pdftex,dvipsnames,table,hyperref={pdfpagemode=FullScreen}]{beamer}
+% Outras classes: [notes], [notes=only], [trans], [handout],
+% [red], [compress], [draft], [class=article]
+\mode<handout>{\beamertemplatesolidbackgroundcolor{black!5}}
+
+\usepackage[brazil]{varioref}
+\usepackage[brazil,english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx,url}
+\usepackage{pslatex}
+\usepackage{beamerthemeshadow}
+
+%\setbeamertemplate{footline}[frame number]
+%\setbeamertemplate{footline}[default]
+\beamertemplatetransparentcovereddynamic
+
+\title[SGP]{Sistema de Gerenciamento Patrimonial}
+\author[Kleuber Gonçalves Nisio]{Kleuber Gonçalves Nisio}
+%\institute{Sistemas de Informação - FASAM}
+
+% Se comentar a linha abaixo, ira aparecer a data quando foi compilada a apresentacao
+\date{Goiânia, 03 de Dezembro 2007}
+
+%\pgfdeclareimage[height=0.4cm]{das}{figs/logodas}
+%\pgfdeclareimage[height=1cm]{ufsc}{figs/logo_ufsc}
+
+% pode-se colocar o LOGO assim
+%\logo{\pgfuseimage{das}}
+% ou...
+%\logo{\vbox{\hbox to 1cm{\hfil\pgfuseimage{ufsc}}\vskip0.1cm\hbox{\pgfuseimage{das}}}}
+
+\begin{document}
+
+\frame
+{
+	\titlepage
+}
+
+\section{Sumário}
+\frame[allowframebreaks,t]
+{
+	\frametitle{Sumário}
+	\tableofcontents
+}
+
+\section{Introdução}
+\frame
+{
+	\frametitle{Introdução}
+	\begin{block}<+->{}
+	Nosso objetivo é demostrar o caminho que o usuário percorrerá pelo sistema, visando tirar proveito de suas funcionalidades.\\
+	\end{block}
+}
+
+\section{As telas}
+\subsection{Usuário}
+\frame
+{
+    \frametitle{Inclusão do Usuário}
+	%incluirUsuario
+	\includegraphics[scale=1.3]{imagens/incluirUsuario} 
+}
+
+\frame
+{
+    \frametitle{Localização do Usuário}
+	%localizarUsuario
+	\includegraphics[scale=1.3]{imagens/localizarUsuario} 
+}
+
+\subsection{Patrimônio}
+\frame
+{
+    \frametitle{Inclusão do Patrimônio}
+	%incluirPatrimonio
+	\includegraphics[scale=1]{imagens/incluirPatrimonio} 
+}
+
+\frame
+{
+    \frametitle{Localização do Patrimônio}
+	%localizarPatrimonio
+	\includegraphics[scale=1.3]{imagens/localizarPatrimonio}
+}
+
+\subsection{Características do Patrimônio}
+\frame
+{
+    \frametitle{Inclusão do Tipo}
+	%incluirTipo
+	\includegraphics[scale=1.4]{imagens/incluirTipo}
+}
+
+\frame
+{
+    \frametitle{Inclusão da Cor}
+	%incluirCor
+	\includegraphics[scale=1.4]{imagens/incluirCor}
+}
+
+\frame
+{
+    \frametitle{Inclusão da Situação}
+	%incluirSituacao
+	\includegraphics[scale=1.4]{imagens/incluirSituacao}
+}
+
+\frame
+{
+    \frametitle{Inclusão da Unidade}
+	%incluirUnidade
+	\includegraphics[scale=1.4]{imagens/incluirUnidade}
+}
+
+\frame
+{
+    \frametitle{Inclusão do Bloco}
+    %incluirBloco
+	\includegraphics[scale=1.4]{imagens/incluirBloco}
+}
+
+\frame
+{
+    \frametitle{Inclusão do Departamento}
+	%incluirDepartamento
+	\includegraphics[scale=1.4]{imagens/incluirDepartamento}
+}
+
+\frame
+{
+    \frametitle{Inclusão da Sala}
+	%incluirSala
+	\includegraphics[scale=1.4]{imagens/incluirSala}
+}
+
+\subsection{A finalização do cadastro}
+\frame
+{
+    \frametitle{Cadastramento do Patrimônio}
+	%Patrimonio
+	\includegraphics[scale=1.4]{imagens/Patrimonio}
+}
+
+\section{Conclusão}
+\frame
+{
+	\frametitle{Conclusão}
+	\begin{block}<+->{}
+      Com as telas apresentadas, esperamos ter demonstrado com clareza a facilidade e agilidade que o usuário obtém usando o sistema.
+	\end{block}
+}
+
+\frame
+{
+	\frametitle{Contato}
+	\begin{LARGE}e-mail: \href{mailto:nisiokleuber@gmail.com}{nisiokleuber@gmail.com}\end{LARGE}
+}
+
+\end{document}
