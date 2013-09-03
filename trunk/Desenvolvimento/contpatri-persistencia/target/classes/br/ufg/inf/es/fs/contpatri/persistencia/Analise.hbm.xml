@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="br.ufg.inf.es.fs.contpatri.model.Analise" table="Analise" >
+        <id name="id" type="java.lang.Long">
+            <column name="idBemPatrimonial" />
+            <generator class="foreign">
+                <param name="property">BemPatrimonial</param>
+            </generator>
+        </id>
+        <one-to-one class="br.ufg.inf.es.fs.contpatri.model.BemPatrimonial" lazy="false" name="bemPatrimonial"
+            constrained="true">
+        </one-to-one>
+        <many-to-one class="br.ufg.inf.es.fs.contpatri.model.Inventario" fetch="select" name="inventario">
+            <column name="idInventario"/>
+        </many-to-one>
+        <property name="situacao" column="tipoSituacaoAnalise">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">
+                    br.ufg.inf.es.fs.contpatri.model.TipoSituacao
+                </param>
+                <param name="type">12</param>
+            </type>       
+        </property>
+    </class>
+</hibernate-mapping>
