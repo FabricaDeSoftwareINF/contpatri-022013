@@ -4,7 +4,6 @@
  */
 package br.ufg.inf.es.fs.contpatri.web.teste.dbunit;
 
-
 import java.io.FileInputStream;
 import javax.security.auth.login.Configuration;
 import org.dbunit.DatabaseTestCase;
@@ -18,72 +17,71 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- *
+ * 
  * @author Gustavo
  */
 class DBunitTest extends DatabaseTestCase {
 
-    private Session session;
-    private IDatabaseConnection conn;
-    private IDataSet dataSet;
-    private FileInputStream loadFile;
+	private Session session;
+	private IDatabaseConnection conn;
+	private IDataSet dataSet;
+	private FileInputStream loadFile;
 
-    public DBunitTest() {
+	public DBunitTest() {
 
-        try {
+		try {
 
-            session = HibernateUtil.getSessionFactory().openSession();
+			session = HibernateUtil.getSessionFactory().openSession();
 
-        } catch (Exception e) {
+		} catch (Exception e) {
 
-            e.getMessage();
+			e.getMessage();
 
-        }
+		}
 
-    }
+	}
 
-    @Before
-    public void setUp() throws Exception {
+	//@Before
+	public void setUp() throws Exception {
 
-//A cada execução dos testes limpa e insere
+		// A cada execução dos testes limpa e insere
 
-        getSetUpOperation();
+		getSetUpOperation();
 
-    }
+	}
 
-//Limpa tudo que tem nas tabelas e faz um insert
-    @Override
-    protected DatabaseOperation getSetUpOperation() throws Exception {
+	// Limpa tudo que tem nas tabelas e faz um insert
+	@Override
+	protected DatabaseOperation getSetUpOperation() throws Exception {
 
-        return DatabaseOperation.CLEAN_INSERT;
+		return DatabaseOperation.CLEAN_INSERT;
 
-    
-}
-    
-@Override
-protected IDatabaseConnection getConnection() throws Exception {
+	}
 
-             conn = new DatabaseConnection(new Configuration().configure().buildSettings().getConnectionProvider().getConnection());
+	@Override
+	protected IDatabaseConnection getConnection() throws Exception {
 
-             return conn;
+		conn = new DatabaseConnection(new Configuration().configure()
+				.buildSettings().getConnectionProvider().getConnection());
 
-       }
-     
-       @Override
+		return conn;
 
-       protected IDataSet getDataSet() throws Exception {
+	}
 
-             loadFile = new FileInputStream("src/test/java/DataAgente.xml");
+	@Override
+	protected IDataSet getDataSet() throws Exception {
 
-             dataSet =  new  FlatXmlDataSet(loadFile);
+		loadFile = new FileInputStream("src/test/java/DataAgente.xml");
 
-             return dataSet;
+		dataSet = new FlatXmlDataSet(loadFile);
 
-       }
-       
-// Testes utilizando DBunit
-       
-       @Test
+		return dataSet;
+
+	}
+
+	// Testes utilizando DBunit
+
+	//@Test
        public void testCheckLoginDataLoaded() throws Exception{
 
              assertNotNull(getDataSet());
@@ -91,9 +89,5 @@ protected IDatabaseConnection getConnection() throws Exception {
              int rowCount = getDataSet().getTable(“Agente”).getRowCount();
 
              assertTrue(rowCount!=0);   }
-       
-      
-      
+
 }
-
-

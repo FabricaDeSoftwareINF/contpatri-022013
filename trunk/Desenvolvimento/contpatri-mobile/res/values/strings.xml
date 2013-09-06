@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">ContPatri - Mobile</string>
+
+    <string name="nome_aplicativo">ContPatriMobile</string>
+    <string name="menu_settings">Configurações</string>
+    <string name="title_activity_tela_sub_locais">SubLocais</string>
+    <string name="coletar">Coletar</string>
+    <string name="relatorio">Relatório</string>
+    <string name="enviar">Enviar</string>
+    <string name="title_activity_coleta">Coleta</string>
+
+    <string-array name="nomes_array">
+        <item>Localizado</item>
+        <item>Relocado</item>
+        <item>Extraviado</item>
+    </string-array>
+    <string-array name="acao_array">
+        <item>Coletar</item>
+        <item>Submeter</item>
+        <item>Relatório</item>
+    </string-array>
+
 </resources>
