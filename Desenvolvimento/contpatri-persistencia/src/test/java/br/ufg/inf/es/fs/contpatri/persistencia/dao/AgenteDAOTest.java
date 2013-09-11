@@ -59,7 +59,7 @@ public class AgenteDAOTest {
     public void tearDown() {
     }
 
-    @Test
+    //@Test
     public void testaCriacaoExclusaoAgente() {
         agenteDAO.create(agente);
         Long id = agente.getId();
