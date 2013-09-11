@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cp="http://java.sun.com/jsf/composite/contpatri" >
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="tituloPainel" required="true"/>
+        <cc:attribute name="tipoUsuario" required="true" shortDescription="Gestor ou Agente"/>
+        <cc:attribute name="tipoUsuarioPlural" required="true" shortDescription="Gestores ou Agentes"/>
+        <cc:attribute name="usuarioBean" required="true" type="br.ufg.inf.es.fs.contpatri.web.controller.IUsuarioBean"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="form-tabela">
+            <h:panelGroup layout="block" class="container-centro" id="div-painel">
+                <cp:painel titulo="#{cc.attrs.tipoUsuarioPlural}" id="painel-usuarios">
+                    <p:commandButton value="Cadastrar" onclick="cadastrar#{cc.attrs.tipoUsuario}Dialog.show();"/>
+                    <p:commandButton value="Editar" update=":#{cc.id}:form-edicao:modalDialogEdicao"
+                                     oncomplete="editar#{cc.attrs.tipoUsuario}Dialog.show();" />
+                    <p:commandButton value="Excluir" onclick="confirmacaoExclusaoDialog.show();"/>
+                    <p:dataTable id="tabela-usuarios" var="usuario"
+                                 rowKey="#{usuario.matricula}"
+                                 value="#{cc.attrs.usuarioBean.usuarios}"
+                                 emptyMessage="Não existem usuários cadastrados"
+                                 selectionMode="single"
+                                 selection="#{cc.attrs.usuarioBean.usuarioSelecionado}" >
+                        <p:column headerText="Matrícula">
+                            <h:outputText value="#{usuario.matricula}"/>
+                        </p:column>
+                        <p:column headerText="Nome">
+                            <h:outputText value="#{usuario.nome}"/>
+                        </p:column>
+                        <p:column headerText="E-mail">
+                            <h:outputText value="#{usuario.email}"/>
+                        </p:column>
+                    </p:dataTable>
+                </cp:painel>
+            </h:panelGroup>
+
+        </h:form>
+
+        <h:form id="form-cadastro">
+            <p:dialog id="modalDialogCadastro"
+                      header="Cadastrar #{cc.attrs.tipoUsuario}"
+                      widgetVar="cadastrar#{cc.attrs.tipoUsuario}Dialog"
+                      modal="true"
+                      height="200px"
+                      width="420px"
+                      resizable="false" draggable="false">  
+                <h:panelGroup id="teste">
+                    <table id="tabela-dados">
+                        <cp:itemCadastro label="Nome" idInputText="nome"
+                                         valor="#{cc.attrs.usuarioBean.usuario.nome}"/>
+                        <cp:itemCadastro label="Matricula" idInputText="matricula"
+                                         valor="#{cc.attrs.usuarioBean.usuario.matricula}"/>
+                        <cp:itemCadastro label="E-mail" idInputText="email"
+                                         valor="#{cc.attrs.usuarioBean.usuario.email}"/>
+                        <tr>
+                            <td><h:outputText value="Senha"/></td>
+                            <td><p:password feedback="true" id="senha"
+                                            value="#{cc.attrs.usuarioBean.usuario.senha}" required="true" requiredMessage="Campo obrigatório"/></td>
+                            <td><p:message id="mensagemSenha" for="senha" display="icon"/></td>
+                        </tr>
+                    </table>
+                </h:panelGroup>
+                <h:panelGroup layout="block" style="position: absolute; right: 10px;">
+                    <p:commandButton value="Cadastrar" action="#{cc.attrs.usuarioBean.adicionar()}"
+                                     update=":#{cc.id}:form-tabela:painel-usuarios:tabela-usuarios, :#{cc.id}:form-cadastro:modalDialogCadastro"
+                                     oncomplete="if (!args.validationFailed){ cadastrar#{cc.attrs.tipoUsuario}Dialog.hide(); } else{ cadastrar#{cc.attrs.tipoUsuario}Dialog.show();} "/>
+                    <p:commandButton value="Cancelar" onclick="cadastrar#{cc.attrs.tipoUsuario}Dialog.hide()"/>
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
+        <h:form id="form-edicao">
+            <p:dialog id="modalDialogEdicao"
+                      header="Editar #{cc.attrs.tipoUsuario}"
+                      widgetVar="editar#{cc.attrs.tipoUsuario}Dialog"
+                      modal="true"
+                      height="200px"
+                      width="420px"
+                      resizable="false" draggable="false" >  
+
+                <table id="tabela-edicao-dados">
+                    <cp:itemCadastro label="Nome" idInputText="nome"
+                                     valor="#{cc.attrs.usuarioBean.usuarioSelecionado.nome}"/>
+                    <cp:itemCadastro label="Matricula" idInputText="matricula"
+                                     valor="#{cc.attrs.usuarioBean.usuarioSelecionado.matricula}"/>
+                    <cp:itemCadastro label="E-mail" idInputText="email"
+                                     valor="#{cc.attrs.usuarioBean.usuarioSelecionado.email}"/>
+                    <tr>
+                        <td><h:outputText value="Senha"/></td>
+                        <td><p:password feedback="true" id="senha"
+                                        value="#{cc.attrs.usuarioBean.usuarioSelecionado.senha}"
+                                        required="true"
+                                        requiredMessage="Campo obrigatório"
+                                        redisplay="true"
+                                        promptLabel="Digite uma senha"
+                                        weakLabel="Senha fraca"
+                                        goodLabel="Senha boa"
+                                        strongLabel="Senha forte"/></td>
+                        <td><p:message id="mensagemSenha" for="senha" display="icon"/></td>
+                    </tr>
+                </table>
+                <h:panelGroup layout="block" style="position: absolute; right: 10px;">
+                    <p:commandButton value="Concluir" action="#{cc.attrs.usuarioBean.editar()}"
+                                     update=":#{cc.id}:form-tabela:painel-usuarios:tabela-usuarios, :#{cc.id}:form-edicao:modalDialogEdicao"
+                                     oncomplete="if (!args.validationFailed){ editar#{cc.attrs.tipoUsuario}Dialog.hide(); } else{ editar#{cc.attrs.tipoUsuario}Dialog.show();} "/>
+                    <p:commandButton value="Cancelar" onclick="editar#{cc.attrs.tipoUsuario}Dialog.hide()"/>
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
+        <h:form id="form-exclusao">
+            <p:confirmDialog header="Excluir #{cc.attrs.tipoUsuario}"
+                             message="Tem certeza que deseja excluir o usuario selecionado?"
+                             widgetVar="confirmacaoExclusaoDialog" >
+                <p:commandButton value="Ok" action="#{cc.attrs.usuarioBean.excluir()}"
+                                 oncomplete="confirmacaoExclusaoDialog.hide()"
+                                 update=":#{cc.id}:form-tabela:painel-usuarios:tabela-usuarios" />  
+                <p:commandButton value="Cancelar" onclick="confirmacaoExclusaoDialog.hide()"
+                                 type="button" />  
+            </p:confirmDialog>
+        </h:form>
+    </cc:implementation>
+</html>

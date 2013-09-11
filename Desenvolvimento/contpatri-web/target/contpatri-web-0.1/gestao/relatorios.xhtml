@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cp="http://java.sun.com/jsf/composite/contpatri"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/layoutTemplate.xhtml">
+
+
+            <ui:param name="pagina" value="Relatórios"/>
+
+            <ui:define name="conteudo">
+                <h:panelGroup layout="block" class="container-centro" id="div-painel">
+                    <cp:painel titulo="Itens Coletados" id="painel-itens">
+                        <h:form id="form-relatorio">
+
+                            <p:growl id="mensagem-edicao" showDetail="true"/>
+                            <p:dataTable id="inventarioTable" 
+                                         value="#{relatoriosBean.bemPatrimonialDataModel}"
+                                         var="item"
+                                         editable="true"
+                                         rowKey="#{item.codigoSicop}"
+                                         paginator="true"
+                                         rows="25"
+                                         filteredValue=""
+                                         currentPageReportTemplate="{currentPage} de {totalPages}"
+                                         rowsPerPageTemplate="15,20,25"
+                                         selection="#{relatoriosBean.bemPatrimonialSelecionado}"
+                                         selectionMode="single"
+                                         emptyMessage="Nenhum registro encontrado"
+                                         lazy="true" >
+                                <p:ajax event="rowEdit" listener="#{relatoriosBean.onEdit}" update=":painel-itens:form-relatorio:mensagem-edicao" />  
+                                <p:column headerText="Código" sortBy="#{item.codigoSicop}"
+                                          filterBy="#{item.codigoSicop}" filterStyle="width:100px" id="codigoSicop">  
+                                    <h:outputText value="#{item.codigoSicop}" /> 
+                                </p:column>  
+                                <p:column headerText="Descrição" sortBy="#{item.descricao}"
+                                          filterBy="#{item.descricao}" filterStyle="width:200px" id="descricao">  
+                                    <h:outputText value="#{item.descricao}" />
+                                </p:column>  
+                                <p:column headerText="Situação" sortBy="#{item.analise.situacao}"
+                                          filterStyle="width:160px" filterBy="#{item.analise.situacao}" id="situacao">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{item.situacao}" /> 
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <h:selectOneMenu value="#{item.situacao}" id="situacoes">
+                                                <f:selectItems value="#{relatoriosBean.tiposAnalise}"
+                                                               itemValue="#{situacao}"
+                                                               itemLabel="#{situacao}"
+                                                               var="situacao" />
+                                            </h:selectOneMenu> 
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column style="width:6%">  
+                                    <p:rowEditor />  
+                                </p:column> 
+                            </p:dataTable>
+                        </h:form>
+                    </cp:painel>
+                </h:panelGroup>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

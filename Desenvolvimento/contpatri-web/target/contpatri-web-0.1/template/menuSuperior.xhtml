@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:body>
+        <ul id="lista-menu">
+            <li class="item-menu #{pagina == 'Agentes' ? 'selecionado' : ''}">
+                <a href="./agentes.jsf">
+                    <h:graphicImage library="img" name="agentes.png"/>
+                    <p>Agentes</p>
+                </a>
+            </li>
+            <li class="item-menu #{pagina == 'Importar' ? 'selecionado' : ''}">
+                <a href="./importar.jsf">
+                    <h:graphicImage library="img" name="importar.png"/>
+                    <p>Importar</p>
+                </a>
+            </li>
+            <li class="item-menu #{pagina == 'Exportar' ? 'selecionado' : ''}">
+                <a href="./exportar.jsf">
+                    <h:graphicImage library="img" name="exportar.png"/>
+                    <p>Exportar</p>
+                </a>
+            </li>
+            <li class="item-menu #{pagina == 'Relatórios' ? 'selecionado' : ''}">
+                <a href="./relatorios.jsf">
+                    <h:graphicImage library="img" name="relatorios.png"/>
+                    <p>Relatórios</p>
+                </a>
+            </li>
+            <li class="item-menu #{pagina == 'Gestores' ? 'selecionado' : ''}" id="gestores">
+                <a href="./gestores.jsf">
+                    <h:graphicImage library="img" name="gestores.png"/>
+                    <p>Gestores</p>
+                </a>
+            </li>
+        </ul>
+    </h:body>
+</html>
+
