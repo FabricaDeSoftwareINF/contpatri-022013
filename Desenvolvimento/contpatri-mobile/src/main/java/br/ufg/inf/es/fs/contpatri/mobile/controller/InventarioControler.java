@@ -1,6 +1,5 @@
 package br.ufg.inf.es.fs.contpatri.mobile.controller;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
@@ -14,21 +13,18 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
 
+import br.ufg.inf.es.fs.contpatri.mobile.util.FolderManager;
 import android.os.Looper;
-import android.util.Log;
 
 public class InventarioControler {
 
 	public void enviaColeta(final String jsonUrl) {
-		
 		Thread t = new Thread() {
 
 			private URI URL;
 
 			public void run() {
-				
-				Looper.prepare(); 
-				
+				Looper.prepare();
 				HttpClient client = new DefaultHttpClient();
 				HttpConnectionParams.setConnectionTimeout(client.getParams(),
 						10000); 
@@ -36,7 +32,6 @@ public class InventarioControler {
 				JSONObject json = new JSONObject();
 
 				try {
-					
 					HttpPost post = new HttpPost(URL);
 
 					StringEntity se = new StringEntity(
@@ -46,16 +41,17 @@ public class InventarioControler {
 					post.setEntity(se);
 					response = client.execute(post);
 
+
 					if (response != null) {
 						InputStream in = response.getEntity().getContent(); 
-						in.close();
 					}
 
-				} catch (final IOException excecao) {
-					Log.e(InventarioControler.class.getSimpleName(), "", excecao);
+				} catch (Exception e) {
+					e.printStackTrace();
+
 				}
 
-				Looper.loop(); 
+				Looper.loop();
 			}
 		};
 		t.start();

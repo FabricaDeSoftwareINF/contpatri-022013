@@ -10,44 +10,51 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
-import br.ufg.inf.es.fs.contpatri.mobile.modelo.Tombamento;
+import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
+import br.ufg.inf.es.fs.contpatri.mobile.util.FolderManager;
 
-public class ColetaControler {
-
-	private transient final String jsonUrl;
-	private transient final JSONObject json;
+public final class ColetaControler {
+	
 	private transient final JSONArray jsonArray;
-	private transient Tombamento tombamento;
+	private transient String jsonUrl;
+	public JSONObject tombamentoJSON = new JSONObject();
+	private Tombamento tombamento;
 
-	public ColetaControler(String jsonUrl) throws JSONException {
+	public ColetaControler(final String jsonUrl) throws JSONException {
 		this.jsonUrl = jsonUrl;
 		this.jsonArray = new JSONArray(FolderManager.callURL(jsonUrl));
-		json = new JSONObject();
 	}
 
-	public synchronized boolean buscaPatrimonio(String tombamento)
-			throws JSONException {
+	public synchronized boolean buscaPatrimonio(final String tombamento) {
 
 		int count = jsonArray.length();
 
 		for (int i = 0; i < count; i++) {
 
-			if (jsonArray.getJSONObject(i).getString(Tombamento.CODIGO)
-					.equals(tombamento)) {
-				this.tombamento = new Tombamento(jsonArray.getJSONObject(i));
-				return true;
+			try {
+				if (jsonArray.getJSONObject(i).getString(Tombamento.CODIGO)
+						.equals(tombamento)) {
+					this.tombamento = new Tombamento(jsonArray.getJSONObject(i));
+					return true;
+				}
+			} catch (final JSONException e) {
+				Log.e(ColetaControler.class.getSimpleName(), "", e);
 			}
 		}
-
 		return false;
 	}
 
-	public boolean finalizarColeta(String situacao, String observacao)
-			throws JSONException {
+	public boolean finalizarColeta(final String situacao, final String observacao) {
 
-		tombamento.setSituacao(situacao);
-		tombamento.setObservacao(observacao);
-		tombamento.registraTombamento();
+		try {
+			
+			tombamento.setSituacao(situacao);
+			tombamento.setObservacao(observacao);
+			tombamento.registraTombamentoUltimaAlteracao();
+			
+		} catch (final JSONException e) {
+			Log.e(ColetaControler.class.getSimpleName(), "", e);
+		}
 
 		File output = new File(jsonUrl);
 
@@ -58,24 +65,27 @@ public class ColetaControler {
 
 				out.write(jsonArray.toString());
 
-			} catch (final IOException excecao) {
-				Log.e(ColetaControler.class.getSimpleName(), "", excecao);
+			} catch (final IOException e) {
+				Log.e(ColetaControler.class.getSimpleName(), "", e);
 			} finally {
 				if (out != null) {
 					try {
 						out.close();
-					} catch (final IOException excecao) {
-						Log.e(ColetaControler.class.getSimpleName(), "", excecao);
+					} catch (IOException e) {
+						Log.e(ColetaControler.class.getSimpleName(), "", e);
 					}
 				}
 			}
-
 		}
-
 		return false;
-
 	}
 
+	public Tombamento getTombamento() {
+		return tombamento;
+	}
 
+	public void setTombamento(final Tombamento tmbmnt) {
+		tombamento = tmbmnt;
+	}
 
 }

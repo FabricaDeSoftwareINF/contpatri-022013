@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget61"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/tombamento"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:hint="Tombamento"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/bscan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SCAN QR CODE" />
+
+    <Spinner
+        android:id="@+id/situacao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/nomes_array" />
+
+    <EditText
+        android:id="@+id/alteracao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Última alteração"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/sublocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Sub Local"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/observacao"
+        android:layout_width="251dp"
+        android:layout_height="71dp"
+        android:hint="Observação"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/descricao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Descrição" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/bconfirmar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CONFIRMAR" />
+
+</TableLayout>
