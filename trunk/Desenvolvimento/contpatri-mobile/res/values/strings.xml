@@ -3,7 +3,7 @@
 
     <string name="nome_aplicativo">ContPatri</string>
     <string name="menu_settings">Configurações</string>
-    <string name="title_activity_tela_sub_locais">TelaSubLocais</string>
+    <string name="titulo_activity_tela_sub_locais">SubLocais</string>
     <string name="coletar">Coletar</string>
     <string name="relatorio">Relatório</string>
     <string name="enviar">Enviar</string>
@@ -16,8 +16,8 @@
     </string-array>
     <string-array name="acao_array">
         <item>Coletar</item>
-        <item>Enviar</item>
         <item>Relatório</item>
+        <item>Exibir coletas</item>
     </string-array>
 
     <string name="logar">Logar</string>
@@ -26,5 +26,19 @@
     <string name="sincronizar">Sincronizar</string>
     <string name="sincronizar_todos">Sincronizar Todos</string>
     <string name="acao">Ação</string>
+
+    <!-- Tela Coleta -->
+    <string name="tombamentoHint">Tombamento</string>
+    <string name="ultimaAlteracaoHint">Ultima Alteração</string>
+    <string name="descricaoHint">Descrição</string>
+    <string name="sublocalHint">Sub Local</string>
+    <string name="observacaoHint">Observações</string>
+    <string name="scanQrcode">QR Code</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="codigo">Código</string>
+    <string name="situacao">Situacao</string>
+    <string name="ultima_alteracao">Ultima Alteracao</string>
+    <string name="informa_es_do_tombamento">Informações do Tombamento</string>
+    <string name="menu">Menu</string>
 
 </resources>

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/gradiente_background"
     android:orientation="vertical" >
 
     <EditText
@@ -17,15 +18,15 @@
     </EditText>
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btnLogin"
+        style="@style/botao"
         android:layout_width="100dp"
         android:layout_height="43dp"
         android:layout_below="@+id/edt_senha"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="63dp"
-        android:onClick="logar"
         android:text="@string/logar"
-        android:textColor="#ff000000"
+        android:onClick="logar"
         android:textSize="16sp" />
 
     <EditText
@@ -41,5 +42,14 @@
 
         <requestFocus />
     </EditText>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/edt_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="@string/nome_aplicativo"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

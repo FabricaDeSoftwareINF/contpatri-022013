@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cinzaEscuro">#1C1C1C</color>
+    <color name="cinzaClaro">#778899</color>
+    <color name="turquesa">#00CED1</color>
+    <color name="branco">#FFFFFF</color>
+    <color name="preto">#000000</color>
+    <color name="azulActionBar">#297994</color>
+
+    <!-- Cores Gradiente Background App -->
+    <color name="startColorGradiente">#828282</color>
+    <color name="endeColorGradiente">#B5B5B5</color>
+    <color name="centerColorGradiente">#E8E8E8</color>
+</resources>
