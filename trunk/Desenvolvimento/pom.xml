@@ -10,7 +10,6 @@
 		<module>contpatri-model</module>
 		<module>contpatri-sicop</module>
 		<module>contpatri-web</module>
-		<module>contpatri-persistencia</module>
     <module>contpatri-mobile</module>
   </modules>
 </project>
