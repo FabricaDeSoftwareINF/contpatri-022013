@@ -1,64 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/widget61"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradiente_background"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/tombamento"
-        android:layout_width="127dp"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tombamento"
-        android:textSize="18sp" />
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/informa_es_do_tombamento"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <Button
-        android:id="@+id/bscan"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SCAN QR CODE" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
 
-    <Spinner
-        android:id="@+id/situacao"
-        android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/edtTombamento"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:hint="@string/tombamentoHint" >
+        </EditText>
+
+        <Button
+            android:id="@+id/btnScanQrCode"
+            style="@style/botao"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="scanQRCode"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/scanQrcode" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:entries="@array/nomes_array" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
 
-    <EditText
-        android:id="@+id/alteracao"
-        android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/spnSituacao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/nomes_array" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Última alteração"
-        android:textSize="18sp" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/sublocal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Sub Local"
-        android:textSize="18sp" />
+        <EditText
+            android:id="@+id/edtUltimaAlteracao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/ultimaAlteracaoHint" />
 
-    <EditText
-        android:id="@+id/observacao"
-        android:layout_width="251dp"
-        android:layout_height="71dp"
-        android:hint="Observação"
-        android:textSize="18sp" />
+        <EditText
+            android:id="@+id/edtSubLocal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/sublocalHint" >
+        </EditText>
 
-    <EditText
-        android:id="@+id/descricao"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Descrição" >
+        <EditText
+            android:id="@+id/edtObservacao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/observacaoHint" />
+    </LinearLayout>
 
-        <requestFocus />
-    </EditText>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="5"
+        android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/bconfirmar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CONFIRMAR" />
+        <Button
+            android:id="@+id/btnConfirmar"
+            style="@style/botao"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:onClick="confirmar"
+            android:text="@string/confirmar" />
 
-</TableLayout>
+    </RelativeLayout>
+
+</LinearLayout>
