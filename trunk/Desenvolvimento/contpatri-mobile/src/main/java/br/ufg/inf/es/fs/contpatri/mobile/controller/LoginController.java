@@ -1,13 +1,29 @@
+/**
+ * Esse documento é parte do código fonte e artefatos relacionados ao projeto
+ * CONTPATRI, em desenvolvimento pela Fábrica de Software da UFG.
+ *
+ * Links relevantes: Fábrica de Software: http://fs.inf.ufg.br/ 
+ * Instituto de Informática UFG: http://www.inf.ufg.br 
+ * Projeto CONTPATRI DROPBOX: https://www.dropbox.com/home/CONTPATRI%20-%20012013 
+ *
+ * Copyleft © UFG.
+ *
+ * Licenciado sobre a licença GNU-GPL v3
+ *
+ * Você pode obter uma cópia da licença em http://www.gnu.org/licenses/gpl.html
+ *
+ * A menos que especificado ou exigido por legislação local, o software é
+ * fornecido "da maneira que está", sem garantias ou condições de qualquer tipo,
+ * nem expressas nem implícitas. Em caso de dúvidas referir a licença GNU-GPL.
+ */
 package br.ufg.inf.es.fs.contpatri.mobile.controller;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public final class LoginController {
 
-	private String login;
-	private String senha;
+	private transient String login;
+	private transient String senha;
 
 	public LoginController(final String user, final String pass)
 			throws NoSuchAlgorithmException {
@@ -16,27 +32,7 @@ public final class LoginController {
 	}
 
 	public boolean logar() {
-		/*
-		 * String local = "http://localhost:8080/axis/Servico.jws";
-		 * 
-		 * // Criando e configurando o servi�o Call call = (Call) new
-		 * Service().createCall(); // Configurando o endere�o.
-		 * call.setTargetEndpointAddress(local); // Marcando o m�todo a ser
-		 * chamado. call.setOperationName("logar");
-		 * 
-		 * // Par�metros da fun��o soma. Object[] param = new Object[] { login,
-		 * hash(senha) }; // Retorno da Fun��o // Integer ret = (Integer)
-		 * call.invoke(param);
-		 */
-
 		return true;
-	}
-
-	public String hash(String senha) throws NoSuchAlgorithmException {
-		MessageDigest md = MessageDigest.getInstance("SHA-1");
-		BigInteger hash = new BigInteger(1, md.digest(senha.getBytes()));
-		String crypto = hash.toString(16);
-		return crypto;
 	}
 
 	public String getLogin() {
