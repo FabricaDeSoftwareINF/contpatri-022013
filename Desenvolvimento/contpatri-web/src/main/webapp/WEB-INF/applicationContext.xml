@@ -35,7 +35,7 @@
     </authentication-manager>
  
     <b:bean id="mySqlDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
-        <b:property name="url" value="jdbc:mysql://homologacao.fabrica.inf.ufg.br:3306/contpatri" />
+        <b:property name="url" value="jdbc:mysql://200.137.197.236:3306/contpatri" />
         <b:property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <b:property name="username" value="contpatri" />
         <b:property name="password" value="mysql" />
