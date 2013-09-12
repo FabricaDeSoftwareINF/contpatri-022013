@@ -1,91 +1,83 @@
+/**
+ * Esse documento é parte do código fonte e artefatos relacionados ao projeto
+ * CONTPATRI, em desenvolvimento pela Fábrica de Software da UFG.
+ *
+ * Links relevantes: Fábrica de Software: http://fs.inf.ufg.br/ 
+ * Instituto de Informática UFG: http://www.inf.ufg.br 
+ * Projeto CONTPATRI DROPBOX: https://www.dropbox.com/home/CONTPATRI%20-%20012013 
+ *
+ * Copyleft © UFG.
+ *
+ * Licenciado sobre a licença GNU-GPL v3
+ *
+ * Você pode obter uma cópia da licença em http://www.gnu.org/licenses/gpl.html
+ *
+ * A menos que especificado ou exigido por legislação local, o software é
+ * fornecido "da maneira que está", sem garantias ou condições de qualquer tipo,
+ * nem expressas nem implícitas. Em caso de dúvidas referir a licença GNU-GPL.
+ */
 package br.ufg.inf.es.fs.contpatri.mobile.controller;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.Log;
+import br.ufg.inf.es.fs.contpatri.mobile.nucleo.NucleoApp;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
-import br.ufg.inf.es.fs.contpatri.mobile.util.FolderManager;
 
 public final class ColetaControler {
-	
-	private transient final JSONArray jsonArray;
-	private transient String jsonUrl;
-	public JSONObject tombamentoJSON = new JSONObject();
-	private Tombamento tombamento;
 
-	public ColetaControler(final String jsonUrl) throws JSONException {
-		this.jsonUrl = jsonUrl;
-		this.jsonArray = new JSONArray(FolderManager.callURL(jsonUrl));
+	public ColetaControler() {
+
 	}
 
-	public synchronized boolean buscaPatrimonio(final String tombamento) {
+	public boolean getTombamento() {
+		return true;
+	}
 
-		int count = jsonArray.length();
+	public void gerarColeta(final Activity activity, final Tombamento tombamento) {
 
-		for (int i = 0; i < count; i++) {
+		File arqTombamento = new File(NucleoApp.LOCAL_COLETAS
+				+ tombamento.getCodigo() + ".json");
 
-			try {
-				if (jsonArray.getJSONObject(i).getString(Tombamento.CODIGO)
-						.equals(tombamento)) {
-					this.tombamento = new Tombamento(jsonArray.getJSONObject(i));
-					return true;
-				}
-			} catch (final JSONException e) {
-				Log.e(ColetaControler.class.getSimpleName(), "", e);
-			}
+		if (arqTombamento.exists()) {
+			arqTombamento.delete();
 		}
-		return false;
-	}
-
-	public boolean finalizarColeta(final String situacao, final String observacao) {
 
 		try {
+
+			arqTombamento.createNewFile();
 			
-			tombamento.setSituacao(situacao);
-			tombamento.setObservacao(observacao);
-			tombamento.registraTombamentoUltimaAlteracao();
-			
-		} catch (final JSONException e) {
+			FileOutputStream fos = new FileOutputStream(arqTombamento);
+			fos.write(tombamento.toJson().getBytes());
+			fos.close();
+
+			AlertDialog.Builder builder;
+			builder = new AlertDialog.Builder(activity);
+			builder.setIcon(android.R.drawable.ic_dialog_info);
+			builder.setTitle("Sucesso");
+			builder.setMessage("Tombamento " + tombamento.getCodigo()
+					+ " gerado com sucesso!\nArquivo gerado "
+					+ arqTombamento.getName());
+			builder.setPositiveButton("OK",
+					new DialogInterface.OnClickListener() {
+						public void onClick(final DialogInterface dialog,
+								int which) {
+							activity.finish();
+						}
+					});
+			final AlertDialog dialog = builder.create();
+			dialog.setCanceledOnTouchOutside(true);
+			dialog.show();
+
+		} catch (final IOException e) {
 			Log.e(ColetaControler.class.getSimpleName(), "", e);
 		}
 
-		File output = new File(jsonUrl);
-
-		if (output.canWrite()) {
-			BufferedWriter out = null;
-			try {
-				out = new BufferedWriter(new FileWriter(output, false));
-
-				out.write(jsonArray.toString());
-
-			} catch (final IOException e) {
-				Log.e(ColetaControler.class.getSimpleName(), "", e);
-			} finally {
-				if (out != null) {
-					try {
-						out.close();
-					} catch (IOException e) {
-						Log.e(ColetaControler.class.getSimpleName(), "", e);
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	public Tombamento getTombamento() {
-		return tombamento;
-	}
-
-	public void setTombamento(final Tombamento tmbmnt) {
-		tombamento = tmbmnt;
 	}
 
 }
