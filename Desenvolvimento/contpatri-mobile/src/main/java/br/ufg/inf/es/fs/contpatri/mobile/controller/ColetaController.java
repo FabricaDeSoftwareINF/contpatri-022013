@@ -64,6 +64,9 @@ public final class ColetaController {
 		File arqTombamento = new File(NucleoApp.LOCAL_COLETAS
 				+ tombamento.getCodigo() + ".json");
 
+		/*
+		 * Verifica se o arquivo existe, se sim, delete-o.
+		 */
 		if (arqTombamento.exists()) {
 			arqTombamento.delete();
 		}

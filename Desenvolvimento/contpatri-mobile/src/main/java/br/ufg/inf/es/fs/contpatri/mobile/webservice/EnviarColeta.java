@@ -46,9 +46,9 @@ import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
  */
 public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 
-	private transient final ProgressDialog dialog;
-	private transient final String host;
-	private transient final List<Tombamento> listaTombamento;
+	private final ProgressDialog dialog;
+	private final String host;
+	private final List<Tombamento> listaTombamento;
 
 	/**
 	 * Construtor padrão para instanciar e inicializar o objeto.
@@ -92,6 +92,8 @@ public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 			HttpResponse response = httpclient.execute(httppost);
+
+			Log.e("", response.getParams().toString());
 
 		} catch (final ClientProtocolException e) {
 			Log.e(EnviarColeta.class.getSimpleName(), "", e);

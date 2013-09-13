@@ -43,7 +43,7 @@ public final class Preferencias {
 
 	}
 
-	private transient static SharedPreferences configuracoes;
+	private static SharedPreferences configuracoes;
 
 	/**
 	 * Método que cria as configurações do aplicativo e instancia a classe
