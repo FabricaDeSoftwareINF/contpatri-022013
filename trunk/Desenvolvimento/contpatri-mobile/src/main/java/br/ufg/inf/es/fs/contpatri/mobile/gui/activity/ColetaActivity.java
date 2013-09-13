@@ -170,29 +170,37 @@ public final class ColetaActivity extends Activity {
 
 		IntentResult resultadoScan = IntentIntegrator.parseActivityResult(
 				request, result, i);
-
-		if (resultadoScan.getRawBytes() != null) {
+		
+		if (resultadoScan != null) {
+			String contents = resultadoScan.getContents();
 			
-			long cod = 0;
+			if (contents != null) {
+				long cod = 0;
 
-			/*
-			 * Bloco de tratamento para verificar se o QRCode utilizado, contém
-			 * somente números.
-			 */
-			try {
-				cod = Long.parseLong(i.getStringExtra("SCAN_RESULT"));
-			} catch (final NumberFormatException e) {
-				Log.e(ColetaActivity.class.getSimpleName(), "", e);
-				Toast.makeText(this, "QRCode inválido", Toast.LENGTH_LONG)
-						.show();
+				/*
+				 * Bloco de tratamento para verificar se o QRCode utilizado,
+				 * contém somente números.
+				 */
+				try {
+					
+					cod = Long.parseLong(i.getStringExtra("SCAN_RESULT"));
+					
+				} catch (final NumberFormatException e) {
+					Log.e(ColetaActivity.class.getSimpleName(), "", e);
+					Toast.makeText(this, "QRCode inválido", Toast.LENGTH_LONG)
+							.show();
+				}
+
+				tombamento.setText(String.valueOf(cod));
+			} else {
+				Toast.makeText(this, "Cancelado o escaneamento",
+						Toast.LENGTH_LONG).show();
 			}
-			
-			tombamento.setText(String.valueOf(cod));
-			
 		} else {
 			Toast.makeText(this, "Cancelado o escaneamento", Toast.LENGTH_LONG)
 					.show();
-		}
-	}
 
+		}
+
+	}
 }

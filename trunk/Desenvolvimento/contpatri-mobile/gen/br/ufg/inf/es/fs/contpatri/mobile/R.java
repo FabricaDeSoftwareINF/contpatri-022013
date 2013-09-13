@@ -34,10 +34,6 @@ public final class R {
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
-
-         Customize dimensions originally defined in res/values/dimens.xml (such as
-         screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
-    
          */
         public static final int activity_horizontal_margin=0x7f050000;
         public static final int activity_vertical_margin=0x7f050001;
@@ -46,9 +42,10 @@ public final class R {
         public static final int gradiente_background=0x7f020000;
         public static final int ic_launcher=0x7f020001;
         public static final int selector_botoes=0x7f020002;
+        public static final int selector_table_row=0x7f020003;
     }
     public static final class id {
-        public static final int RelativeLayout1=0x7f09000d;
+        public static final int RelativeLayout1=0x7f090018;
         public static final int btnConfirmar=0x7f090006;
         public static final int btnLogin=0x7f09000a;
         public static final int btnMenu=0x7f090008;
@@ -61,44 +58,57 @@ public final class R {
         public static final int edt_login=0x7f09000b;
         public static final int edt_senha=0x7f090009;
         public static final int spnSituacao=0x7f090002;
-        public static final int txtCodigo=0x7f09000c;
-        public static final int txtSituacao=0x7f09000e;
-        public static final int txtUltimaAlteracao=0x7f09000f;
+        public static final int tbrColeta=0x7f09000e;
+        public static final int tbrDivisor1=0x7f090010;
+        public static final int tbrDivisor2=0x7f090013;
+        public static final int tbrDivisor3=0x7f090016;
+        public static final int tbrExibir=0x7f090014;
+        public static final int tbrRelatorio=0x7f090011;
+        public static final int tbrTitulo=0x7f09000c;
+        public static final int txtCodigo=0x7f090017;
+        public static final int txtColetar=0x7f09000f;
+        public static final int txtExibir=0x7f090015;
+        public static final int txtRelatorio=0x7f090012;
+        public static final int txtSituacao=0x7f090019;
+        public static final int txtTitulo=0x7f09000d;
+        public static final int txtUltimaAlteracao=0x7f09001a;
     }
     public static final class layout {
         public static final int activity_coleta=0x7f030000;
         public static final int activity_lista_coleta=0x7f030001;
         public static final int activity_login=0x7f030002;
-        public static final int linha_lista_sub_locais=0x7f030003;
+        public static final int dialog_menu_coleta=0x7f030003;
+        public static final int linha_lista_sub_locais=0x7f030004;
     }
     public static final class string {
-        public static final int acao=0x7f06000c;
-        public static final int codigo=0x7f060014;
+        public static final int acao=0x7f06000d;
+        public static final int codigo=0x7f060015;
         public static final int coletar=0x7f060003;
-        public static final int confirmar=0x7f060013;
-        public static final int descricaoHint=0x7f06000f;
-        public static final int enviar=0x7f060005;
-        public static final int informa_es_do_tombamento=0x7f060017;
-        public static final int logar=0x7f060007;
-        public static final int login=0x7f060009;
-        public static final int menu=0x7f060018;
+        public static final int confirmar=0x7f060014;
+        public static final int descricaoHint=0x7f060010;
+        public static final int enviar=0x7f060006;
+        public static final int exibirColeta=0x7f060005;
+        public static final int informa_es_do_tombamento=0x7f060018;
+        public static final int logar=0x7f060008;
+        public static final int login=0x7f06000a;
+        public static final int menu=0x7f060019;
         public static final int menu_settings=0x7f060001;
         public static final int nome_aplicativo=0x7f060000;
-        public static final int observacaoHint=0x7f060011;
+        public static final int observacaoHint=0x7f060012;
         public static final int relatorio=0x7f060004;
-        public static final int scanQrcode=0x7f060012;
-        public static final int senha=0x7f060008;
-        public static final int sincronizar=0x7f06000a;
-        public static final int sincronizar_todos=0x7f06000b;
-        public static final int situacao=0x7f060015;
-        public static final int sublocalHint=0x7f060010;
-        public static final int title_activity_coleta=0x7f060006;
+        public static final int scanQrcode=0x7f060013;
+        public static final int senha=0x7f060009;
+        public static final int sincronizar=0x7f06000b;
+        public static final int sincronizar_todos=0x7f06000c;
+        public static final int situacao=0x7f060016;
+        public static final int sublocalHint=0x7f060011;
+        public static final int title_activity_coleta=0x7f060007;
         public static final int titulo_activity_tela_sub_locais=0x7f060002;
         /**  Tela Coleta 
          */
-        public static final int tombamentoHint=0x7f06000d;
-        public static final int ultimaAlteracaoHint=0x7f06000e;
-        public static final int ultima_alteracao=0x7f060016;
+        public static final int tombamentoHint=0x7f06000e;
+        public static final int ultimaAlteracaoHint=0x7f06000f;
+        public static final int ultima_alteracao=0x7f060017;
     }
     public static final class style {
         public static final int AppBaseTheme=0x7f080000;

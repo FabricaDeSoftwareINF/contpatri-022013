@@ -19,19 +19,25 @@
 package br.ufg.inf.es.fs.contpatri.mobile.webservice;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -48,11 +54,13 @@ import br.ufg.inf.es.fs.contpatri.mobile.nucleo.NucleoApp;
  */
 public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 
-	private HttpResponse response;
 	private final ProgressDialog dialog;
 	private final String usuario;
 	private final String senha;
 	private Map<Boolean, String> retorno;
+	private boolean sucesso;
+	private String mensagem;
+	private final int timeout = 10000;
 
 	/**
 	 * Construtor padrão para instanciar e inicializar o objeto.
@@ -82,25 +90,60 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 	@Override
 	protected Void doInBackground(final Void... params) {
 
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(NucleoApp.URL_AUTENTICAR);
+		/*
+		 * Parâmetros a serem utilizados.
+		 */
+		ArrayList<NameValuePair> listaParametros = new ArrayList<NameValuePair>();
+		listaParametros.add(new BasicNameValuePair("login", usuario));
+		listaParametros.add(new BasicNameValuePair("senha", senha));
+
+		/*
+		 * Ajuste de timeout.
+		 */
+		HttpParams httpParams = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
+		HttpConnectionParams.setSoTimeout(httpParams, timeout);
+
+		/*
+		 * Configurações iniciais para estabelecer uma conexão HTTP.
+		 */
+		DefaultHttpClient httpCliente = new DefaultHttpClient(httpParams);
+		HttpPost httpPost = new HttpPost(NucleoApp.URL_AUTENTICAR);
+		HttpResponse httpResponse;
 
 		try {
 
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			httpPost.setEntity(new UrlEncodedFormEntity(listaParametros));
+			httpResponse = httpCliente.execute(httpPost);
 
-			nameValuePairs.add(new BasicNameValuePair("login", usuario));
-			nameValuePairs.add(new BasicNameValuePair("senha", senha));
+			if (httpResponse.getStatusLine().getStatusCode() >= 400) {
+				sucesso = false;
+				mensagem = httpResponse.getStatusLine().getReasonPhrase();
+			} else {
 
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				ResponseHandler<String> handlerResposta = new BasicResponseHandler();
+				String resposta = handlerResposta.handleResponse(httpResponse);
 
-			response = httpclient.execute(httppost);
+				/*
+				 * Pega a resposta e transforma para JSON. Depois pega as TAG's
+				 * para que depois seja repassada para a tela de login.
+				 */
+				JSONObject json = new JSONObject(resposta);
+				sucesso = json.getBoolean("sucesso");
+				mensagem = json.getString("mensagem");
 
+			}
+
+		} catch (final UnsupportedEncodingException e) {
+			Log.e(Autenticar.class.getSimpleName(), "", e);
 		} catch (final ClientProtocolException e) {
-			Log.e(EnviarColeta.class.getSimpleName(), "", e);
+			Log.e(Autenticar.class.getSimpleName(), "", e);
 		} catch (final IOException e) {
-			Log.e(EnviarColeta.class.getSimpleName(), "", e);
+			Log.e(Autenticar.class.getSimpleName(), "", e);
+		} catch (final JSONException e) {
+			Log.e(Autenticar.class.getSimpleName(), "", e);
 		}
+
 		return null;
 	}
 
@@ -108,7 +151,6 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 	protected void onPostExecute(final Void result) {
 		super.onPostExecute(result);
 		dialog.dismiss();
-		Log.e("", response.getParams().toString());
 	}
 
 	/**
@@ -120,7 +162,8 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 	 *         segundo elemento, será a mensagem de retorno de erro
 	 */
 	public Map<Boolean, String> getRetorno() {
-		retorno.put(true, "OK");
+		//retorno.put(sucesso, mensagem);
+		retorno.put(true, mensagem);
 		return retorno;
 	}
 
