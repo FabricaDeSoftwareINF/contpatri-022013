@@ -49,9 +49,6 @@ public final class ColetaActivity extends Activity {
 	private EditText tombamento;
 	private EditText sublocal;
 	private EditText observacao;
-	private EditText alteracao;
-
-	private Spinner spinner;
 
 	private String selecionado;
 
@@ -67,9 +64,9 @@ public final class ColetaActivity extends Activity {
 		tombamento = (EditText) findViewById(R.id.edtTombamento);
 		sublocal = (EditText) findViewById(R.id.edtSubLocal);
 		observacao = (EditText) findViewById(R.id.edtObservacao);
-		alteracao = (EditText) findViewById(R.id.edtUltimaAlteracao);
+		EditText alteracao = (EditText) findViewById(R.id.edtUltimaAlteracao);
 		alteracao.setEnabled(false);
-		spinner = (Spinner) findViewById(R.id.spnSituacao);
+		Spinner spinner = (Spinner) findViewById(R.id.spnSituacao);
 
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 

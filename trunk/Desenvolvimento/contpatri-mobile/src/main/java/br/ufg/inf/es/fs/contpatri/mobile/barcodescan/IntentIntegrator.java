@@ -149,8 +149,11 @@ import android.util.Log;
  */
 public class IntentIntegrator {
 
-	public static final int REQUEST_CODE = 0x0000c0de; // Only use bottom 16
-														// bits
+	/*
+	 * Only use bottom 16 bits
+	 */
+	public static final int REQUEST_CODE = 0x0000c0de; 
+														
 	private static final String TAG = IntentIntegrator.class.getSimpleName();
 
 	public static final String DEFAULT_TITLE = "Instalar Barcode Scanner?";
@@ -176,11 +179,18 @@ public class IntentIntegrator {
 
 	public static final List<String> TARGET_BARCODE_SCANNER_ONLY = Collections
 			.singletonList(BS_PACKAGE);
-	public static final List<String> TARGET_ALL_KNOWN = list(BSPLUS_PACKAGE, // Barcode
-																				// Scanner+
-			BSPLUS_PACKAGE + ".simple", // Barcode Scanner+ Simple
-			BS_PACKAGE // Barcode Scanner
-	// What else supports this intent?
+	/*
+	 * Barcode Scanner+
+	 */
+	public static final List<String> TARGET_ALL_KNOWN = list(BSPLUS_PACKAGE,
+			/*
+			 * Barcode Scanner+ Simple
+			 */
+			BSPLUS_PACKAGE + ".simple", 
+			/*
+			 * Barcode Scanner. What else supports this intent?
+			 */
+			BS_PACKAGE  
 	);
 
 	private final Activity activity;

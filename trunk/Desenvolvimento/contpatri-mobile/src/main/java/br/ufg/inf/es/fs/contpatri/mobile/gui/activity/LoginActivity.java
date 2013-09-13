@@ -46,8 +46,6 @@ public final class LoginActivity extends Activity {
 	private EditText edtLogin;
 	private EditText edtSenha;
 	private Context contexto;
-	private String login;
-	private String senha;
 
 	@Override
 	protected void onCreate(final Bundle args) {
@@ -69,8 +67,8 @@ public final class LoginActivity extends Activity {
 	 */
 	public void logar(final View view) {
 
-		login = edtLogin.getText().toString();
-		senha = edtSenha.getText().toString();
+		String login = edtLogin.getText().toString();
+		String senha = edtSenha.getText().toString();
 
 		/*
 		 * Verifica se há algo digitado nos campos, se não houver, responderá

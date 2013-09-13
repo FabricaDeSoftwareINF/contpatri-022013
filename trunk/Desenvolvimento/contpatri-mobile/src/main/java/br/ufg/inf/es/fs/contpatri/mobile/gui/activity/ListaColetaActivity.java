@@ -49,9 +49,7 @@ public final class ListaColetaActivity extends ListActivity {
 	private List<Tombamento> listaTombamento;
 	private Activity activity;
 	private AlertDialog.Builder builder;
-	private ListView lista;
 	private Intent intent;
-	private AlertDialog dialog;
 
 	@Override
 	protected void onCreate(final Bundle args) {
@@ -81,7 +79,7 @@ public final class ListaColetaActivity extends ListActivity {
 					}
 				});
 
-		lista = getListView();
+		ListView lista = getListView();
 		lista.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
@@ -171,7 +169,7 @@ public final class ListaColetaActivity extends ListActivity {
 			}
 		});
 
-		dialog = builder.create();
+		AlertDialog dialog = builder.create();
 		dialog.setCanceledOnTouchOutside(true);
 		dialog.show();
 

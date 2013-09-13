@@ -108,6 +108,7 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 	protected void onPostExecute(final Void result) {
 		super.onPostExecute(result);
 		dialog.dismiss();
+		Log.e("", response.getParams().toString());
 	}
 
 	/**
