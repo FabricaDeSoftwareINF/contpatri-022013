@@ -69,7 +69,7 @@ public class ListaColetaAdapter extends BaseAdapter {
 		Tombamento tmb = listaTombamento.get(posicao);
 
 		holder.alteracao.setText(Conversores.longToDate(tmb.getUltimaAlteracao()));
-		holder.codigo.setText(tmb.getCodigo());
+		holder.codigo.setText(String.valueOf(tmb.getCodigo()));
 		holder.situacao.setText(tmb.getSituacao());
 
 		return convertView;

@@ -11,4 +11,9 @@
     <color name="startColorGradiente">#828282</color>
     <color name="endeColorGradiente">#B5B5B5</color>
     <color name="centerColorGradiente">#E8E8E8</color>
+    
+    <!-- Cores Inf -->
+    <color name="azulClaro">#DAECF8</color>
+    <color name="azul">#81C2EA</color>
+    <color name="letras">#005CA1</color>
 </resources>

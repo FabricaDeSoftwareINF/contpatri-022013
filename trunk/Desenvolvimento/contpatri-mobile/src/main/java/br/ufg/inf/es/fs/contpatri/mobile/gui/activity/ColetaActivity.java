@@ -82,7 +82,7 @@ public final class ColetaActivity extends Activity {
 			Button btnConfirmar = (Button) findViewById(R.id.btnConfirmar);
 			btnConfirmar.setClickable(false);
 
-			tombamento.setText(tmb.getCodigo());
+			tombamento.setText(String.valueOf(tmb.getCodigo()));
 			sublocal.setText(tmb.getSublocal());
 			observacao.setText(tmb.getObservacao());
 
@@ -129,7 +129,7 @@ public final class ColetaActivity extends Activity {
 			dialog.setCanceledOnTouchOutside(true);
 			dialog.show();
 		} else {
-			tmb.setCodigo(codigo);
+			tmb.setCodigo(Long.parseLong(codigo));
 			tmb.setSituacao(selecionado);
 			tmb.setSublocal(sub);
 			tmb.setObservacao(obs);

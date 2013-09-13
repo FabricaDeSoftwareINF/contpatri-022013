@@ -20,7 +20,9 @@ package br.ufg.inf.es.fs.contpatri.mobile.webservice;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -35,7 +37,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
+import br.ufg.inf.es.fs.contpatri.mobile.nucleo.NucleoApp;
 
 /**
  * Classe que cria uma Thread para comunicar com o WebService e enviar todas as
@@ -47,11 +49,13 @@ import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
  * @author Thiago Fernandes
  * 
  */
-public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
+public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 
-	private transient final ProgressDialog dialog;
-	private transient final String host;
-	private transient final List<Tombamento> listaTombamento;
+	private HttpResponse response;
+	private final ProgressDialog dialog;
+	private final String usuario;
+	private final String senha;
+	private Map<Boolean, String> retorno;
 
 	/**
 	 * Construtor padrão para instanciar e inicializar o objeto.
@@ -61,58 +65,57 @@ public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 	 * @param url
 	 *            url para conexão com o WebService
 	 */
-	public EnviarColeta(final Context context, final String url,
-			final List<Tombamento> lista) {
+	public Autenticar(final Context context, final String user,
+			final String pass) {
 		dialog = new ProgressDialog(context);
-		host = url;
-		listaTombamento = lista;
+		retorno = new HashMap<Boolean, String>();
+		usuario = user;
+		senha = pass;
 	}
 
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		dialog.setTitle("Sincronizando...");
-		dialog.setMessage("Aguarde a sincronização");
-		dialog.setIndeterminate(false);
-		dialog.setMax(listaTombamento.size());
+		dialog.setTitle("Autenticando...");
+		dialog.setMessage("Realizando login com " + usuario);
+		dialog.setIndeterminate(true);
 		dialog.show();
 	}
 
 	@Override
 	protected Void doInBackground(final Void... params) {
 
-	    HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httppost = new HttpPost(host);
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost(NucleoApp.URL_AUTENTICAR);
 
-	    try {
+		try {
 
-	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-	        
-	        nameValuePairs.add(new BasicNameValuePair("id", "12345"));
-	        nameValuePairs.add(new BasicNameValuePair("stringdata", "AndDev is Cool!"));
-	        
-	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 
-	        HttpResponse response = httpclient.execute(httppost);
-	        
-	    } catch (final ClientProtocolException e) {
-	    	Log.e(EnviarColeta.class.getSimpleName(), "", e);
-	    } catch (final IOException e) {
-	        Log.e(EnviarColeta.class.getSimpleName(), "", e);
-	    }
+			nameValuePairs.add(new BasicNameValuePair("login", usuario));
+			nameValuePairs.add(new BasicNameValuePair("senha", senha));
+
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+			response = httpclient.execute(httppost);
+
+		} catch (final ClientProtocolException e) {
+			Log.e(EnviarColeta.class.getSimpleName(), "", e);
+		} catch (final IOException e) {
+			Log.e(EnviarColeta.class.getSimpleName(), "", e);
+		}
 		return null;
-	}
-
-	@Override
-	protected void onProgressUpdate(final Integer... progresso) {
-		dialog.setProgress(progresso[0]);
-		dialog.setMessage("Enviando item " + progresso[0]);
 	}
 
 	@Override
 	protected void onPostExecute(final Void result) {
 		super.onPostExecute(result);
 		dialog.dismiss();
+	}
+
+	public Map<Boolean, String> getRetorno() {
+		retorno.put(true, "OK");
+		return retorno;
 	}
 
 }
