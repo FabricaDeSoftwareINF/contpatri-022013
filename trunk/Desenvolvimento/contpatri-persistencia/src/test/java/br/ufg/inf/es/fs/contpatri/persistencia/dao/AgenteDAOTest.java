@@ -66,8 +66,8 @@ public class AgenteDAOTest {
         Agente agenteRecuperado = agenteDAO.findByID(Agente.class, id);
         assertEquals(agente, agenteRecuperado);
         
-        //agenteDAO.delete(agente);
-        //Agente agenteExcluido = agenteDAO.findByID(Agente.class, id);
-        //assertNull(agenteExcluido);
+        agenteDAO.delete(agente);
+        Agente agenteExcluido = agenteDAO.findByID(Agente.class, id);
+        assertNull(agenteExcluido);
     }
 }
