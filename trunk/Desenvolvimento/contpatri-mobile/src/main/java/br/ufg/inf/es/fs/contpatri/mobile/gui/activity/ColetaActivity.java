@@ -65,13 +65,13 @@ public final class ColetaActivity extends Activity {
 		spinner = (Spinner) findViewById(R.id.spnSituacao);
 
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
+			
 			public void onItemSelected(final AdapterView<?> parent,
 					final View view, final int pos, final long id) {
 				selecionado = (String) parent.getItemAtPosition(pos);
 			}
 
-			@Override
+			
 			public void onNothingSelected(final AdapterView<?> parent) {
 
 			}
