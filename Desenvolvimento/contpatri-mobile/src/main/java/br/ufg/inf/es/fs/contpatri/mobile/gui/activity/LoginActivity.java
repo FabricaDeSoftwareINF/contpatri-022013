@@ -66,8 +66,7 @@ public final class LoginActivity extends Activity {
 		login = edtLogin.getText().toString();
 		senha = edtSenha.getText().toString();
 
-		if ((!login.equals(null) && !senha.equals(null))
-				&& (!login.equals("") && !senha.equals(""))) {
+		if (login.length() > 0 && senha.length() > 0) {
 
 			if (!Preferencias.existeUsuario(login, senha)) {
 

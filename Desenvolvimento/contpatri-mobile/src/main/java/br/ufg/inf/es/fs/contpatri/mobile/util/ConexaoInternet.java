@@ -22,4 +22,11 @@ public final class ConexaoInternet {
 		return false;
 	}
 	
+	/**
+	 * Construtor para não instanciar a classe.
+	 */
+	private ConexaoInternet() {
+		
+	}
+	
 }

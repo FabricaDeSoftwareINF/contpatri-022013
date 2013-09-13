@@ -16,6 +16,8 @@
 
 package br.ufg.inf.es.fs.contpatri.mobile.barcodescan;
 
+import java.util.Arrays;
+
 /**
  * <p>
  * Encapsulates the result of a barcode scan invoked through
@@ -40,7 +42,7 @@ public final class IntentResult {
 			Integer orientation, String errorCorrectionLevel) {
 		this.contents = contents;
 		this.formatName = formatName;
-		this.rawBytes = rawBytes;
+		this.rawBytes = Arrays.copyOf(rawBytes, rawBytes.length);
 		this.orientation = orientation;
 		this.errorCorrectionLevel = errorCorrectionLevel;
 	}

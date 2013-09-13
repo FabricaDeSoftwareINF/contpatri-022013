@@ -39,7 +39,14 @@ import android.util.Log;
  */
 public final class Preferencias {
 
-	private transient static SharedPreferences CONFIGURACOES;
+	/**
+	 * Construtor para não instanciar a classe.
+	 */
+	private Preferencias() {
+
+	}
+
+	private transient static SharedPreferences configuracoes;
 
 	/**
 	 * Método que cria as configurações do aplicativo e instancia a classe
@@ -50,7 +57,7 @@ public final class Preferencias {
 	 *            <code>SharedPreferences</code>
 	 */
 	public static void criarConfiguracoes(final Context contexto) {
-		CONFIGURACOES = contexto.getSharedPreferences("login",
+		configuracoes = contexto.getSharedPreferences("login",
 				Context.MODE_PRIVATE);
 	}
 
@@ -64,11 +71,7 @@ public final class Preferencias {
 	 * @return verdadeiro para usuário existente. Caso contrário, será falso.
 	 */
 	public static boolean existeUsuario(final String login, final String senha) {
-		if (CONFIGURACOES.getString(login, "") == "") {
-			return false;
-		} else {
-			return true;
-		}
+		return configuracoes.getString(login, "").equals("");
 	}
 
 	/**
@@ -81,8 +84,8 @@ public final class Preferencias {
 	 *            senha utilizado pelo usuário
 	 */
 	public static void gravarUsuario(final String login, final String senha) {
-		Editor editor = CONFIGURACOES.edit();
-		if (CONFIGURACOES.getString(login, "") == "") {
+		Editor editor = configuracoes.edit();
+		if (configuracoes.getString(login, "").equals("")) {
 			editor.putString(login, mascararSenha(senha));
 			editor.commit();
 		}
@@ -90,7 +93,9 @@ public final class Preferencias {
 
 	/**
 	 * Método que mascara a senha do usuário em uma <code>String</code>.
-	 * @param senha senha do usuário
+	 * 
+	 * @param senha
+	 *            senha do usuário
 	 * @return retorna a <code>String</code> codificada do usuário
 	 */
 	public static String mascararSenha(final String senha) {

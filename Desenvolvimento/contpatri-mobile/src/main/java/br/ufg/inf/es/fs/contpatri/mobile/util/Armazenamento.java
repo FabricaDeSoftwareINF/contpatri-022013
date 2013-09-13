@@ -60,12 +60,8 @@ public final class Armazenamento {
 		 *         leitura e gravação, caso contrário será falso.
 		 */
 		public static boolean getEstadoValido() {
-			if (Environment.MEDIA_MOUNTED.equals(Environment
-					.getExternalStorageState())) {
-				return true;
-			} else {
-				return false;
-			}
+			return Environment.MEDIA_MOUNTED.equals(Environment
+					.getExternalStorageState());
 		}
 
 		public static List<Tombamento> getListaTombamentos() {
