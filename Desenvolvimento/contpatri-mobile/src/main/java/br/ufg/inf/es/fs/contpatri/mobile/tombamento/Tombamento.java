@@ -155,11 +155,13 @@ public final class Tombamento implements Parcelable {
 		ultimaAlteracao = tmp.getUltimaAlteracao();
 		observacao = tmp.getObservacao();
 	}
-
+	
+	@Override
 	public int describeContents() {
 		return 0;
 	}
-
+	
+	@Override
 	public void writeToParcel(final Parcel paramParcel, final int paramInt) {
 		paramParcel.writeLong(codigo);
 		paramParcel.writeString(situacao);
@@ -169,11 +171,13 @@ public final class Tombamento implements Parcelable {
 	}
 
 	public static final Parcelable.Creator<Tombamento> CREATOR = new Parcelable.Creator<Tombamento>() {
-
+		
+		@Override
 		public Tombamento createFromParcel(final Parcel source) {
 			return new Tombamento(source);
 		}
-
+		
+		@Override
 		public Tombamento[] newArray(final int size) {
 			return new Tombamento[size];
 		}
