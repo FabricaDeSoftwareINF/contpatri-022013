@@ -30,22 +30,22 @@ public class ListaColetaAdapter extends BaseAdapter {
 		listaTombamento = tombamentos;
 	}
 
-	@Override
+	
 	public int getCount() {
 		return listaTombamento.size();
 	}
 
-	@Override
+	
 	public Object getItem(int paramInt) {
 		return listaTombamento.get(paramInt);
 	}
 
-	@Override
+	
 	public long getItemId(int paramInt) {
 		return paramInt;
 	}
 
-	@Override
+	
 	public View getView(int posicao, View convertView, ViewGroup vGroup) {
 
 		if (convertView == null) {

@@ -70,12 +70,13 @@ public final class ListaColetaActivity extends ListActivity {
 					}
 				});
 
+		NucleoApp.criaPastas();
+		
 		listaTombamento = Armazenamento.Externo.getListaTombamentos();
 
-		NucleoApp.criaPastas();
 		lista = getListView();
 		lista.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
+			
 			public boolean onItemLongClick(final AdapterView<?> adapter,
 					final View view, final int pos, final long id) {
 				AlertDialog.Builder builder;

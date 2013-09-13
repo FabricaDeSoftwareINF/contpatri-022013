@@ -156,7 +156,7 @@ public class IntentIntegrator {
 	public static final String DEFAULT_TITLE = "Instalar Barcode Scanner?";
 	public static final String DEFAULT_MESSAGE = "Este aplicativo requer o Barcode Scanner para ser instalado, deseja instalar?";
 	public static final String DEFAULT_YES = "Sim";
-	public static final String DEFAULT_NO = "Não";
+	public static final String DEFAULT_NO = "Nï¿½o";
 
 	private static final String BS_PACKAGE = "com.google.zxing.client.android";
 	private static final String BSPLUS_PACKAGE = "com.srowen.bs.android";
@@ -365,7 +365,7 @@ public class IntentIntegrator {
 		downloadDialog.setMessage(message);
 		downloadDialog.setPositiveButton(buttonYes,
 				new DialogInterface.OnClickListener() {
-					@Override
+					
 					public void onClick(DialogInterface dialogInterface, int i) {
 						String packageName = targetApplications.get(0);
 						Uri uri = Uri.parse("market://details?id="
@@ -383,7 +383,7 @@ public class IntentIntegrator {
 				});
 		downloadDialog.setNegativeButton(buttonNo,
 				new DialogInterface.OnClickListener() {
-					@Override
+					
 					public void onClick(DialogInterface dialogInterface, int i) {
 					}
 				});
