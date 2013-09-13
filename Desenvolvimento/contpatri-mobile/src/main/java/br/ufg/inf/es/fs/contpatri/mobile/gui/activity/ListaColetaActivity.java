@@ -32,6 +32,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import br.ufg.inf.es.fs.contpatri.mobile.R;
 import br.ufg.inf.es.fs.contpatri.mobile.adapter.ListaColetaAdapter;
+import br.ufg.inf.es.fs.contpatri.mobile.gui.dialog.DialogMenuColeta;
 import br.ufg.inf.es.fs.contpatri.mobile.nucleo.NucleoApp;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Armazenamento;
@@ -41,6 +42,7 @@ import br.ufg.inf.es.fs.contpatri.mobile.webservice.EnviarColeta;
  * Classe que exibe e gerencia a tela ListaColeta
  * 
  * @author Rogério Tristão Junior
+ * @author Muryllo Tiraza Santos
  * 
  */
 public final class ListaColetaActivity extends ListActivity {
@@ -115,8 +117,7 @@ public final class ListaColetaActivity extends ListActivity {
 	 *            view que realizou o evento de clique e chamou esse método
 	 */
 	public void sincronizar(final View view) {
-		new EnviarColeta(activity, "http:\\", listaTombamento)
-				.execute(new Void[0]);
+		new EnviarColeta(activity, listaTombamento).execute(new Void[0]);
 	}
 
 	/**
@@ -127,8 +128,9 @@ public final class ListaColetaActivity extends ListActivity {
 	 *            view que realizou o evento de clique e chamou esse método
 	 */
 	public void menu(final View view) {
-		final AlertDialog dialog = builder.create();
-		dialog.show();
+		// final AlertDialog dialog = builder.create();
+		// dialog.show();
+		new DialogMenuColeta(this).exibeDialog();
 	}
 
 	/**

@@ -19,23 +19,33 @@
 package br.ufg.inf.es.fs.contpatri.mobile.webservice;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
+import br.ufg.inf.es.fs.contpatri.mobile.nucleo.NucleoApp;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
+import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
 
 /**
  * Classe que cria uma Thread para comunicar com o WebService e enviar todas as
@@ -46,8 +56,8 @@ import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
  */
 public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 
+	private final int timeout = 10000;
 	private final ProgressDialog dialog;
-	private final String host;
 	private final List<Tombamento> listaTombamento;
 
 	/**
@@ -55,13 +65,9 @@ public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 	 * 
 	 * @param context
 	 *            contexto necessário para iniciar o <code>ProgressDialog</code>
-	 * @param url
-	 *            url para conexão com o WebService
 	 */
-	public EnviarColeta(final Context context, final String url,
-			final List<Tombamento> lista) {
+	public EnviarColeta(final Context context, final List<Tombamento> lista) {
 		dialog = new ProgressDialog(context);
-		host = url;
 		listaTombamento = lista;
 	}
 
@@ -78,28 +84,57 @@ public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 	@Override
 	protected Void doInBackground(final Void... params) {
 
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(host);
+		boolean sucesso;
+		String mensagem;
 
 		try {
 
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			/*
+			 * Ajuste de timeout.
+			 */
+			HttpParams httpParams = new BasicHttpParams();
+			HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
+			HttpConnectionParams.setSoTimeout(httpParams, timeout);
 
-			nameValuePairs.add(new BasicNameValuePair("id", "12345"));
-			nameValuePairs.add(new BasicNameValuePair("stringdata",
-					"AndDev is Cool!"));
+			/*
+			 * Configurações iniciais para estabelecer uma conexão HTTP.
+			 */
+			DefaultHttpClient httpCliente = new DefaultHttpClient(httpParams);
+			HttpPost httpPost = new HttpPost(NucleoApp.URL_ENVIAR_COLETA);
 
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			for (Tombamento tombamento : listaTombamento) {
 
-			HttpResponse response = httpclient.execute(httppost);
+				/*
+				 * Colocando o json do tombamento na requisição.
+				 */
+				httpPost.setEntity(new ByteArrayEntity(tombamento.toJson()
+						.getBytes("UTF8")));
+				httpPost.setHeader("json", tombamento.toJson());
+				ResponseHandler<String> handlerResposta = new BasicResponseHandler();
+				String responseBody = httpCliente.execute(httpPost,
+						handlerResposta);
 
-			Log.e("", response.getParams().toString());
+				/*
+				 * Pega a resposta e transforma para JSON. Depois pega as TAG's
+				 * para que depois seja repassada para a tela de login.
+				 */
+				JSONObject json = new JSONObject(responseBody);
+				sucesso = json.getBoolean("sucesso");
+				mensagem = json.getString("mensagem");
 
+				publishProgress(1);
+			}
+
+		} catch (final UnsupportedEncodingException e) {
+			Log.e(Autenticar.class.getSimpleName(), "", e);
 		} catch (final ClientProtocolException e) {
-			Log.e(EnviarColeta.class.getSimpleName(), "", e);
+			Log.e(Autenticar.class.getSimpleName(), "", e);
 		} catch (final IOException e) {
-			Log.e(EnviarColeta.class.getSimpleName(), "", e);
+			Log.e(Autenticar.class.getSimpleName(), "", e);
+		} catch (final JSONException e) {
+			Log.e(Autenticar.class.getSimpleName(), "", e);
 		}
+
 		return null;
 	}
 

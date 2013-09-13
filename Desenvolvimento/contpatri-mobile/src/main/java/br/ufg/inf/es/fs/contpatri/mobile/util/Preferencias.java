@@ -68,7 +68,7 @@ public final class Preferencias {
 	 * @return verdadeiro para usuário existente. Caso contrário, será falso.
 	 */
 	public static boolean existeUsuario(final String login, final String senha) {
-		return configuracoes.getString(login, "").equals("");
+		return configuracoes.getString(login, "").equals(login);
 	}
 
 	/**

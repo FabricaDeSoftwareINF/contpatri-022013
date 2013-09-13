@@ -38,6 +38,7 @@ import br.ufg.inf.es.fs.contpatri.mobile.webservice.Autenticar;
  * usuário no aplicativo.
  * 
  * @author Rogério Tristão Junior
+ * @author Muryllo Tiraza Santos
  * 
  */
 public final class LoginActivity extends Activity {
@@ -56,6 +57,12 @@ public final class LoginActivity extends Activity {
 		edtSenha = (EditText) findViewById(R.id.edt_senha);
 		Preferencias.criarConfiguracoes(this);
 		loginDialog = new LoginDialog(this);
+	}
+
+	@Override
+	protected void onPause() {
+		this.finish();
+		super.onPause();
 	}
 
 	/**
@@ -94,7 +101,7 @@ public final class LoginActivity extends Activity {
 				} else {
 
 					Autenticar autentica = new Autenticar(contexto, login,
-							login);
+							senha);
 					autentica.execute(new Void[0]);
 					Iterator<Entry<Boolean, String>> iterator = autentica
 							.getRetorno().entrySet().iterator();

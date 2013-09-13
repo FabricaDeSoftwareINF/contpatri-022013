@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/azulClaro"
+    android:orientation="vertical" >
+
+    <TableRow
+        android:id="@+id/tbrTitulo"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:background="@color/azul"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/acao"
+            android:textColor="@color/letras"
+            android:textSize="26sp" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tbrColeta"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@drawable/selector_table_row"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/txtColetar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:text="@string/coletar"
+            android:textColor="@color/letras"
+            android:textSize="20sp" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tbrDivisor1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/azul" >
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tbrRelatorio"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@drawable/selector_table_row"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/txtRelatorio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:text="@string/relatorio"
+            android:textColor="@color/letras"
+            android:textSize="20sp" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tbrDivisor2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/azul" >
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tbrExibir"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@drawable/selector_table_row"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/txtExibir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:text="@string/exibirColeta"
+            android:textColor="@color/letras"
+            android:textSize="20sp" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tbrDivisor3"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/azul" >
+    </TableRow>
+
+</LinearLayout>

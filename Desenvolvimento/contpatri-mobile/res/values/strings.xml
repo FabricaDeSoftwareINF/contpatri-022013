@@ -6,6 +6,7 @@
     <string name="titulo_activity_tela_sub_locais">SubLocais</string>
     <string name="coletar">Coletar</string>
     <string name="relatorio">Relatório</string>
+    <string name="exibirColeta">Exibir coletas</string>
     <string name="enviar">Enviar</string>
     <string name="title_activity_coleta">Coleta</string>
 
