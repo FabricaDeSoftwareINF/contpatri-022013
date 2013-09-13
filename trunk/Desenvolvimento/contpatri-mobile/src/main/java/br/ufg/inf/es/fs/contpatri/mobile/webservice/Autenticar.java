@@ -44,9 +44,6 @@ import br.ufg.inf.es.fs.contpatri.mobile.nucleo.NucleoApp;
  * coletas que estão pendentes no aplicativo.
  * 
  * @author Rogério Tristão Junior
- * @author Muryllo Tiraza
- * @author Fellipe Cesar
- * @author Thiago Fernandes
  * 
  */
 public final class Autenticar extends AsyncTask<Void, Integer, Void> {
@@ -113,6 +110,14 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 		dialog.dismiss();
 	}
 
+	/**
+	 * Método que retorna o resultado da requisição de autenticação.
+	 * 
+	 * @return retorna um <code>Map> do tipo <code>Boolean</code> e
+	 *         <code>String</code> onde, o primeiro se for verdadeiro, a
+	 *         autenticação foi bem sucedida, caso contrário será falso e, no
+	 *         segundo elemento, será a mensagem de retorno de erro
+	 */
 	public Map<Boolean, String> getRetorno() {
 		retorno.put(true, "OK");
 		return retorno;

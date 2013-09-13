@@ -4,11 +4,27 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-public final class ConexaoInternet {
+/**
+ * Classe que verifiaca conectividade do aplicativo á rede.
+ * 
+ * @author Rogério Tristão Junior
+ * 
+ */
+public final class ConexaoRede {
 
+	/**
+	 * Método que verifica o status da conexão com a internet.
+	 * 
+	 * @param contexto
+	 *            <code>Context</code> utilizado para iniciar o gerenciador de
+	 *            estado de conexão do <b>Android</b>
+	 * @return verdadeiro para conexão validada, caso contrário será falsa
+	 */
 	public static boolean isConnectedInternet(final Context contexto) {
+		
 		ConnectivityManager conectividade = (ConnectivityManager) contexto
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		
 		if (conectividade != null) {
 			NetworkInfo[] info = conectividade.getAllNetworkInfo();
 			if (info != null) {
@@ -19,14 +35,15 @@ public final class ConexaoInternet {
 				}
 			}
 		}
+		
 		return false;
 	}
-	
+
 	/**
 	 * Construtor para não instanciar a classe.
 	 */
-	private ConexaoInternet() {
-		
+	private ConexaoRede() {
+
 	}
-	
+
 }

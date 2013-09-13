@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -31,24 +32,30 @@ import android.widget.Toast;
 import br.ufg.inf.es.fs.contpatri.mobile.R;
 import br.ufg.inf.es.fs.contpatri.mobile.barcodescan.IntentIntegrator;
 import br.ufg.inf.es.fs.contpatri.mobile.barcodescan.IntentResult;
-import br.ufg.inf.es.fs.contpatri.mobile.controller.ColetaControler;
+import br.ufg.inf.es.fs.contpatri.mobile.controller.ColetaController;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
 
+/**
+ * Tela para coleta das informações do ativo fixo.
+ * 
+ * @author Rogério Tristão Junior
+ * 
+ */
 public final class ColetaActivity extends Activity {
 
-	private transient EditText tombamento;
-	private transient EditText sublocal;
-	private transient EditText observacao;
-	private transient EditText alteracao;
+	private ColetaController coleta;
 
-	private transient ColetaControler coleta;
+	private EditText tombamento;
+	private EditText sublocal;
+	private EditText observacao;
+	private EditText alteracao;
 
-	private transient Spinner spinner;
+	private Spinner spinner;
 
-	private transient String selecionado;
+	private String selecionado;
 
-	private transient Tombamento tmb;
+	private Tombamento tmb;
 
 	@Override
 	protected void onCreate(final Bundle args) {
@@ -66,16 +73,23 @@ public final class ColetaActivity extends Activity {
 
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
+			@Override
 			public void onItemSelected(final AdapterView<?> parent,
 					final View view, final int pos, final long id) {
 				selecionado = (String) parent.getItemAtPosition(pos);
 			}
 
+			@Override
 			public void onNothingSelected(final AdapterView<?> parent) {
 
 			}
 		});
 
+		/*
+		 * Se a variável tmb for nula, quer dizer que é uma inclusão de um novo
+		 * ativo fixo, caso contrário ele estará abrindo um registro de ativo
+		 * fixo.
+		 */
 		if (tmb != null) {
 
 			Button btnConfirmar = (Button) findViewById(R.id.btnConfirmar);
@@ -105,17 +119,34 @@ public final class ColetaActivity extends Activity {
 
 	}
 
+	/**
+	 * Classe que chama o aplicativo BarcodeScan para ler o QRCode.
+	 * 
+	 * @param view
+	 *            view que realizou o evento de clique e chamou esse método
+	 */
 	public void scanQRCode(final View view) {
 		IntentIntegrator integrator = new IntentIntegrator(this);
 		integrator.initiateScan();
 	}
 
+	/**
+	 * Classe que confirma a ação para gravar o objeto <code>Tombamento</code>
+	 * em um arquivo <b>JSON</b>.
+	 * 
+	 * @param view
+	 *            view que realizou o evento de clique e chamou esse método
+	 */
 	public void confirmar(final View view) {
 
 		String codigo = tombamento.getText().toString();
 		String sub = sublocal.getText().toString();
 		String obs = observacao.getText().toString();
 
+		/*
+		 * Se os campos forem nulos, inválidos, mostrará uma caixa de diálogo
+		 * informando o erro, senão gravará o objeto tombamento em um arquivo.
+		 */
 		if (codigo.length() == 0 || sub.length() == 0 || obs.length() == 0) {
 			AlertDialog.Builder builder;
 			builder = new AlertDialog.Builder(this);
@@ -130,8 +161,8 @@ public final class ColetaActivity extends Activity {
 			tmb.setSituacao(selecionado);
 			tmb.setSublocal(sub);
 			tmb.setObservacao(obs);
-			coleta = new ColetaControler();
-			coleta.gerarColeta(this, tmb);
+			coleta = new ColetaController(this);
+			coleta.gerarColeta(tmb);
 		}
 
 	}
@@ -139,10 +170,28 @@ public final class ColetaActivity extends Activity {
 	@Override
 	public void onActivityResult(final int request, final int result,
 			final Intent i) {
-		IntentResult scanResult = IntentIntegrator.parseActivityResult(request,
-				result, i);
-		if (scanResult.getRawBytes() != null) {
-			tombamento.setText(i.getStringExtra("SCAN_RESULT"));
+
+		IntentResult resultadoScan = IntentIntegrator.parseActivityResult(
+				request, result, i);
+
+		if (resultadoScan.getRawBytes() != null) {
+			
+			long cod = 0;
+
+			/*
+			 * Bloco de tratamento para verificar se o QRCode utilizado, contém
+			 * somente números.
+			 */
+			try {
+				cod = Long.parseLong(i.getStringExtra("SCAN_RESULT"));
+			} catch (final NumberFormatException e) {
+				Log.e(ColetaActivity.class.getSimpleName(), "", e);
+				Toast.makeText(this, "QRCode inválido", Toast.LENGTH_LONG)
+						.show();
+			}
+			
+			tombamento.setText(String.valueOf(cod));
+			
 		} else {
 			Toast.makeText(this, "Cancelado o escaneamento", Toast.LENGTH_LONG)
 					.show();

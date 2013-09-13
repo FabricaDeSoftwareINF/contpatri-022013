@@ -31,9 +31,6 @@ import com.google.gson.GsonBuilder;
  * para o WebService, coleta de informações e exibição de informações.
  * 
  * @author Rogério Tristão Junior
- * @author Muryllo Tiraza
- * @author Fellipe Cesar
- * @author Thiago Fernandes
  * 
  */
 public final class Tombamento implements Parcelable {
@@ -50,10 +47,26 @@ public final class Tombamento implements Parcelable {
 	private String observacao;
 	private long ultimaAlteracao;
 
+	/**
+	 * Construtor padrão.
+	 */
 	public Tombamento() {
 
 	}
 
+	/**
+	 * Construtor para instanciar o objeto do tipo <code>Tombamento</code> já
+	 * com seus valores.
+	 * 
+	 * @param id
+	 *            código do tombamento
+	 * @param sit
+	 *            situação do tombamento
+	 * @param subLocal
+	 *            sublocal do tombamento
+	 * @param obs
+	 *            observação do tombamento
+	 */
 	public Tombamento(final long id, final String sit, final String subLocal,
 			final String obs) {
 		codigo = id;
@@ -63,6 +76,12 @@ public final class Tombamento implements Parcelable {
 		setUltimaAlteracao();
 	}
 
+	/**
+	 * Construtor utilizado para o <code>Parcel</code>.
+	 * 
+	 * @param source
+	 *            leitor de dados <code>Parcel</code>
+	 */
 	public Tombamento(final Parcel source) {
 		codigo = source.readLong();
 		situacao = source.readString();
@@ -112,12 +131,23 @@ public final class Tombamento implements Parcelable {
 		this.observacao = observacao;
 	}
 
+	/**
+	 * Método que retorna uma <code>String</code> em <b>JSON</b> do objeto
+	 * <code>Tombamento</code>.
+	 * 
+	 * @return retorna a <code>String</code> do objeto
+	 */
 	public String toJson() {
-		return new Gson().toJson(this);
+		return new GsonBuilder().setPrettyPrinting().create().toJson(this);
 	}
 
+	/**
+	 * Transforma a <code>String</code> do <b>JSON</b> no objeto atual.
+	 * 
+	 * @param json <code>String</code> <b>JSON</b>
+	 */
 	public void fromJson(final String json) {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		Gson gson = new Gson();
 		Tombamento tmp = (Tombamento) gson.fromJson(json, Tombamento.class);
 		codigo = tmp.getCodigo();
 		situacao = tmp.getSituacao();
@@ -126,12 +156,10 @@ public final class Tombamento implements Parcelable {
 		observacao = tmp.getObservacao();
 	}
 
-	
 	public int describeContents() {
 		return 0;
 	}
 
-	
 	public void writeToParcel(final Parcel paramParcel, final int paramInt) {
 		paramParcel.writeLong(codigo);
 		paramParcel.writeString(situacao);
@@ -141,12 +169,11 @@ public final class Tombamento implements Parcelable {
 	}
 
 	public static final Parcelable.Creator<Tombamento> CREATOR = new Parcelable.Creator<Tombamento>() {
-		
+
 		public Tombamento createFromParcel(final Parcel source) {
 			return new Tombamento(source);
 		}
 
-		
 		public Tombamento[] newArray(final int size) {
 			return new Tombamento[size];
 		}
