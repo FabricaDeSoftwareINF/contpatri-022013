@@ -9,4 +9,11 @@ public final class Conversores {
 		return new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss", Locale.getDefault()).format(numero);
 	}
 	
+	/**
+	 * Construtor para não instanciar a classe.
+	 */
+	private Conversores() {
+		
+	}
+	
 }

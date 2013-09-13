@@ -20,10 +20,16 @@ public final class NucleoApp {
 	public static final String URL_AUTENTICAR = URL_BASE + "autenticacao";
 	public static final String URL_ENVIAR_COLETA = URL_BASE + "inventario/coletas";
 	
-	
 	public static void criaPastas() {
 		new File(LOCAL_RELATORIOS).mkdirs();
 		new File(LOCAL_COLETAS).mkdirs();
+	}
+	
+	/**
+	 * Construtor para não instanciar a classe.
+	 */
+	private NucleoApp() {
+		
 	}
 	
 }

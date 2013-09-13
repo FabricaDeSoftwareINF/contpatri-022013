@@ -65,13 +65,12 @@ public final class ColetaActivity extends Activity {
 		spinner = (Spinner) findViewById(R.id.spnSituacao);
 
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			
+
 			public void onItemSelected(final AdapterView<?> parent,
 					final View view, final int pos, final long id) {
 				selecionado = (String) parent.getItemAtPosition(pos);
 			}
 
-			
 			public void onNothingSelected(final AdapterView<?> parent) {
 
 			}
@@ -117,9 +116,7 @@ public final class ColetaActivity extends Activity {
 		String sub = sublocal.getText().toString();
 		String obs = observacao.getText().toString();
 
-		if ((codigo.isEmpty() || codigo == null)
-				|| (sub.isEmpty() || sub == null)
-				|| (obs.isEmpty() || obs == null)) {
+		if (codigo.length() == 0 || sub.length() == 0 || obs.length() == 0) {
 			AlertDialog.Builder builder;
 			builder = new AlertDialog.Builder(this);
 			builder.setIcon(android.R.drawable.ic_dialog_alert);

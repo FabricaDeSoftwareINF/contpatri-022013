@@ -46,8 +46,10 @@ public class ListaColetaAdapter extends BaseAdapter {
 	}
 
 	
-	public View getView(int posicao, View convertView, ViewGroup vGroup) {
+	public View getView(final int posicao, final View view, final ViewGroup vGroup) {
 
+		View convertView = view;
+		
 		if (convertView == null) {
 
 			convertView = inflater.inflate(R.layout.linha_lista_sub_locais,
