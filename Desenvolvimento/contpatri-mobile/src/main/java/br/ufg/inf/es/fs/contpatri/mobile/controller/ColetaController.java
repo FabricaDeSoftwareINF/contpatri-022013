@@ -26,20 +26,40 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.widget.Toast;
 import br.ufg.inf.es.fs.contpatri.mobile.nucleo.NucleoApp;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
 
-public final class ColetaControler {
+/**
+ * Classe que controla as ações do evento da tela de Coleta do aplicativo.
+ * 
+ * @author Rogério Tristão Junior
+ * 
+ */
+public final class ColetaController {
 
-	public ColetaControler() {
+	private Activity activity;
 
+	/**
+	 * Construtor padrão para instanciar a classe e inicializar as variáveis.
+	 * 
+	 * @param actv
+	 *            <code>Activity</code> necessária para fechar a tela atual caso
+	 *            tenha sucesso na gravação do arquivo e para a construção de um
+	 *            <code>Dialog</code>
+	 */
+	public ColetaController(final Activity actv) {
+		activity = actv;
 	}
 
-	public boolean getTombamento() {
-		return true;
-	}
-
-	public void gerarColeta(final Activity activity, final Tombamento tombamento) {
+	/**
+	 * Método que grava em um arquivo do tipo <b>.json</b> e no formato do JSON,
+	 * o objeto Tombamento.
+	 * 
+	 * @param tombamento
+	 *            objeto que terá suas informações gravadas no arquivo
+	 */
+	public void gerarColeta(final Tombamento tombamento) {
 
 		File arqTombamento = new File(NucleoApp.LOCAL_COLETAS
 				+ tombamento.getCodigo() + ".json");
@@ -51,18 +71,18 @@ public final class ColetaControler {
 		try {
 
 			arqTombamento.createNewFile();
-			
+
 			FileOutputStream fos = new FileOutputStream(arqTombamento);
 			fos.write(tombamento.toJson().getBytes());
 			fos.close();
 
-			AlertDialog.Builder builder;
-			builder = new AlertDialog.Builder(activity);
-			builder.setIcon(android.R.drawable.ic_dialog_info);
+			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+			AlertDialog dialog;
 			builder.setTitle("Sucesso");
 			builder.setMessage("Tombamento " + tombamento.getCodigo()
 					+ " gerado com sucesso!\nArquivo gerado "
 					+ arqTombamento.getName());
+			builder.setIcon(android.R.drawable.ic_dialog_info);
 			builder.setPositiveButton("OK",
 					new DialogInterface.OnClickListener() {
 						public void onClick(final DialogInterface dialog,
@@ -70,12 +90,16 @@ public final class ColetaControler {
 							activity.finish();
 						}
 					});
-			final AlertDialog dialog = builder.create();
+			dialog = builder.create();
 			dialog.setCanceledOnTouchOutside(true);
 			dialog.show();
 
 		} catch (final IOException e) {
-			Log.e(ColetaControler.class.getSimpleName(), "", e);
+			Toast.makeText(
+					activity,
+					"Erro na gravação do arquivo. Verifique seu armazenamento interno ou externo.",
+					Toast.LENGTH_LONG).show();
+			Log.e(ColetaController.class.getSimpleName(), "", e);
 		}
 
 	}

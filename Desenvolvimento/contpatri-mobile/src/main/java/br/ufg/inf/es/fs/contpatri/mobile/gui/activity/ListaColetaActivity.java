@@ -37,15 +37,21 @@ import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Armazenamento;
 import br.ufg.inf.es.fs.contpatri.mobile.webservice.EnviarColeta;
 
+/**
+ * Classe que exibe e gerencia a tela ListaColeta
+ * 
+ * @author Rogério Tristão Junior
+ * 
+ */
 public final class ListaColetaActivity extends ListActivity {
 
-	private transient ListaColetaAdapter lca;
-	private transient List<Tombamento> listaTombamento;
-	private transient Activity activity;
-	private transient AlertDialog.Builder builder;
-	private transient ListView lista;
-	private transient Intent intent;
-	private transient AlertDialog dialog;
+	private ListaColetaAdapter lca;
+	private List<Tombamento> listaTombamento;
+	private Activity activity;
+	private AlertDialog.Builder builder;
+	private ListView lista;
+	private Intent intent;
+	private AlertDialog dialog;
 
 	@Override
 	protected void onCreate(final Bundle args) {
@@ -53,6 +59,7 @@ public final class ListaColetaActivity extends ListActivity {
 		setContentView(R.layout.activity_lista_coleta);
 
 		NucleoApp.criaPastas();
+
 		listaTombamento = Armazenamento.Externo.getListaTombamentos();
 		lca = new ListaColetaAdapter(this, listaTombamento);
 		activity = this;
@@ -61,6 +68,7 @@ public final class ListaColetaActivity extends ListActivity {
 		builder.setTitle(R.string.acao);
 		builder.setItems(R.array.acao_array,
 				new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						if (which == 0) {
 							intent = new Intent(activity, ColetaActivity.class);
@@ -76,41 +84,14 @@ public final class ListaColetaActivity extends ListActivity {
 		lista = getListView();
 		lista.setOnItemLongClickListener(new OnItemLongClickListener() {
 
+			@Override
 			public boolean onItemLongClick(final AdapterView<?> adapter,
 					final View view, final int pos, final long id) {
-				AlertDialog.Builder builder;
-				builder = new AlertDialog.Builder(activity);
-				builder.setIcon(android.R.drawable.ic_dialog_alert);
-				builder.setTitle("Excluir");
-				builder.setMessage("Desejar excluir o tombamento "
-						+ listaTombamento.get(pos).getCodigo() + " ?");
-
-				builder.setPositiveButton("Sim",
-						new DialogInterface.OnClickListener() {
-							public void onClick(final DialogInterface dialog,
-									int which) {
-								Armazenamento.Externo
-										.excluirArquivoTombamento(listaTombamento
-												.get(pos).getCodigo());
-								dialog.dismiss();
-								lca.notifyDataSetChanged();
-							}
-						});
-
-				builder.setNegativeButton("Não",
-						new DialogInterface.OnClickListener() {
-							public void onClick(final DialogInterface dialog,
-									int which) {
-								dialog.dismiss();
-							}
-						});
-
-				dialog = builder.create();
-				dialog.setCanceledOnTouchOutside(true);
-				dialog.show();
+				exibeDialogo(pos);
 				return true;
 			}
 		});
+		lista.setAdapter(lca);
 	}
 
 	@Override
@@ -126,21 +107,73 @@ public final class ListaColetaActivity extends ListActivity {
 	protected void onResume() {
 		super.onResume();
 		menu(findViewById(R.id.btnMenu));
-		lca.notifyDataSetChanged();
-		lista.setAdapter(lca);
 	}
 
+	/**
+	 * Método que sincroniza as coletas dos ativos fixos do aplicativo, com o
+	 * WebService.
+	 * 
+	 * @param view
+	 *            view que realizou o evento de clique e chamou esse método
+	 */
 	public void sincronizar(final View view) {
 		new EnviarColeta(activity, "http:\\", listaTombamento)
 				.execute(new Void[0]);
 	}
 
+	/**
+	 * Método que responde ao evento de clique e exibe o <code>Dialog</code>
+	 * para escolha de uma opção.
+	 * 
+	 * @param view
+	 *            view que realizou o evento de clique e chamou esse método
+	 */
 	public void menu(final View view) {
 		final AlertDialog dialog = builder.create();
 		dialog.show();
 	}
 
+	/**
+	 * Método que inicia a tela de Relatórios do aplicativo.
+	 */
 	private void iniciaTelaRelatorio() {
+
+	}
+
+	/**
+	 * Método que exibe o <code>Dialog</code> quando o evento de clique longo é
+	 * ativado.
+	 * 
+	 * @param posicao
+	 *            posicao do item na lista que sofreu o evento
+	 */
+	private void exibeDialogo(final int posicao) {
+
+		AlertDialog.Builder builder;
+		builder = new AlertDialog.Builder(activity);
+		builder.setIcon(android.R.drawable.ic_dialog_alert);
+		builder.setTitle("Excluir");
+		builder.setMessage("Desejar excluir o tombamento "
+				+ listaTombamento.get(posicao).getCodigo() + " ?");
+
+		builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+			public void onClick(final DialogInterface dialog, int which) {
+				Armazenamento.Externo.excluirArquivoTombamento(listaTombamento
+						.get(posicao).getCodigo());
+				dialog.dismiss();
+				lca.notifyDataSetChanged();
+			}
+		});
+
+		builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+			public void onClick(final DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+
+		dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(true);
+		dialog.show();
 
 	}
 

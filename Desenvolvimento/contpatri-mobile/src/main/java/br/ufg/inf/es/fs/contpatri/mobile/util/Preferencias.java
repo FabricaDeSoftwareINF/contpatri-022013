@@ -32,9 +32,6 @@ import android.util.Log;
  * Classe que gerencia as configurações da aplicação
  * 
  * @author Rogério Tristão Junior
- * @author Muryllo Tiraza
- * @author Fellipe Cesar
- * @author Thiago Fernandes
  * 
  */
 public final class Preferencias {

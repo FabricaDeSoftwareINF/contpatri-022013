@@ -42,9 +42,6 @@ import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
  * coletas que estão pendentes no aplicativo.
  * 
  * @author Rogério Tristão Junior
- * @author Muryllo Tiraza
- * @author Fellipe Cesar
- * @author Thiago Fernandes
  * 
  */
 public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
@@ -81,25 +78,26 @@ public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 	@Override
 	protected Void doInBackground(final Void... params) {
 
-	    HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httppost = new HttpPost(host);
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost(host);
 
-	    try {
+		try {
 
-	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-	        
-	        nameValuePairs.add(new BasicNameValuePair("id", "12345"));
-	        nameValuePairs.add(new BasicNameValuePair("stringdata", "AndDev is Cool!"));
-	        
-	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 
-	        HttpResponse response = httpclient.execute(httppost);
-	        
-	    } catch (final ClientProtocolException e) {
-	    	Log.e(EnviarColeta.class.getSimpleName(), "", e);
-	    } catch (final IOException e) {
-	        Log.e(EnviarColeta.class.getSimpleName(), "", e);
-	    }
+			nameValuePairs.add(new BasicNameValuePair("id", "12345"));
+			nameValuePairs.add(new BasicNameValuePair("stringdata",
+					"AndDev is Cool!"));
+
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+			HttpResponse response = httpclient.execute(httppost);
+
+		} catch (final ClientProtocolException e) {
+			Log.e(EnviarColeta.class.getSimpleName(), "", e);
+		} catch (final IOException e) {
+			Log.e(EnviarColeta.class.getSimpleName(), "", e);
+		}
 		return null;
 	}
 

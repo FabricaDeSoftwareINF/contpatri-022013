@@ -35,9 +35,6 @@ import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
  * Classe que gerencia o armazenamento interno e externo para uso do aplicativo.
  * 
  * @author Rogério Tristão Junior
- * @author Muryllo Tiraza
- * @author Fellipe Cesar
- * @author Thiago Fernandes
  * 
  */
 public final class Armazenamento {
@@ -46,9 +43,6 @@ public final class Armazenamento {
 	 * Classe com operações do dispositivo de armazenamento externo.
 	 * 
 	 * @author Rogério Tristão Junior
-	 * @author Muryllo Tiraza
-	 * @author Fellipe Cesar
-	 * @author Thiago Fernandes
 	 * 
 	 */
 	public static class Externo {
@@ -64,6 +58,11 @@ public final class Armazenamento {
 					.getExternalStorageState());
 		}
 
+		/**
+		 * Retorna uma lista de todos os ativos fixos coletados.
+		 * 
+		 * @return retorna uma <code>List</code> do tipo <code>Tombamento</code>
+		 */
 		public static List<Tombamento> getListaTombamentos() {
 
 			StringBuilder sb;
@@ -99,6 +98,13 @@ public final class Armazenamento {
 			return lista;
 		}
 
+		/**
+		 * Método que exclui um arquivo em <b>JSON</b> do tombamento, com base
+		 * no código do mesmo.
+		 * 
+		 * @param codigo
+		 *            código do ativo fixo
+		 */
 		public static void excluirArquivoTombamento(final long codigo) {
 			String id = String.valueOf(codigo);
 			new File(NucleoApp.LOCAL_COLETAS + id + ".json").delete();

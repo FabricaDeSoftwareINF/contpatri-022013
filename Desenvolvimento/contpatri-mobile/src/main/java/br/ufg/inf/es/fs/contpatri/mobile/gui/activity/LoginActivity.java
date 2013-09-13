@@ -29,7 +29,7 @@ import android.view.View;
 import android.widget.EditText;
 import br.ufg.inf.es.fs.contpatri.mobile.R;
 import br.ufg.inf.es.fs.contpatri.mobile.gui.dialog.LoginDialog;
-import br.ufg.inf.es.fs.contpatri.mobile.util.ConexaoInternet;
+import br.ufg.inf.es.fs.contpatri.mobile.util.ConexaoRede;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Preferencias;
 import br.ufg.inf.es.fs.contpatri.mobile.webservice.Autenticar;
 
@@ -38,7 +38,6 @@ import br.ufg.inf.es.fs.contpatri.mobile.webservice.Autenticar;
  * usuário no aplicativo.
  * 
  * @author Rogério Tristão Junior
- * @author Muryllo Tiraza
  * 
  */
 public final class LoginActivity extends Activity {
@@ -61,16 +60,37 @@ public final class LoginActivity extends Activity {
 		loginDialog = new LoginDialog(this);
 	}
 
+	/**
+	 * Método que responde ao evento do botão para autenticar as credenciais
+	 * digitadas.
+	 * 
+	 * @param view
+	 *            view que realizou o evento de clique e chamou esse método
+	 */
 	public void logar(final View view) {
 
 		login = edtLogin.getText().toString();
 		senha = edtSenha.getText().toString();
 
+		/*
+		 * Verifica se há algo digitado nos campos, se não houver, responderá
+		 * com um diálogo dizendo para inserir as credenciais.
+		 */
 		if (login.length() > 0 && senha.length() > 0) {
 
+			/*
+			 * Verifica se o usuário digitado, existe nas configurações do
+			 * android, se sim, irá logar na aplicação, senão irá tentar
+			 * autenticar com o WebService com as credenciais digitadas.
+			 */
 			if (!Preferencias.existeUsuario(login, senha)) {
 
-				if (!ConexaoInternet.isConnectedInternet(this)) {
+				/*
+				 * Verifica o status com a internet, se estiver ok, continua com
+				 * o processo de validação dos dados, senão irá mostrar um
+				 * diálogo informando o problema.
+				 */
+				if (!ConexaoRede.isConnectedInternet(this)) {
 					loginDialog
 							.mostrar("Não foi possível autenticar devido à limitação na comunicação com o servidor ou ausência da mesma.");
 				} else {
@@ -80,7 +100,13 @@ public final class LoginActivity extends Activity {
 					autentica.execute(new Void[0]);
 					Iterator<Entry<Boolean, String>> iterator = autentica
 							.getRetorno().entrySet().iterator();
-					
+
+					/*
+					 * Verifica se a resposta do WebService for verdadeiro, se
+					 * for, as credenciais foram autenticadas e serão
+					 * armazenadas no Android, caso contrário exibirá o erro
+					 * retornado pelo WebService.
+					 */
 					if (iterator.next().getKey()) {
 						Preferencias.gravarUsuario(login, senha);
 						Intent troca = new Intent(LoginActivity.this,
