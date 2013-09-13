@@ -15,12 +15,17 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
+        public static final int azul=0x7f04000a;
         public static final int azulActionBar=0x7f040005;
+        /**  Cores Inf 
+         */
+        public static final int azulClaro=0x7f040009;
         public static final int branco=0x7f040003;
         public static final int centerColorGradiente=0x7f040008;
         public static final int cinzaClaro=0x7f040001;
         public static final int cinzaEscuro=0x7f040000;
         public static final int endeColorGradiente=0x7f040007;
+        public static final int letras=0x7f04000b;
         public static final int preto=0x7f040004;
         /**  Cores Gradiente Background App 
          */
@@ -29,6 +34,10 @@ public final class R {
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
+
+         Customize dimensions originally defined in res/values/dimens.xml (such as
+         screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
+    
          */
         public static final int activity_horizontal_margin=0x7f050000;
         public static final int activity_vertical_margin=0x7f050001;

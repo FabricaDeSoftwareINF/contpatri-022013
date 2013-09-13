@@ -52,6 +52,9 @@ public final class ListaColetaActivity extends ListActivity {
 		super.onCreate(args);
 		setContentView(R.layout.activity_lista_coleta);
 
+		NucleoApp.criaPastas();
+		listaTombamento = Armazenamento.Externo.getListaTombamentos();
+		lca = new ListaColetaAdapter(this, listaTombamento);
 		activity = this;
 
 		builder = new AlertDialog.Builder(this);
@@ -70,13 +73,9 @@ public final class ListaColetaActivity extends ListActivity {
 					}
 				});
 
-		NucleoApp.criaPastas();
-		
-		listaTombamento = Armazenamento.Externo.getListaTombamentos();
-
 		lista = getListView();
 		lista.setOnItemLongClickListener(new OnItemLongClickListener() {
-			
+
 			public boolean onItemLongClick(final AdapterView<?> adapter,
 					final View view, final int pos, final long id) {
 				AlertDialog.Builder builder;
@@ -93,8 +92,8 @@ public final class ListaColetaActivity extends ListActivity {
 								Armazenamento.Externo
 										.excluirArquivoTombamento(listaTombamento
 												.get(pos).getCodigo());
-								lca.notifyDataSetChanged();
 								dialog.dismiss();
+								lca.notifyDataSetChanged();
 							}
 						});
 
@@ -127,7 +126,7 @@ public final class ListaColetaActivity extends ListActivity {
 	protected void onResume() {
 		super.onResume();
 		menu(findViewById(R.id.btnMenu));
-		lca = new ListaColetaAdapter(this, listaTombamento);
+		lca.notifyDataSetChanged();
 		lista.setAdapter(lca);
 	}
 

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradiente_background"
     android:gravity="center"
     android:orientation="vertical" >
 
@@ -37,7 +38,8 @@
                 android:layout_height="match_parent"
                 android:layout_margin="3dp"
                 android:onClick="sincronizar"
-                android:text="@string/sincronizar" />
+                android:text="@string/sincronizar"
+                android:textColor="@color/letras" />
         </LinearLayout>
 
         <LinearLayout
@@ -49,11 +51,12 @@
             <Button
                 android:id="@+id/btnMenu"
                 style="@style/botao"
-                android:onClick="menu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="3dp"
-                android:text="@string/menu" />
+                android:onClick="menu"
+                android:text="@string/menu"
+                android:textColor="@color/letras" />
         </LinearLayout>
     </LinearLayout>
 

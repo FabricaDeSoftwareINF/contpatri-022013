@@ -24,6 +24,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Classe que abstrai o Tombamento. É nela que é feita as operações de envio
@@ -43,7 +44,7 @@ public final class Tombamento implements Parcelable {
 	public static final String ULTIMA_ALTERACAO = "timestamp";
 	public static final String OBSERVACAO = "observacao";
 
-	private String codigo;
+	private long codigo;
 	private String situacao;
 	private String sublocal;
 	private String observacao;
@@ -53,7 +54,7 @@ public final class Tombamento implements Parcelable {
 
 	}
 
-	public Tombamento(final String id, final String sit, final String subLocal,
+	public Tombamento(final long id, final String sit, final String subLocal,
 			final String obs) {
 		codigo = id;
 		situacao = sit;
@@ -63,18 +64,18 @@ public final class Tombamento implements Parcelable {
 	}
 
 	public Tombamento(final Parcel source) {
-		codigo = source.readString();
+		codigo = source.readLong();
 		situacao = source.readString();
 		sublocal = source.readString();
 		observacao = source.readString();
 		ultimaAlteracao = source.readLong();
 	}
 
-	public String getCodigo() {
+	public long getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(final String codigo) {
+	public void setCodigo(final long codigo) {
 		this.codigo = codigo;
 	}
 
@@ -116,7 +117,7 @@ public final class Tombamento implements Parcelable {
 	}
 
 	public void fromJson(final String json) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		Tombamento tmp = (Tombamento) gson.fromJson(json, Tombamento.class);
 		codigo = tmp.getCodigo();
 		situacao = tmp.getSituacao();
@@ -132,7 +133,7 @@ public final class Tombamento implements Parcelable {
 
 	
 	public void writeToParcel(final Parcel paramParcel, final int paramInt) {
-		paramParcel.writeString(codigo);
+		paramParcel.writeLong(codigo);
 		paramParcel.writeString(situacao);
 		paramParcel.writeString(sublocal);
 		paramParcel.writeString(observacao);

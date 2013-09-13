@@ -18,21 +18,20 @@
  */
 package br.ufg.inf.es.fs.contpatri.mobile.gui.activity;
 
-import java.security.NoSuchAlgorithmException;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
-import br.ufg.inf.es.fs.contpatri.mobile.controller.LoginController;
-import br.ufg.inf.es.fs.contpatri.mobile.util.FolderManager;
-import br.ufg.inf.es.fs.contpatri.mobile.util.Preferencias;
-
 import br.ufg.inf.es.fs.contpatri.mobile.R;
+import br.ufg.inf.es.fs.contpatri.mobile.gui.dialog.LoginDialog;
+import br.ufg.inf.es.fs.contpatri.mobile.util.ConexaoInternet;
+import br.ufg.inf.es.fs.contpatri.mobile.util.Preferencias;
+import br.ufg.inf.es.fs.contpatri.mobile.webservice.Autenticar;
 
 /**
  * Classe que exibe a tela de login e inicia o processo de autenticação do
@@ -40,19 +39,16 @@ import br.ufg.inf.es.fs.contpatri.mobile.R;
  * 
  * @author Rogério Tristão Junior
  * @author Muryllo Tiraza
- * @author Fellipe Cesar
- * @author Thiago Fernandes
  * 
  */
 public final class LoginActivity extends Activity {
 
-	private transient LoginController logarController;
-
-	private transient EditText edtLogin;
-	private transient EditText edtSenha;
-	private transient Context contexto;
-	private transient String login;
-	private transient String senha;
+	private LoginDialog loginDialog;
+	private EditText edtLogin;
+	private EditText edtSenha;
+	private Context contexto;
+	private String login;
+	private String senha;
 
 	@Override
 	protected void onCreate(final Bundle args) {
@@ -62,6 +58,7 @@ public final class LoginActivity extends Activity {
 		edtLogin = (EditText) findViewById(R.id.edt_login);
 		edtSenha = (EditText) findViewById(R.id.edt_senha);
 		Preferencias.criarConfiguracoes(this);
+		loginDialog = new LoginDialog(this);
 	}
 
 	public void logar(final View view) {
@@ -69,39 +66,42 @@ public final class LoginActivity extends Activity {
 		login = edtLogin.getText().toString();
 		senha = edtSenha.getText().toString();
 
-		try {
+		if ((!login.equals(null) && !senha.equals(null))
+				&& (!login.equals("") && !senha.equals(""))) {
 
 			if (!Preferencias.existeUsuario(login, senha)) {
 
-				logarController = new LoginController(login, senha);
-
-				if (logarController.logar()) {
-
-					Preferencias.gravarUsuario(login, senha);
-
+				if (!ConexaoInternet.isConnectedInternet(this)) {
+					loginDialog
+							.mostrar("Não foi possível autenticar devido à limitação na comunicação com o servidor ou ausência da mesma.");
 				} else {
-					Toast.makeText(contexto,
-							"Erro ao logar, tente novamente mais tarde",
-							Toast.LENGTH_LONG).show();
+
+					Autenticar autentica = new Autenticar(contexto, login,
+							login);
+					autentica.execute(new Void[0]);
+					Iterator<Entry<Boolean, String>> iterator = autentica
+							.getRetorno().entrySet().iterator();
+					
+					if (iterator.next().getKey()) {
+						Preferencias.gravarUsuario(login, senha);
+						Intent troca = new Intent(LoginActivity.this,
+								ListaColetaActivity.class);
+						startActivity(troca);
+						finish();
+					} else {
+						loginDialog.mostrar(iterator.next().getValue());
+					}
 				}
 
-			}
-
-			if (FolderManager.criaDiretorio(this)) {
+			} else {
 				Intent troca = new Intent(LoginActivity.this,
 						ListaColetaActivity.class);
 				startActivity(troca);
-				finish();
-			} else {
-				Toast.makeText(contexto, "Falha no login, tente novamente",
-						Toast.LENGTH_LONG).show();
 			}
 
-		} catch (final NoSuchAlgorithmException e) {
-			Log.e(LoginActivity.class.getSimpleName(),
-					"Erro ao logar, tente novamente mais tarde", e);
+		} else {
+			loginDialog.mostrar("Insira as credenciais!");
 		}
 
 	}
-
 }

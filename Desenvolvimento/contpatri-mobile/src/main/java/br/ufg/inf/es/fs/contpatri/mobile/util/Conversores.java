@@ -6,7 +6,7 @@ import java.util.Locale;
 public final class Conversores {
 
 	public static String longToDate(final long numero) {
-		return new SimpleDateFormat("dd/mm/yyyy - HH:mm:ss", Locale.getDefault()).format(numero);
+		return new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss", Locale.getDefault()).format(numero);
 	}
 	
 }

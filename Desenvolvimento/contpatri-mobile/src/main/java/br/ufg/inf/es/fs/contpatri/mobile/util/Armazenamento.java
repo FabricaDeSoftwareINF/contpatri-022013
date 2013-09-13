@@ -103,8 +103,9 @@ public final class Armazenamento {
 			return lista;
 		}
 
-		public static void excluirArquivoTombamento(final String codigo) {
-			new File(NucleoApp.LOCAL_COLETAS + codigo + ".json").delete();
+		public static void excluirArquivoTombamento(final long codigo) {
+			String id = String.valueOf(codigo);
+			new File(NucleoApp.LOCAL_COLETAS + id + ".json").delete();
 		}
 
 	}
