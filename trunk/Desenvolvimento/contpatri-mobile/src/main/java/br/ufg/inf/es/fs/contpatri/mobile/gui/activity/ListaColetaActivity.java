@@ -57,10 +57,10 @@ public final class ListaColetaActivity extends ListActivity {
 	protected void onCreate(final Bundle args) {
 		super.onCreate(args);
 		setContentView(R.layout.activity_lista_coleta);
-
 		NucleoApp.criaPastas();
 
 		listaTombamento = Armazenamento.Externo.getListaTombamentos();
+
 		lca = new ListaColetaAdapter(this, listaTombamento);
 		activity = this;
 
