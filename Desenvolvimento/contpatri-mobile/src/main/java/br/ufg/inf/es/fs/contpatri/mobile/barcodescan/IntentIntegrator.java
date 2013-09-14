@@ -152,8 +152,8 @@ public class IntentIntegrator {
 	/*
 	 * Only use bottom 16 bits
 	 */
-	public static final int REQUEST_CODE = 0x0000c0de; 
-														
+	public static final int REQUEST_CODE = 0x0000c0de;
+
 	private static final String TAG = IntentIntegrator.class.getSimpleName();
 
 	public static final String DEFAULT_TITLE = "Instalar Barcode Scanner?";
@@ -183,15 +183,14 @@ public class IntentIntegrator {
 	 * Barcode Scanner+
 	 */
 	public static final List<String> TARGET_ALL_KNOWN = list(BSPLUS_PACKAGE,
-			/*
-			 * Barcode Scanner+ Simple
-			 */
-			BSPLUS_PACKAGE + ".simple", 
-			/*
-			 * Barcode Scanner. What else supports this intent?
-			 */
-			BS_PACKAGE  
-	);
+	/*
+	 * Barcode Scanner+ Simple
+	 */
+	BSPLUS_PACKAGE + ".simple",
+	/*
+	 * Barcode Scanner. What else supports this intent?
+	 */
+	BS_PACKAGE);
 
 	private final Activity activity;
 	private String title;
@@ -201,7 +200,7 @@ public class IntentIntegrator {
 	private List<String> targetApplications;
 	private final Map<String, Object> moreExtras;
 
-	public IntentIntegrator(Activity activity) {
+	public IntentIntegrator(final Activity activity) {
 		this.activity = activity;
 		title = DEFAULT_TITLE;
 		message = DEFAULT_MESSAGE;
@@ -215,11 +214,11 @@ public class IntentIntegrator {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
-	public void setTitleByID(int titleID) {
+	public void setTitleByID(final int titleID) {
 		title = activity.getString(titleID);
 	}
 
@@ -227,11 +226,11 @@ public class IntentIntegrator {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(final String message) {
 		this.message = message;
 	}
 
-	public void setMessageByID(int messageID) {
+	public void setMessageByID(final int messageID) {
 		message = activity.getString(messageID);
 	}
 
@@ -239,11 +238,11 @@ public class IntentIntegrator {
 		return buttonYes;
 	}
 
-	public void setButtonYes(String buttonYes) {
+	public void setButtonYes(final String buttonYes) {
 		this.buttonYes = buttonYes;
 	}
 
-	public void setButtonYesByID(int buttonYesID) {
+	public void setButtonYesByID(final int buttonYesID) {
 		buttonYes = activity.getString(buttonYesID);
 	}
 
@@ -251,11 +250,11 @@ public class IntentIntegrator {
 		return buttonNo;
 	}
 
-	public void setButtonNo(String buttonNo) {
+	public void setButtonNo(final String buttonNo) {
 		this.buttonNo = buttonNo;
 	}
 
-	public void setButtonNoByID(int buttonNoID) {
+	public void setButtonNoByID(final int buttonNoID) {
 		buttonNo = activity.getString(buttonNoID);
 	}
 
@@ -263,22 +262,23 @@ public class IntentIntegrator {
 		return targetApplications;
 	}
 
-	public final void setTargetApplications(List<String> targetApplications) {
+	public final void setTargetApplications(
+			final List<String> targetApplications) {
 		if (targetApplications.isEmpty()) {
 			throw new IllegalArgumentException("No target applications");
 		}
 		this.targetApplications = targetApplications;
 	}
 
-	public void setSingleTargetApplication(String targetApplication) {
-		this.targetApplications = Collections.singletonList(targetApplication);
+	public void setSingleTargetApplication(final String targetApplication) {
+		targetApplications = Collections.singletonList(targetApplication);
 	}
 
 	public Map<String, ?> getMoreExtras() {
 		return moreExtras;
 	}
 
-	public final void addExtra(String key, Object value) {
+	public final void addExtra(final String key, final Object value) {
 		moreExtras.put(key, value);
 	}
 
@@ -299,15 +299,15 @@ public class IntentIntegrator {
 	 *         to download the app if a prompt was needed, or null otherwise
 	 */
 	public final AlertDialog initiateScan(
-			Collection<String> desiredBarcodeFormats) {
-		Intent intentScan = new Intent(BS_PACKAGE + ".SCAN");
+			final Collection<String> desiredBarcodeFormats) {
+		final Intent intentScan = new Intent(BS_PACKAGE + ".SCAN");
 		intentScan.addCategory(Intent.CATEGORY_DEFAULT);
 
 		// check which types of codes to scan for
 		if (desiredBarcodeFormats != null) {
 			// set the desired barcode types
-			StringBuilder joinedByComma = new StringBuilder();
-			for (String format : desiredBarcodeFormats) {
+			final StringBuilder joinedByComma = new StringBuilder();
+			for (final String format : desiredBarcodeFormats) {
 				if (joinedByComma.length() > 0) {
 					joinedByComma.append(',');
 				}
@@ -316,7 +316,7 @@ public class IntentIntegrator {
 			intentScan.putExtra("SCAN_FORMATS", joinedByComma.toString());
 		}
 
-		String targetAppPackage = findTargetAppPackage(intentScan);
+		final String targetAppPackage = findTargetAppPackage(intentScan);
 		if (targetAppPackage == null) {
 			return showDownloadDialog();
 		}
@@ -340,16 +340,16 @@ public class IntentIntegrator {
 	 * @see android.app.Activity#startActivityForResult(Intent, int)
 	 * @see android.app.Fragment#startActivityForResult(Intent, int)
 	 */
-	protected void startActivityForResult(Intent intent, int code) {
+	protected void startActivityForResult(final Intent intent, final int code) {
 		activity.startActivityForResult(intent, code);
 	}
 
-	private String findTargetAppPackage(Intent intent) {
-		PackageManager pm = activity.getPackageManager();
-		List<ResolveInfo> availableApps = pm.queryIntentActivities(intent,
-				PackageManager.MATCH_DEFAULT_ONLY);
+	private String findTargetAppPackage(final Intent intent) {
+		final PackageManager pm = activity.getPackageManager();
+		final List<ResolveInfo> availableApps = pm.queryIntentActivities(
+				intent, PackageManager.MATCH_DEFAULT_ONLY);
 		if (availableApps != null) {
-			for (String targetApp : targetApplications) {
+			for (final String targetApp : targetApplications) {
 				if (contains(availableApps, targetApp)) {
 					return targetApp;
 				}
@@ -358,10 +358,10 @@ public class IntentIntegrator {
 		return null;
 	}
 
-	private static boolean contains(Iterable<ResolveInfo> availableApps,
-			String targetApp) {
-		for (ResolveInfo availableApp : availableApps) {
-			String packageName = availableApp.activityInfo.packageName;
+	private static boolean contains(final Iterable<ResolveInfo> availableApps,
+			final String targetApp) {
+		for (final ResolveInfo availableApp : availableApps) {
+			final String packageName = availableApp.activityInfo.packageName;
 			if (targetApp.equals(packageName)) {
 				return true;
 			}
@@ -370,20 +370,23 @@ public class IntentIntegrator {
 	}
 
 	private AlertDialog showDownloadDialog() {
-		AlertDialog.Builder downloadDialog = new AlertDialog.Builder(activity);
+		final AlertDialog.Builder downloadDialog = new AlertDialog.Builder(
+				activity);
 		downloadDialog.setTitle(title);
 		downloadDialog.setMessage(message);
 		downloadDialog.setPositiveButton(buttonYes,
 				new DialogInterface.OnClickListener() {
 					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
-						String packageName = targetApplications.get(0);
-						Uri uri = Uri.parse("market://details?id="
+					public void onClick(final DialogInterface dialogInterface,
+							final int i) {
+						final String packageName = targetApplications.get(0);
+						final Uri uri = Uri.parse("market://details?id="
 								+ packageName);
-						Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+						final Intent intent = new Intent(Intent.ACTION_VIEW,
+								uri);
 						try {
 							activity.startActivity(intent);
-						} catch (ActivityNotFoundException anfe) {
+						} catch (final ActivityNotFoundException anfe) {
 							// Hmm, market is not installed
 							Log.w(TAG,
 									"Google Play is not installed; cannot install "
@@ -394,7 +397,8 @@ public class IntentIntegrator {
 		downloadDialog.setNegativeButton(buttonNo,
 				new DialogInterface.OnClickListener() {
 					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
+					public void onClick(final DialogInterface dialogInterface,
+							final int i) {
 					}
 				});
 		return downloadDialog.show();
@@ -410,23 +414,25 @@ public class IntentIntegrator {
 	 *         else an {@link IntentResult} containing the result of the scan.
 	 *         If the user cancelled scanning, the fields will be null.
 	 */
-	public static IntentResult parseActivityResult(int requestCode,
-			int resultCode, Intent intent) {
+	public static IntentResult parseActivityResult(final int requestCode,
+			final int resultCode, final Intent intent) {
 		if (requestCode == REQUEST_CODE) {
 			if (resultCode == Activity.RESULT_OK) {
-				String contents = intent.getStringExtra("SCAN_RESULT");
-				String formatName = intent.getStringExtra("SCAN_RESULT_FORMAT");
-				byte[] rawBytes = intent.getByteArrayExtra("SCAN_RESULT_BYTES");
-				int intentOrientation = intent.getIntExtra(
+				final String contents = intent.getStringExtra("SCAN_RESULT");
+				final String formatName = intent
+						.getStringExtra("SCAN_RESULT_FORMAT");
+				final byte[] rawBytes = intent
+						.getByteArrayExtra("SCAN_RESULT_BYTES");
+				final int intentOrientation = intent.getIntExtra(
 						"SCAN_RESULT_ORIENTATION", Integer.MIN_VALUE);
-				Integer orientation = intentOrientation == Integer.MIN_VALUE ? null
+				final Integer orientation = intentOrientation == Integer.MIN_VALUE ? null
 						: intentOrientation;
-				String errorCorrectionLevel = intent
+				final String errorCorrectionLevel = intent
 						.getStringExtra("SCAN_RESULT_ERROR_CORRECTION_LEVEL");
 				return new IntentResult(contents, formatName, rawBytes,
 						orientation, errorCorrectionLevel);
 			}
-			return new IntentResult();
+			return null;
 		}
 		return null;
 	}
@@ -436,7 +442,7 @@ public class IntentIntegrator {
 	 * 
 	 * @see #shareText(CharSequence, CharSequence)
 	 */
-	public final AlertDialog shareText(CharSequence text) {
+	public final AlertDialog shareText(final CharSequence text) {
 		return shareText(text, "TEXT_TYPE");
 	}
 
@@ -453,13 +459,14 @@ public class IntentIntegrator {
 	 * @return the {@link AlertDialog} that was shown to the user prompting them
 	 *         to download the app if a prompt was needed, or null otherwise
 	 */
-	public final AlertDialog shareText(CharSequence text, CharSequence type) {
-		Intent intent = new Intent();
+	public final AlertDialog shareText(final CharSequence text,
+			final CharSequence type) {
+		final Intent intent = new Intent();
 		intent.addCategory(Intent.CATEGORY_DEFAULT);
 		intent.setAction(BS_PACKAGE + ".ENCODE");
 		intent.putExtra("ENCODE_TYPE", type);
 		intent.putExtra("ENCODE_DATA", text);
-		String targetAppPackage = findTargetAppPackage(intent);
+		final String targetAppPackage = findTargetAppPackage(intent);
 		if (targetAppPackage == null) {
 			return showDownloadDialog();
 		}
@@ -471,14 +478,14 @@ public class IntentIntegrator {
 		return null;
 	}
 
-	private static List<String> list(String... values) {
+	private static List<String> list(final String... values) {
 		return Collections.unmodifiableList(Arrays.asList(values));
 	}
 
-	private void attachMoreExtras(Intent intent) {
-		for (Map.Entry<String, Object> entry : moreExtras.entrySet()) {
-			String key = entry.getKey();
-			Object value = entry.getValue();
+	private void attachMoreExtras(final Intent intent) {
+		for (final Map.Entry<String, Object> entry : moreExtras.entrySet()) {
+			final String key = entry.getKey();
+			final Object value = entry.getValue();
 			// Kind of hacky
 			if (value instanceof Integer) {
 				intent.putExtra(key, (Integer) value);

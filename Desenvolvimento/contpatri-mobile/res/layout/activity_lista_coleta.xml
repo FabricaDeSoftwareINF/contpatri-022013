@@ -1,63 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradiente_background"
-    android:gravity="center"
-    android:orientation="vertical" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:orientation="vertical" >
-
-        <ListView
-            android:id="@android:id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-        </ListView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal" >
-
-        <LinearLayout
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical" >
-
-            <Button
-                android:id="@+id/btnSincronizar"
-                style="@style/botao"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="3dp"
-                android:onClick="sincronizar"
-                android:text="@string/sincronizar"
-                android:textColor="@color/letras" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical" >
-
-            <Button
-                android:id="@+id/btnMenu"
-                style="@style/botao"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="3dp"
-                android:onClick="menu"
-                android:text="@string/menu"
-                android:textColor="@color/letras" />
-        </LinearLayout>
-    </LinearLayout>
-
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@drawable/gradiente_background"
+	android:gravity="center"
+	android:orientation="vertical" >
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dip"
+		android:layout_weight="1"
+		android:orientation="vertical" >
+		<ListView
+			android:id="@android:id/list"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" >
+		</ListView>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:baselineAligned="false"
+		android:orientation="horizontal" >
+		<LinearLayout
+			android:layout_width="0dip"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:orientation="vertical" >
+			<Button
+				style="@style/botao"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_margin="3dp"
+				android:onClick="sincronizar"
+				android:text="@string/sincronizar"
+				android:textColor="@color/letras" />
+		</LinearLayout>
+		<LinearLayout
+			android:layout_width="0dip"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:orientation="vertical" >
+			<Button
+				style="@style/botao"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_margin="3dp"
+				android:onClick="coletar"
+				android:text="@string/coletar"
+				android:textColor="@color/letras" />
+		</LinearLayout>
+	</LinearLayout>
 </LinearLayout>
