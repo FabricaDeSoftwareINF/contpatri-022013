@@ -28,6 +28,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import br.ufg.inf.es.fs.contpatri.mobile.R;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
+import br.ufg.inf.es.fs.contpatri.mobile.util.Armazenamento;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
 
 /**
@@ -39,8 +40,8 @@ import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
  */
 public final class ListaColetaAdapter extends BaseAdapter {
 
+	private final LayoutInflater inflater;
 	private List<Tombamento> listaTombamento;
-	private LayoutInflater inflater;
 	private ViewHolder holder;
 
 	/**
@@ -75,16 +76,17 @@ public final class ListaColetaAdapter extends BaseAdapter {
 	public int getCount() {
 		return listaTombamento.size();
 	}
-	
+
 	@Override
-	public Object getItem(int paramInt) {
+	public Object getItem(final int paramInt) {
 		return listaTombamento.get(paramInt);
 	}
 
-	public long getItemId(int paramInt) {
-		return paramInt;
+	@Override
+	public long getItemId(final int id) {
+		return id;
 	}
-	
+
 	@Override
 	public View getView(final int posicao, final View view,
 			final ViewGroup vGroup) {
@@ -109,7 +111,7 @@ public final class ListaColetaAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		Tombamento tmb = listaTombamento.get(posicao);
+		final Tombamento tmb = listaTombamento.get(posicao);
 
 		holder.alteracao.setText(Conversores.longToDate(tmb
 				.getUltimaAlteracao()));
@@ -117,6 +119,12 @@ public final class ListaColetaAdapter extends BaseAdapter {
 		holder.situacao.setText(tmb.getSituacao());
 
 		return convertView;
+	}
+
+	@Override
+	public void notifyDataSetChanged() {
+		listaTombamento = Armazenamento.Externo.getListaTombamentos();
+		super.notifyDataSetChanged();
 	}
 
 }

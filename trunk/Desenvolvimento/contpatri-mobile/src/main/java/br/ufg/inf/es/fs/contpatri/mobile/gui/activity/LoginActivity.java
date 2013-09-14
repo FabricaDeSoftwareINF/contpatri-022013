@@ -61,7 +61,7 @@ public final class LoginActivity extends Activity {
 
 	@Override
 	protected void onPause() {
-		this.finish();
+		finish();
 		super.onPause();
 	}
 
@@ -74,8 +74,8 @@ public final class LoginActivity extends Activity {
 	 */
 	public void logar(final View view) {
 
-		String login = edtLogin.getText().toString();
-		String senha = edtSenha.getText().toString();
+		final String login = edtLogin.getText().toString();
+		final String senha = edtSenha.getText().toString();
 
 		/*
 		 * Verifica se há algo digitado nos campos, se não houver, responderá
@@ -100,10 +100,10 @@ public final class LoginActivity extends Activity {
 							.mostrar("Não foi possível autenticar devido à limitação na comunicação com o servidor ou ausência da mesma.");
 				} else {
 
-					Autenticar autentica = new Autenticar(contexto, login,
-							senha);
+					final Autenticar autentica = new Autenticar(contexto,
+							login, senha);
 					autentica.execute(new Void[0]);
-					Iterator<Entry<Boolean, String>> iterator = autentica
+					final Iterator<Entry<Boolean, String>> iterator = autentica
 							.getRetorno().entrySet().iterator();
 
 					/*
@@ -114,7 +114,7 @@ public final class LoginActivity extends Activity {
 					 */
 					if (iterator.next().getKey()) {
 						Preferencias.gravarUsuario(login, senha);
-						Intent troca = new Intent(LoginActivity.this,
+						final Intent troca = new Intent(LoginActivity.this,
 								ListaColetaActivity.class);
 						startActivity(troca);
 						finish();
@@ -124,7 +124,7 @@ public final class LoginActivity extends Activity {
 				}
 
 			} else {
-				Intent troca = new Intent(LoginActivity.this,
+				final Intent troca = new Intent(LoginActivity.this,
 						ListaColetaActivity.class);
 				startActivity(troca);
 			}

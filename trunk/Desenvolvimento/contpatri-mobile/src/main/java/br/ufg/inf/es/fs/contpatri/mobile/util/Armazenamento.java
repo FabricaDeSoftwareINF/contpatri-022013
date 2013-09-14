@@ -66,12 +66,12 @@ public final class Armazenamento {
 		public static List<Tombamento> getListaTombamentos() {
 
 			StringBuilder sb;
-			List<Tombamento> lista = new ArrayList<Tombamento>();
-			File[] listaArquivos = new File(NucleoApp.LOCAL_COLETAS)
+			final List<Tombamento> lista = new ArrayList<Tombamento>();
+			final File[] listaArquivos = new File(NucleoApp.LOCAL_COLETAS)
 					.listFiles();
 			InputStream fis;
 
-			for (File arquivo : listaArquivos) {
+			for (final File arquivo : listaArquivos) {
 				try {
 
 					fis = new FileInputStream(arquivo);
@@ -82,7 +82,7 @@ public final class Armazenamento {
 						sb.append((char) conteudo);
 					}
 
-					Tombamento tmb = new Tombamento();
+					final Tombamento tmb = new Tombamento();
 					tmb.fromJson(sb.toString());
 
 					lista.add(tmb);
@@ -106,7 +106,7 @@ public final class Armazenamento {
 		 *            código do ativo fixo
 		 */
 		public static void excluirArquivoTombamento(final long codigo) {
-			String id = String.valueOf(codigo);
+			final String id = String.valueOf(codigo);
 			new File(NucleoApp.LOCAL_COLETAS + id + ".json").delete();
 		}
 

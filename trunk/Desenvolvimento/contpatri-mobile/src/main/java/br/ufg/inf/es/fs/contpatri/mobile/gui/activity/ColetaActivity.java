@@ -64,9 +64,11 @@ public final class ColetaActivity extends Activity {
 		tombamento = (EditText) findViewById(R.id.edtTombamento);
 		sublocal = (EditText) findViewById(R.id.edtSubLocal);
 		observacao = (EditText) findViewById(R.id.edtObservacao);
-		EditText alteracao = (EditText) findViewById(R.id.edtUltimaAlteracao);
+		final Button qrCode = (Button) findViewById(R.id.btnScanQrCode);
+
+		final EditText alteracao = (EditText) findViewById(R.id.edtUltimaAlteracao);
 		alteracao.setEnabled(false);
-		Spinner spinner = (Spinner) findViewById(R.id.spnSituacao);
+		final Spinner spinner = (Spinner) findViewById(R.id.spnSituacao);
 
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -89,14 +91,17 @@ public final class ColetaActivity extends Activity {
 		 */
 		if (tmb != null) {
 
-			Button btnConfirmar = (Button) findViewById(R.id.btnConfirmar);
-			btnConfirmar.setClickable(false);
-
 			tombamento.setText(String.valueOf(tmb.getCodigo()));
-			sublocal.setText(tmb.getSublocal());
-			observacao.setText(tmb.getObservacao());
+			tombamento.setEnabled(false);
 
-			String[] arraySituacao = getResources().getStringArray(
+			sublocal.setText(tmb.getSublocal());
+
+			observacao.setText(tmb.getObservacao());
+			tmb.setUltimaAlteracao();
+
+			qrCode.setEnabled(false);
+
+			final String[] arraySituacao = getResources().getStringArray(
 					R.array.nomes_array);
 
 			if (tmb.getSituacao().equals(arraySituacao[0])) {
@@ -123,7 +128,7 @@ public final class ColetaActivity extends Activity {
 	 *            view que realizou o evento de clique e chamou esse método
 	 */
 	public void scanQRCode(final View view) {
-		IntentIntegrator integrator = new IntentIntegrator(this);
+		final IntentIntegrator integrator = new IntentIntegrator(this);
 		integrator.initiateScan();
 	}
 
@@ -136,9 +141,9 @@ public final class ColetaActivity extends Activity {
 	 */
 	public void confirmar(final View view) {
 
-		String codigo = tombamento.getText().toString();
-		String sub = sublocal.getText().toString();
-		String obs = observacao.getText().toString();
+		final String codigo = tombamento.getText().toString();
+		final String sub = sublocal.getText().toString();
+		final String obs = observacao.getText().toString();
 
 		/*
 		 * Se os campos forem nulos, inválidos, mostrará uma caixa de diálogo
@@ -168,38 +173,30 @@ public final class ColetaActivity extends Activity {
 	public void onActivityResult(final int request, final int result,
 			final Intent i) {
 
-		IntentResult resultadoScan = IntentIntegrator.parseActivityResult(
-				request, result, i);
-		
-		if (resultadoScan != null) {
-			String contents = resultadoScan.getContents();
-			
-			if (contents != null) {
-				long cod = 0;
+		final IntentResult resultadoScan = IntentIntegrator
+				.parseActivityResult(request, result, i);
 
-				/*
-				 * Bloco de tratamento para verificar se o QRCode utilizado,
-				 * contém somente números.
-				 */
-				try {
-					
-					cod = Long.parseLong(i.getStringExtra("SCAN_RESULT"));
-					
-				} catch (final NumberFormatException e) {
-					Log.e(ColetaActivity.class.getSimpleName(), "", e);
-					Toast.makeText(this, "QRCode inválido", Toast.LENGTH_LONG)
-							.show();
-				}
-
-				tombamento.setText(String.valueOf(cod));
-			} else {
-				Toast.makeText(this, "Cancelado o escaneamento",
-						Toast.LENGTH_LONG).show();
-			}
-		} else {
+		if (resultadoScan == null) {
 			Toast.makeText(this, "Cancelado o escaneamento", Toast.LENGTH_LONG)
 					.show();
+		} else {
+			long cod = 0;
 
+			/*
+			 * Bloco de tratamento para verificar se o QRCode utilizado, contém
+			 * somente números.
+			 */
+			try {
+
+				cod = Long.parseLong(i.getStringExtra("SCAN_RESULT"));
+
+			} catch (final NumberFormatException e) {
+				Log.e(ColetaActivity.class.getSimpleName(), "", e);
+				Toast.makeText(this, "QRCode inválido", Toast.LENGTH_LONG)
+						.show();
+			}
+
+			tombamento.setText(String.valueOf(cod));
 		}
 
 	}
