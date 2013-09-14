@@ -52,7 +52,7 @@ public final class TombamentoTeste {
 	public void tearDown() {
 	}
 
-	@Test
+	//@Test
 	/**
 	 * Teste  
 	 */
@@ -62,7 +62,7 @@ public final class TombamentoTeste {
 		long id = 2L;
 		String sit = "EXTRAVIADO";
 		String subLocal = "Sala 155";
-		String obs = "Não encontrado";
+		String obs = "Nao encontrado";
 
 		tombamento.setCodigo(id);
 		tombamento.setSituacao(sit);
@@ -78,30 +78,4 @@ public final class TombamentoTeste {
 		assertNotNull(tombamento.getUltimaAlteracao());
 		assertEquals(0, tombamento.describeContents());
 	}
-	
-	
-	/*
-	*//**
-	 * Teste  json
-	 *//*
-	public void testTombamentoJSON() {
-		tombamento = new Tombamento(1L, "REALOCADO", "Sala 154",
-				"Movido de sala");
-		long id = 2L;
-		String sit = "EXTRAVIADO";
-		String subLocal = "Sala 155";
-		String obs = "Não encontrado";
-
-		tombamento.setCodigo(id);
-		tombamento.setSituacao(sit);
-		tombamento.setSublocal(subLocal);
-		tombamento.setObservacao(obs);
-		tombamento.setUltimaAlteracao();
-		
-		String json = tombamento.toJson();
-
-		System.out.println(json);
-		assertEquals(false, json.isEmpty());
-		assertEquals(tombamento, tombamento.fromJson(json));
-	}*/
 }
