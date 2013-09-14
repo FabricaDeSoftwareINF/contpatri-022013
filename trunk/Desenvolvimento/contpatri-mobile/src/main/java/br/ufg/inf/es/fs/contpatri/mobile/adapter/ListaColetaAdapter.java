@@ -28,7 +28,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import br.ufg.inf.es.fs.contpatri.mobile.R;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
-import br.ufg.inf.es.fs.contpatri.mobile.util.Armazenamento;
+import br.ufg.inf.es.fs.contpatri.mobile.tombamento.TombamentoDAO;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
 
 /**
@@ -40,8 +40,9 @@ import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
  */
 public final class ListaColetaAdapter extends BaseAdapter {
 
+	private List<Tombamento> lista;
+	private final TombamentoDAO tmbDAO;
 	private final LayoutInflater inflater;
-	private List<Tombamento> listaTombamento;
 	private ViewHolder holder;
 
 	/**
@@ -62,24 +63,26 @@ public final class ListaColetaAdapter extends BaseAdapter {
 	 * @param contexto
 	 *            contexto usado para inicializar o redimensionador de layouts (
 	 *            <code>LayoutInflater</code>)
-	 * @param tombamentos
-	 *            lista de objetos do tipo <code>Tombamento</code> para que o
-	 *            adapter pegue os dados e adapte no layout
 	 */
-	public ListaColetaAdapter(final Context contexto,
-			final List<Tombamento> tombamentos) {
+	public ListaColetaAdapter(final Context contexto) {
 		inflater = LayoutInflater.from(contexto);
-		listaTombamento = tombamentos;
+		tmbDAO = new TombamentoDAO(contexto);
 	}
 
 	@Override
 	public int getCount() {
-		return listaTombamento.size();
+		tmbDAO.abrirConexao();
+		lista = tmbDAO.getTodos();
+		tmbDAO.fecharConexao();
+		return lista.size();
 	}
 
 	@Override
 	public Object getItem(final int paramInt) {
-		return listaTombamento.get(paramInt);
+		tmbDAO.abrirConexao();
+		lista = tmbDAO.getTodos();
+		tmbDAO.fecharConexao();
+		return lista.get(paramInt);
 	}
 
 	@Override
@@ -111,7 +114,11 @@ public final class ListaColetaAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		final Tombamento tmb = listaTombamento.get(posicao);
+		tmbDAO.abrirConexao();
+		lista = tmbDAO.getTodos();
+		tmbDAO.fecharConexao();
+
+		final Tombamento tmb = lista.get(posicao);
 
 		holder.alteracao.setText(Conversores.longToDate(tmb
 				.getUltimaAlteracao()));
@@ -123,7 +130,9 @@ public final class ListaColetaAdapter extends BaseAdapter {
 
 	@Override
 	public void notifyDataSetChanged() {
-		listaTombamento = Armazenamento.Externo.getListaTombamentos();
+		tmbDAO.abrirConexao();
+		lista = tmbDAO.getTodos();
+		tmbDAO.fecharConexao();
 		super.notifyDataSetChanged();
 	}
 

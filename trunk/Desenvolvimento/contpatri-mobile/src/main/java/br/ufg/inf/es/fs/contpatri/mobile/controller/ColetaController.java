@@ -18,17 +18,11 @@
  */
 package br.ufg.inf.es.fs.contpatri.mobile.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.util.Log;
-import android.widget.Toast;
-import br.ufg.inf.es.fs.contpatri.mobile.nucleo.NucleoApp;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
+import br.ufg.inf.es.fs.contpatri.mobile.tombamento.TombamentoDAO;
 
 /**
  * Classe que controla as ações do evento da tela de Coleta do aplicativo.
@@ -38,7 +32,8 @@ import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
  */
 public final class ColetaController {
 
-	private Activity activity;
+	private final Activity activity;
+	private final TombamentoDAO tmbDAO;
 
 	/**
 	 * Construtor padrão para instanciar a classe e inicializar as variáveis.
@@ -50,6 +45,7 @@ public final class ColetaController {
 	 */
 	public ColetaController(final Activity actv) {
 		activity = actv;
+		tmbDAO = new TombamentoDAO(actv);
 	}
 
 	/**
@@ -61,49 +57,25 @@ public final class ColetaController {
 	 */
 	public void gerarColeta(final Tombamento tombamento) {
 
-		File arqTombamento = new File(NucleoApp.LOCAL_COLETAS
-				+ tombamento.getCodigo() + ".json");
+		tmbDAO.abrirConexao();
+		tmbDAO.inserir(tombamento);
+		tmbDAO.fecharConexao();
 
-		/*
-		 * Verifica se o arquivo existe, se sim, delete-o.
-		 */
-		if (arqTombamento.exists()) {
-			arqTombamento.delete();
-		}
-
-		try {
-
-			arqTombamento.createNewFile();
-
-			FileOutputStream fos = new FileOutputStream(arqTombamento);
-			fos.write(tombamento.toJson().getBytes());
-			fos.close();
-
-			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-			AlertDialog dialog;
-			builder.setTitle("Sucesso");
-			builder.setMessage("Tombamento " + tombamento.getCodigo()
-					+ " gerado com sucesso!\nArquivo gerado "
-					+ arqTombamento.getName());
-			builder.setIcon(android.R.drawable.ic_dialog_info);
-			builder.setPositiveButton("OK",
-					new DialogInterface.OnClickListener() {
-						public void onClick(final DialogInterface dialog,
-								int which) {
-							activity.finish();
-						}
-					});
-			dialog = builder.create();
-			dialog.setCanceledOnTouchOutside(true);
-			dialog.show();
-
-		} catch (final IOException e) {
-			Toast.makeText(
-					activity,
-					"Erro na gravação do arquivo. Verifique seu armazenamento interno ou externo.",
-					Toast.LENGTH_LONG).show();
-			Log.e(ColetaController.class.getSimpleName(), "", e);
-		}
+		final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		AlertDialog dialog;
+		builder.setTitle("Sucesso");
+		builder.setMessage("Tombamento " + tombamento.getCodigo()
+				+ " gerado com sucesso!");
+		builder.setIcon(android.R.drawable.ic_dialog_info);
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface dialog, final int which) {
+				activity.finish();
+			}
+		});
+		dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(true);
+		dialog.show();
 
 	}
 
