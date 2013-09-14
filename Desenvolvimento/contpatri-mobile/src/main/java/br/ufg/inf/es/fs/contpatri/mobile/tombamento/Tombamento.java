@@ -23,9 +23,6 @@ import java.sql.Timestamp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 /**
  * Classe que abstrai o Tombamento. É nela que é feita as operações de envio
  * para o WebService, coleta de informações e exibição de informações.
@@ -44,6 +41,40 @@ public final class Tombamento implements Parcelable {
 	private long codigo;
 	private String situacao;
 	private String sublocal;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (codigo ^ codigo >>> 32);
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Tombamento other = (Tombamento) obj;
+		if (codigo != other.codigo) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Tombamento [codigo=" + codigo + ", situacao=" + situacao
+				+ ", sublocal=" + sublocal + ", observacao=" + observacao
+				+ ", ultimaAlteracao=" + ultimaAlteracao + "]";
+	}
+
 	private String observacao;
 	private long ultimaAlteracao;
 
@@ -103,8 +134,11 @@ public final class Tombamento implements Parcelable {
 	}
 
 	public void setUltimaAlteracao() {
-		this.ultimaAlteracao = new Timestamp(System.currentTimeMillis())
-				.getTime();
+		ultimaAlteracao = new Timestamp(System.currentTimeMillis()).getTime();
+	}
+
+	public void setUltimaAlteracao(final long alteracao) {
+		ultimaAlteracao = alteracao;
 	}
 
 	public String getSituacao() {
@@ -131,36 +165,11 @@ public final class Tombamento implements Parcelable {
 		this.observacao = observacao;
 	}
 
-	/**
-	 * Método que retorna uma <code>String</code> em <b>JSON</b> do objeto
-	 * <code>Tombamento</code>.
-	 * 
-	 * @return retorna a <code>String</code> do objeto
-	 */
-	public String toJson() {
-		return new GsonBuilder().setPrettyPrinting().create().toJson(this);
-	}
-
-	/**
-	 * Transforma a <code>String</code> do <b>JSON</b> no objeto atual.
-	 * 
-	 * @param json <code>String</code> <b>JSON</b>
-	 */
-	public void fromJson(final String json) {
-		Gson gson = new Gson();
-		Tombamento tmp = (Tombamento) gson.fromJson(json, Tombamento.class);
-		codigo = tmp.getCodigo();
-		situacao = tmp.getSituacao();
-		sublocal = tmp.getSublocal();
-		ultimaAlteracao = tmp.getUltimaAlteracao();
-		observacao = tmp.getObservacao();
-	}
-	
 	@Override
 	public int describeContents() {
 		return 0;
 	}
-	
+
 	@Override
 	public void writeToParcel(final Parcel paramParcel, final int paramInt) {
 		paramParcel.writeLong(codigo);
@@ -171,12 +180,12 @@ public final class Tombamento implements Parcelable {
 	}
 
 	public static final Parcelable.Creator<Tombamento> CREATOR = new Parcelable.Creator<Tombamento>() {
-		
+
 		@Override
 		public Tombamento createFromParcel(final Parcel source) {
 			return new Tombamento(source);
 		}
-		
+
 		@Override
 		public Tombamento[] newArray(final int size) {
 			return new Tombamento[size];

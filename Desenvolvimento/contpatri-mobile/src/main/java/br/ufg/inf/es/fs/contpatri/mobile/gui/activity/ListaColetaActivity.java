@@ -18,22 +18,20 @@
  */
 package br.ufg.inf.es.fs.contpatri.mobile.gui.activity;
 
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import br.ufg.inf.es.fs.contpatri.mobile.R;
 import br.ufg.inf.es.fs.contpatri.mobile.adapter.ListaColetaAdapter;
-import br.ufg.inf.es.fs.contpatri.mobile.nucleo.NucleoApp;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
-import br.ufg.inf.es.fs.contpatri.mobile.util.Armazenamento;
+import br.ufg.inf.es.fs.contpatri.mobile.tombamento.TombamentoDAO;
 import br.ufg.inf.es.fs.contpatri.mobile.webservice.EnviarColeta;
 
 /**
@@ -45,19 +43,18 @@ import br.ufg.inf.es.fs.contpatri.mobile.webservice.EnviarColeta;
  */
 public final class ListaColetaActivity extends ListActivity {
 
+	private TombamentoDAO tmbDAO;
 	private ListaColetaAdapter lca;
-	private List<Tombamento> listaTombamento;
 	private Intent intent;
 
 	@Override
 	protected void onCreate(final Bundle args) {
 		super.onCreate(args);
 		setContentView(R.layout.activity_lista_coleta);
+		tmbDAO = new TombamentoDAO(this);
 
-		NucleoApp.criaPastas();
-
-		final ListView lista = getListView();
-		lista.setOnItemLongClickListener(new OnItemLongClickListener() {
+		final ListView lst = getListView();
+		lst.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(final AdapterView<?> adapter,
@@ -67,17 +64,18 @@ public final class ListaColetaActivity extends ListActivity {
 			}
 		});
 
-		listaTombamento = Armazenamento.Externo.getListaTombamentos();
-		lca = new ListaColetaAdapter(this, listaTombamento);
-		lista.setAdapter(lca);
+		lca = new ListaColetaAdapter(this);
+		lst.setAdapter(lca);
 	}
 
 	@Override
-	protected void onListItemClick(final ListView lista, final View view,
+	protected void onListItemClick(final ListView lst, final View view,
 			final int posicao, final long id) {
-		super.onListItemClick(lista, view, posicao, id);
+		super.onListItemClick(lst, view, posicao, id);
 		intent = new Intent(this, ColetaActivity.class);
-		intent.putExtra("tombamento", listaTombamento.get(posicao));
+		tmbDAO.abrirConexao();
+		intent.putExtra("tombamento", tmbDAO.getTodos().get(posicao));
+		tmbDAO.fecharConexao();
 		startActivity(intent);
 	}
 
@@ -95,7 +93,7 @@ public final class ListaColetaActivity extends ListActivity {
 	 *            view que realizou o evento de clique e chamou esse método
 	 */
 	public void sincronizar(final View view) {
-		new EnviarColeta(this, listaTombamento).execute(new Void[0]);
+		new EnviarColeta(this).execute(new Void[0]);
 		lca.notifyDataSetChanged();
 	}
 
@@ -107,6 +105,9 @@ public final class ListaColetaActivity extends ListActivity {
 	 *            view que realizou o evento de clique e chamou esse método
 	 */
 	public void coletar(final View view) {
+		tmbDAO.abrirConexao();
+		Log.i("TESTE", tmbDAO.getTodosJson());
+		tmbDAO.fecharConexao();
 		intent = new Intent(this, ColetaActivity.class);
 		startActivity(intent);
 	}
@@ -120,18 +121,24 @@ public final class ListaColetaActivity extends ListActivity {
 	 */
 	private void excluirRegistro(final int posicao) {
 
+		tmbDAO.abrirConexao();
+		final Tombamento tombamento = tmbDAO.getTodos().get(posicao);
+		tmbDAO.fecharConexao();
+
 		AlertDialog.Builder builder;
 		builder = new AlertDialog.Builder(this);
 		builder.setIcon(android.R.drawable.ic_dialog_alert);
 		builder.setTitle("Excluir");
 		builder.setMessage("Desejar excluir o tombamento "
-				+ listaTombamento.get(posicao).getCodigo() + " ?");
+				+ tombamento.getCodigo() + " ?");
 
 		builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface dialog, final int which) {
-				Armazenamento.Externo.excluirArquivoTombamento(listaTombamento
-						.get(posicao).getCodigo());
+				tmbDAO.abrirConexao();
+				tmbDAO.deletar(tombamento.getCodigo());
+				tmbDAO.fecharConexao();
+				lca.notifyDataSetChanged();
 				dialog.dismiss();
 			}
 		});
@@ -146,7 +153,7 @@ public final class ListaColetaActivity extends ListActivity {
 		final AlertDialog dialog = builder.create();
 		dialog.setCanceledOnTouchOutside(true);
 		dialog.show();
-		lca.notifyDataSetChanged();
+
 	}
 
 }

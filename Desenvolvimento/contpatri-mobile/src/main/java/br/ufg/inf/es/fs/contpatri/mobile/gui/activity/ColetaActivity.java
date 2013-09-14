@@ -34,6 +34,7 @@ import br.ufg.inf.es.fs.contpatri.mobile.barcodescan.IntentIntegrator;
 import br.ufg.inf.es.fs.contpatri.mobile.barcodescan.IntentResult;
 import br.ufg.inf.es.fs.contpatri.mobile.controller.ColetaController;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
+import br.ufg.inf.es.fs.contpatri.mobile.tombamento.TombamentoDAO;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
 
 /**
@@ -46,9 +47,12 @@ public final class ColetaActivity extends Activity {
 
 	private ColetaController coleta;
 
-	private EditText tombamento;
+	private EditText edtCodigo;
 	private EditText sublocal;
 	private EditText observacao;
+	private EditText alteracao;
+
+	private Spinner spinner;
 
 	private String selecionado;
 
@@ -61,14 +65,14 @@ public final class ColetaActivity extends Activity {
 
 		tmb = getIntent().getParcelableExtra("tombamento");
 
-		tombamento = (EditText) findViewById(R.id.edtTombamento);
+		edtCodigo = (EditText) findViewById(R.id.edtTombamento);
 		sublocal = (EditText) findViewById(R.id.edtSubLocal);
 		observacao = (EditText) findViewById(R.id.edtObservacao);
 		final Button qrCode = (Button) findViewById(R.id.btnScanQrCode);
 
-		final EditText alteracao = (EditText) findViewById(R.id.edtUltimaAlteracao);
+		alteracao = (EditText) findViewById(R.id.edtUltimaAlteracao);
 		alteracao.setEnabled(false);
-		final Spinner spinner = (Spinner) findViewById(R.id.spnSituacao);
+		spinner = (Spinner) findViewById(R.id.spnSituacao);
 
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -91,8 +95,8 @@ public final class ColetaActivity extends Activity {
 		 */
 		if (tmb != null) {
 
-			tombamento.setText(String.valueOf(tmb.getCodigo()));
-			tombamento.setEnabled(false);
+			edtCodigo.setText(String.valueOf(tmb.getCodigo()));
+			edtCodigo.setEnabled(false);
 
 			sublocal.setText(tmb.getSublocal());
 
@@ -141,7 +145,7 @@ public final class ColetaActivity extends Activity {
 	 */
 	public void confirmar(final View view) {
 
-		final String codigo = tombamento.getText().toString();
+		final String codigo = edtCodigo.getText().toString();
 		final String sub = sublocal.getText().toString();
 		final String obs = observacao.getText().toString();
 
@@ -180,7 +184,11 @@ public final class ColetaActivity extends Activity {
 			Toast.makeText(this, "Cancelado o escaneamento", Toast.LENGTH_LONG)
 					.show();
 		} else {
+
 			long cod = 0;
+
+			final TombamentoDAO tmbDAO = new TombamentoDAO(this);
+			tmbDAO.abrirConexao();
 
 			/*
 			 * Bloco de tratamento para verificar se o QRCode utilizado, contém
@@ -190,14 +198,41 @@ public final class ColetaActivity extends Activity {
 
 				cod = Long.parseLong(i.getStringExtra("SCAN_RESULT"));
 
+				tmb = tmbDAO.localizar(cod);
+
+				if (tmb != null) {
+					recuperaDados();
+				}
+
 			} catch (final NumberFormatException e) {
 				Log.e(ColetaActivity.class.getSimpleName(), "", e);
 				Toast.makeText(this, "QRCode inválido", Toast.LENGTH_LONG)
 						.show();
+			} finally {
+				tmbDAO.fecharConexao();
 			}
 
-			tombamento.setText(String.valueOf(cod));
+			edtCodigo.setText(String.valueOf(cod));
 		}
 
 	}
+
+	private void recuperaDados() {
+
+		sublocal.setText(tmb.getSublocal());
+		observacao.setText(tmb.getObservacao());
+		alteracao.setText(String.valueOf(tmb.getUltimaAlteracao()));
+
+		final String[] arraySituacao = getResources().getStringArray(
+				R.array.nomes_array);
+
+		if (tmb.getSituacao().equals(arraySituacao[0])) {
+			spinner.setSelection(0);
+		} else if (tmb.getSituacao().equals(arraySituacao[1])) {
+			spinner.setSelection(1);
+		} else if (tmb.getSituacao().equals(arraySituacao[2])) {
+			spinner.setSelection(2);
+		}
+	}
+
 }
