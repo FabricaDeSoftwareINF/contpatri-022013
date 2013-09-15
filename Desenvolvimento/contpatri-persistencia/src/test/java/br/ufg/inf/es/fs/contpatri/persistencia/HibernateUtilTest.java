@@ -21,8 +21,6 @@ package br.ufg.inf.es.fs.contpatri.persistencia;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
@@ -37,17 +35,31 @@ public class HibernateUtilTest {
 	@Test
 	/**
 	 * Teste
-	 * @throws IOException
 	 */
-	public void testHibernateUtils() throws IOException {
+	public void testHibernateUtils() {
+		HibernateUtil util = new HibernateUtil();
 		
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = HibernateUtil.getSession();
 		
-		HibernateUtil.beginTransaction();
-		HibernateUtil.commitTransaction();
-		//HibernateUtil.rollbackTransaction();
-		HibernateUtil.closeSession();
+		try{
+			HibernateUtil.beginTransaction();
+			HibernateUtil.commitTransaction();
+		} catch(Exception e){
+			System.out.println(e.getMessage());
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		
+		try{
+			util.toString();
+			HibernateUtil.beginTransaction();
+			HibernateUtil.rollbackTransaction();
+		} catch(Exception e){
+			System.out.println(e.getMessage());
+		} finally {
+			HibernateUtil.closeSession();
+		}
 		
 		assertNotNull(sessionFactory);
 		assertNotNull(session);
