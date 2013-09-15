@@ -93,10 +93,14 @@ public class AnaliseTest {
 		Analise analise2 = new Analise(bemPermanente1, inventario2, null);
 		Analise analise3 = new Analise(bemPermanente2, inventario1, null);
 		
+		Object o = new Object();
+		
 		assertFalse(analise1.equals(analise2));
 		assertFalse(analise1.equals(analise3));
 		assertFalse(analise1.equals(null));
+		assertFalse(analise1.equals(o));
 		assertTrue(analise1.equals(analise1));
 		assertNotNull(analise.hashCode());
+		assertEquals(0, new Analise().hashCode());
 	}
 }
