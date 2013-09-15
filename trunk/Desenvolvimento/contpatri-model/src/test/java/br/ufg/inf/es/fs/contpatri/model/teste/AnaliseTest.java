@@ -95,7 +95,8 @@ public class AnaliseTest {
 		
 		assertFalse(analise1.equals(analise2));
 		assertFalse(analise1.equals(analise3));
-		assertTrue(analise.equals(analise));
+		assertFalse(analise1.equals(null));
+		assertTrue(analise1.equals(analise1));
 		assertNotNull(analise.hashCode());
 	}
 }
