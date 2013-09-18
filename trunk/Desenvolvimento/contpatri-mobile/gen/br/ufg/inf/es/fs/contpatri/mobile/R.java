@@ -67,13 +67,15 @@ public final class R {
         public static final int coletar=0x7f050001;
         public static final int confirmar=0x7f05000e;
         public static final int exibirColeta=0x7f050003;
-        public static final int informa_es_do_tombamento=0x7f050012;
+        public static final int informacoes_do_tombamento=0x7f050012;
         public static final int logar=0x7f050004;
         public static final int login=0x7f050006;
         public static final int nome_aplicativo=0x7f050000;
         public static final int observacaoHint=0x7f05000c;
         public static final int relatorio=0x7f050002;
         public static final int scanQrcode=0x7f05000d;
+        public static final int scan_cancelado=0x7f050013;
+        public static final int scan_invalido=0x7f050014;
         public static final int senha=0x7f050005;
         public static final int sincronizar=0x7f050007;
         public static final int situacao=0x7f050010;

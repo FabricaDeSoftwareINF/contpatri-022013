@@ -63,16 +63,19 @@ public final class ColetaController {
 
 		final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 		AlertDialog dialog;
+
 		builder.setTitle("Sucesso");
 		builder.setMessage("Tombamento " + tombamento.getCodigo()
 				+ " gerado com sucesso!");
 		builder.setIcon(android.R.drawable.ic_dialog_info);
+
 		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface dialog, final int which) {
 				activity.finish();
 			}
 		});
+
 		dialog = builder.create();
 		dialog.setCanceledOnTouchOutside(true);
 		dialog.show();

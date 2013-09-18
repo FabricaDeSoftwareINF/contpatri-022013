@@ -39,10 +39,10 @@ public final class ConexaoRede {
 	 * @return verdadeiro para conexão validada, caso contrário será falsa
 	 */
 	public static boolean isConnectedInternet(final Context contexto) {
-		
+
 		ConnectivityManager conectividade = (ConnectivityManager) contexto
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		
+
 		if (conectividade != null) {
 			NetworkInfo[] info = conectividade.getAllNetworkInfo();
 			if (info != null) {
@@ -53,7 +53,7 @@ public final class ConexaoRede {
 				}
 			}
 		}
-		
+
 		return false;
 	}
 

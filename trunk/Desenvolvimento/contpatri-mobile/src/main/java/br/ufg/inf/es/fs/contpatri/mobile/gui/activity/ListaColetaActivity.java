@@ -47,56 +47,6 @@ public final class ListaColetaActivity extends ListActivity {
 	private ListaColetaAdapter lca;
 	private Intent intent;
 
-	@Override
-	protected void onCreate(final Bundle args) {
-		super.onCreate(args);
-		setContentView(R.layout.activity_lista_coleta);
-		tmbDAO = new TombamentoDAO(this);
-
-		final ListView lst = getListView();
-		lst.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(final AdapterView<?> adapter,
-					final View view, final int pos, final long id) {
-				excluirRegistro(pos);
-				return true;
-			}
-		});
-
-		lca = new ListaColetaAdapter(this);
-		lst.setAdapter(lca);
-	}
-
-	@Override
-	protected void onListItemClick(final ListView lst, final View view,
-			final int posicao, final long id) {
-		super.onListItemClick(lst, view, posicao, id);
-		intent = new Intent(this, ColetaActivity.class);
-		tmbDAO.abrirConexao();
-		intent.putExtra("tombamento", tmbDAO.getTodos().get(posicao));
-		tmbDAO.fecharConexao();
-		startActivity(intent);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		lca.notifyDataSetChanged();
-	}
-
-	/**
-	 * Método que sincroniza as coletas dos ativos fixos do aplicativo, com o
-	 * WebService.
-	 * 
-	 * @param view
-	 *            view que realizou o evento de clique e chamou esse método
-	 */
-	public void sincronizar(final View view) {
-		new EnviarColeta(this).execute(new Void[0]);
-		lca.notifyDataSetChanged();
-	}
-
 	/**
 	 * Método que responde ao evento de clique e exibe o <code>Dialog</code>
 	 * para escolha de uma opção.
@@ -154,6 +104,56 @@ public final class ListaColetaActivity extends ListActivity {
 		dialog.setCanceledOnTouchOutside(true);
 		dialog.show();
 
+	}
+
+	@Override
+	protected void onCreate(final Bundle args) {
+		super.onCreate(args);
+		setContentView(R.layout.activity_lista_coleta);
+		tmbDAO = new TombamentoDAO(this);
+
+		final ListView lst = getListView();
+		lst.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(final AdapterView<?> adapter,
+					final View view, final int pos, final long id) {
+				excluirRegistro(pos);
+				return true;
+			}
+		});
+
+		lca = new ListaColetaAdapter(this);
+		lst.setAdapter(lca);
+	}
+
+	@Override
+	protected void onListItemClick(final ListView lst, final View view,
+			final int posicao, final long id) {
+		super.onListItemClick(lst, view, posicao, id);
+		intent = new Intent(this, ColetaActivity.class);
+		tmbDAO.abrirConexao();
+		intent.putExtra("tombamento", tmbDAO.getTodos().get(posicao));
+		tmbDAO.fecharConexao();
+		startActivity(intent);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		lca.notifyDataSetChanged();
+	}
+
+	/**
+	 * Método que sincroniza as coletas dos ativos fixos do aplicativo, com o
+	 * WebService.
+	 * 
+	 * @param view
+	 *            view que realizou o evento de clique e chamou esse método
+	 */
+	public void sincronizar(final View view) {
+		new EnviarColeta(this).execute(new Void[0]);
+		lca.notifyDataSetChanged();
 	}
 
 }

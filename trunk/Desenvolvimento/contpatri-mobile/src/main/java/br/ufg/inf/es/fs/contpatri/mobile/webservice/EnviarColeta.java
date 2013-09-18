@@ -53,16 +53,6 @@ public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 	}
 
 	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-		dialog.setTitle("Sincronizando...");
-		dialog.setMessage("Aguarde a sincronização");
-		dialog.setIndeterminate(false);
-		dialog.setMax(listaTombamento.size());
-		dialog.show();
-	}
-
-	@Override
 	protected Void doInBackground(final Void... params) {
 		/*
 		 * final boolean sucesso; final String mensagem;
@@ -115,15 +105,25 @@ public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 	}
 
 	@Override
-	protected void onProgressUpdate(final Integer... progresso) {
-		dialog.setProgress(progresso[0]);
-		dialog.setMessage("Enviando item " + progresso[0]);
-	}
-
-	@Override
 	protected void onPostExecute(final Void result) {
 		super.onPostExecute(result);
 		dialog.dismiss();
+	}
+
+	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		dialog.setTitle("Sincronizando...");
+		dialog.setMessage("Aguarde a sincronização");
+		dialog.setIndeterminate(false);
+		dialog.setMax(listaTombamento.size());
+		dialog.show();
+	}
+
+	@Override
+	protected void onProgressUpdate(final Integer... progresso) {
+		dialog.setProgress(progresso[0]);
+		dialog.setMessage("Enviando item " + progresso[0]);
 	}
 
 }

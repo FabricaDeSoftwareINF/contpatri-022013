@@ -32,18 +32,14 @@ import br.ufg.inf.es.fs.contpatri.mobile.tombamento.TombamentoDAO;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
 
 /**
- * Classe que adapta os dados à um layout definido na pasta res/layout para ser
- * utilizado em uma lista.
+ * Classe que adapta as informações do tombamento à um layout definido na pasta
+ * res/layout para ser utilizado em uma lista. É inflado tal layout referido
+ * para que possa ser adaptado à lista.
  * 
  * @author Rogério Tristão Junior
  * 
  */
 public final class ListaColetaAdapter extends BaseAdapter {
-
-	private List<Tombamento> lista;
-	private final TombamentoDAO tmbDAO;
-	private final LayoutInflater inflater;
-	private ViewHolder holder;
 
 	/**
 	 * Design Pattern indicado pela Google para melhorar a performance.
@@ -56,6 +52,12 @@ public final class ListaColetaAdapter extends BaseAdapter {
 		private TextView situacao;
 		private TextView alteracao;
 	}
+
+	private List<Tombamento> lista;
+	private final TombamentoDAO tmbDAO;
+	private final LayoutInflater inflater;
+
+	private ViewHolder holder;
 
 	/**
 	 * Construtor para instanciar o Adapter e inicializar as variáveis.
