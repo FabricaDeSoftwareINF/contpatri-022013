@@ -16,26 +16,36 @@
  * fornecido "da maneira que está", sem garantias ou condições de qualquer tipo,
  * nem expressas nem implícitas. Em caso de dúvidas referir a licença GNU-GPL.
  */
-package br.ufg.inf.es.fs.contpatri.mobile.nucleo;
+package br.ufg.inf.es.fs.contpatri.mobile.webservice;
 
 /**
- * Classe que centraliza informações comuns às classes.
+ * Classe que lista todos os links que o aplicativo utilizará.
  * 
  * @author Rogério Tristão Junior
  * 
  */
-public final class NucleoApp {
+public final class ListaLinks {
 
-	public static final String TIPO_HASH = "SHA-1";
+	/**
+	 * Endereço base para todas as requisições do aplicativo.
+	 */
 	public static final String URL_BASE = "http://fs.inf.ufg.br/contpatri/";
+
+	/**
+	 * Endereço para autenticação do aplicativo no WebService.
+	 */
 	public static final String URL_AUTENTICAR = URL_BASE + "autenticacao";
+
+	/**
+	 * Endereço para envio das coletas realizadas ao WebService.
+	 */
 	public static final String URL_ENVIAR_COLETA = URL_BASE
 			+ "inventario/coletas";
 
 	/**
-	 * Construtor para não instanciar a classe.
+	 * Construtor privado para não instanciar a classe.
 	 */
-	private NucleoApp() {
+	private ListaLinks() {
 
 	}
 

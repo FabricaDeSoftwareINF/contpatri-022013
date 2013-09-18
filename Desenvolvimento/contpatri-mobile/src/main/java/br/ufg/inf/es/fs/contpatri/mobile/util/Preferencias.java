@@ -22,7 +22,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import br.ufg.inf.es.fs.contpatri.mobile.nucleo.NucleoApp;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -37,12 +36,14 @@ import android.util.Log;
 public final class Preferencias {
 
 	/**
-	 * Construtor para não instanciar a classe.
+	 * Tipo de hash da senha que será usada para armazená-la.
 	 */
-	private Preferencias() {
+	public static final String TIPO_HASH = "SHA-1";
 
-	}
-
+	/**
+	 * Variável estática que referencia ao arquivo de configurações do
+	 * aplicativo.
+	 */
 	private static SharedPreferences configuracoes;
 
 	/**
@@ -81,7 +82,7 @@ public final class Preferencias {
 	 *            senha utilizado pelo usuário
 	 */
 	public static void gravarUsuario(final String login, final String senha) {
-		Editor editor = configuracoes.edit();
+		final Editor editor = configuracoes.edit();
 		if (configuracoes.getString(login, "").equals("")) {
 			editor.putString(login, mascararSenha(senha));
 			editor.commit();
@@ -101,13 +102,21 @@ public final class Preferencias {
 		MessageDigest md;
 
 		try {
-			md = MessageDigest.getInstance(NucleoApp.TIPO_HASH);
-			BigInteger hash = new BigInteger(1, md.digest(senha.getBytes()));
+			md = MessageDigest.getInstance(TIPO_HASH);
+			final BigInteger hash = new BigInteger(1, md.digest(senha
+					.getBytes()));
 			pass = hash.toString(16);
 		} catch (final NoSuchAlgorithmException e) {
 			Log.e(Preferencias.class.getSimpleName(), "", e);
 		}
 
 		return pass;
+	}
+
+	/**
+	 * Construtor para não instanciar a classe.
+	 */
+	private Preferencias() {
+
 	}
 }

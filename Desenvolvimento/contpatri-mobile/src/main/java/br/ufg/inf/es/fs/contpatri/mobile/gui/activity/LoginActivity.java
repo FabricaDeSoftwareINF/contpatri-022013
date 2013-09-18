@@ -22,13 +22,14 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import br.ufg.inf.es.fs.contpatri.mobile.R;
-import br.ufg.inf.es.fs.contpatri.mobile.gui.dialog.LoginDialog;
 import br.ufg.inf.es.fs.contpatri.mobile.util.ConexaoRede;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Preferencias;
 import br.ufg.inf.es.fs.contpatri.mobile.webservice.Autenticar;
@@ -43,27 +44,9 @@ import br.ufg.inf.es.fs.contpatri.mobile.webservice.Autenticar;
  */
 public final class LoginActivity extends Activity {
 
-	private LoginDialog loginDialog;
 	private EditText edtLogin;
 	private EditText edtSenha;
 	private Context contexto;
-
-	@Override
-	protected void onCreate(final Bundle args) {
-		super.onCreate(args);
-		setContentView(R.layout.activity_login);
-		contexto = this;
-		edtLogin = (EditText) findViewById(R.id.edt_login);
-		edtSenha = (EditText) findViewById(R.id.edt_senha);
-		Preferencias.criarConfiguracoes(this);
-		loginDialog = new LoginDialog(this);
-	}
-
-	@Override
-	protected void onPause() {
-		finish();
-		super.onPause();
-	}
 
 	/**
 	 * Método que responde ao evento do botão para autenticar as credenciais
@@ -96,8 +79,7 @@ public final class LoginActivity extends Activity {
 				 * diálogo informando o problema.
 				 */
 				if (!ConexaoRede.isConnectedInternet(this)) {
-					loginDialog
-							.mostrar("Não foi possível autenticar devido à limitação na comunicação com o servidor ou ausência da mesma.");
+					mostrarDialogo("Não foi possível autenticar devido à limitação na comunicação com o servidor ou ausência da mesma.");
 				} else {
 
 					final Autenticar autentica = new Autenticar(contexto,
@@ -119,7 +101,7 @@ public final class LoginActivity extends Activity {
 						startActivity(troca);
 						finish();
 					} else {
-						loginDialog.mostrar(iterator.next().getValue());
+						mostrarDialogo(iterator.next().getValue());
 					}
 				}
 
@@ -130,8 +112,55 @@ public final class LoginActivity extends Activity {
 			}
 
 		} else {
-			loginDialog.mostrar("Insira as credenciais!");
+			mostrarDialogo("Insira as credenciais!");
 		}
 
+	}
+
+	/**
+	 * Método que exibe um <code>Dialog</code> caso haja erro no login do
+	 * usuário no aplicativo.
+	 * 
+	 * @param mensagem
+	 *            mensagem de erro que será exibida na <code>Dialog</code> para
+	 *            informar o motivo de a aplicação não realizar o login
+	 *            corretamente
+	 */
+	private void mostrarDialogo(final String mensagem) {
+
+		AlertDialog.Builder builder;
+		builder = new AlertDialog.Builder(this);
+
+		builder.setTitle("Erro");
+		builder.setMessage(mensagem);
+		builder.setIcon(android.R.drawable.ic_dialog_alert);
+
+		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface dialog, final int which) {
+				dialog.dismiss();
+			}
+		});
+
+		final AlertDialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(true);
+		dialog.show();
+
+	}
+
+	@Override
+	protected void onCreate(final Bundle args) {
+		super.onCreate(args);
+		setContentView(R.layout.activity_login);
+		contexto = this;
+		edtLogin = (EditText) findViewById(R.id.edt_login);
+		edtSenha = (EditText) findViewById(R.id.edt_senha);
+		Preferencias.criarConfiguracoes(this);
+	}
+
+	@Override
+	protected void onPause() {
+		finish();
+		super.onPause();
 	}
 }

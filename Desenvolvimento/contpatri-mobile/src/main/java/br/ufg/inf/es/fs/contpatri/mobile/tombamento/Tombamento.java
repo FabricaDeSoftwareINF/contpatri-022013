@@ -32,51 +32,30 @@ import android.os.Parcelable;
  */
 public final class Tombamento implements Parcelable {
 
-	public static final String CODIGO = "codigo";
-	public static final String SITUACAO = "situacao";
-	public static final String SUBLOCAL = "subLocal";
-	public static final String ULTIMA_ALTERACAO = "timestamp";
-	public static final String OBSERVACAO = "observacao";
-
 	private long codigo;
 	private String situacao;
 	private String sublocal;
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (codigo ^ codigo >>> 32);
-		return result;
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final Tombamento other = (Tombamento) obj;
-		if (codigo != other.codigo) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Tombamento [codigo=" + codigo + ", situacao=" + situacao
-				+ ", sublocal=" + sublocal + ", observacao=" + observacao
-				+ ", ultimaAlteracao=" + ultimaAlteracao + "]";
-	}
-
 	private String observacao;
 	private long ultimaAlteracao;
+
+	/**
+	 * Método utilizado pela interface Parcelable para ser possível ler os dados
+	 * da classe <code>Tombamento</code> e repassar para <code>Adapter</code>,
+	 * <code>List</code> ou outras que utilizem a interface Parcelable para
+	 * comunicação ou usos afins.
+	 */
+	public static final Parcelable.Creator<Tombamento> CREATOR = new Parcelable.Creator<Tombamento>() {
+
+		@Override
+		public Tombamento createFromParcel(final Parcel source) {
+			return new Tombamento(source);
+		}
+
+		@Override
+		public Tombamento[] newArray(final int size) {
+			return new Tombamento[size];
+		}
+	};
 
 	/**
 	 * Construtor padrão.
@@ -121,53 +100,139 @@ public final class Tombamento implements Parcelable {
 		ultimaAlteracao = source.readLong();
 	}
 
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Tombamento other = (Tombamento) obj;
+		if (codigo != other.codigo) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 
+	 * @return o código do tombamento
+	 */
 	public long getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(final long codigo) {
-		this.codigo = codigo;
-	}
-
-	public long getUltimaAlteracao() {
-		return ultimaAlteracao;
-	}
-
-	public void setUltimaAlteracao() {
-		ultimaAlteracao = new Timestamp(System.currentTimeMillis()).getTime();
-	}
-
-	public void setUltimaAlteracao(final long alteracao) {
-		ultimaAlteracao = alteracao;
-	}
-
-	public String getSituacao() {
-		return situacao;
-	}
-
-	public void setSituacao(final String situacao) {
-		this.situacao = situacao;
-	}
-
-	public String getSublocal() {
-		return sublocal;
-	}
-
-	public void setSublocal(final String sublocal) {
-		this.sublocal = sublocal;
-	}
-
+	/**
+	 * 
+	 * @return a observação do tombamento
+	 */
 	public String getObservacao() {
 		return observacao;
 	}
 
+	/**
+	 * 
+	 * @return a situação do tombamento
+	 */
+	public String getSituacao() {
+		return situacao;
+	}
+
+	/**
+	 * 
+	 * @return o sublocal do tombamento
+	 */
+	public String getSublocal() {
+		return sublocal;
+	}
+
+	/**
+	 * 
+	 * @return a última alteração do tombamento
+	 */
+	public long getUltimaAlteracao() {
+		return ultimaAlteracao;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (codigo ^ codigo >>> 32);
+		return result;
+	}
+
+	/**
+	 * Atribui um código ao tombamento.
+	 * 
+	 * @param codigo
+	 *            novo código
+	 */
+	public void setCodigo(final long codigo) {
+		this.codigo = codigo;
+	}
+
+	/**
+	 * Atribui uma nova observação ao tombamento.
+	 * 
+	 * @param observacao
+	 *            nova observação
+	 */
 	public void setObservacao(final String observacao) {
 		this.observacao = observacao;
 	}
 
+	/**
+	 * Atribui uma nova situação ao tombamento.
+	 * 
+	 * @param situacao
+	 *            nova situação
+	 */
+	public void setSituacao(final String situacao) {
+		this.situacao = situacao;
+	}
+
+	/**
+	 * Atribui um novo sublocal ao tombamento.
+	 * 
+	 * @param sublocal
+	 *            novo sublocal
+	 */
+	public void setSublocal(final String sublocal) {
+		this.sublocal = sublocal;
+	}
+
+	/**
+	 * Define a última alteração do tombamento.
+	 */
+	public void setUltimaAlteracao() {
+		ultimaAlteracao = new Timestamp(System.currentTimeMillis()).getTime();
+	}
+
+	/**
+	 * Atribui a data da última alteração do tombamento.
+	 * 
+	 * @param alteracao
+	 *            nova data da última alteração
+	 */
+	public void setUltimaAlteracao(final long alteracao) {
+		ultimaAlteracao = alteracao;
+	}
+
 	@Override
-	public int describeContents() {
-		return 0;
+	public String toString() {
+		return "Tombamento [codigo=" + codigo + ", situacao=" + situacao
+				+ ", sublocal=" + sublocal + ", observacao=" + observacao
+				+ ", ultimaAlteracao=" + ultimaAlteracao + "]";
 	}
 
 	@Override
@@ -178,18 +243,5 @@ public final class Tombamento implements Parcelable {
 		paramParcel.writeString(observacao);
 		paramParcel.writeLong(ultimaAlteracao);
 	}
-
-	public static final Parcelable.Creator<Tombamento> CREATOR = new Parcelable.Creator<Tombamento>() {
-
-		@Override
-		public Tombamento createFromParcel(final Parcel source) {
-			return new Tombamento(source);
-		}
-
-		@Override
-		public Tombamento[] newArray(final int size) {
-			return new Tombamento[size];
-		}
-	};
 
 }

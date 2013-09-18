@@ -58,6 +58,91 @@ public final class ColetaActivity extends Activity {
 
 	private Tombamento tmb;
 
+	/**
+	 * Classe que confirma a ação para gravar o objeto <code>Tombamento</code>
+	 * em um arquivo <b>JSON</b>.
+	 * 
+	 * @param view
+	 *            view que realizou o evento de clique e chamou esse método
+	 */
+	public void confirmar(final View view) {
+
+		final String codigo = edtCodigo.getText().toString();
+		final String sub = sublocal.getText().toString();
+		final String obs = observacao.getText().toString();
+
+		/*
+		 * Se os campos forem nulos, inválidos, mostrará uma caixa de diálogo
+		 * informando o erro, senão gravará o objeto tombamento em um arquivo.
+		 */
+		if (codigo.length() == 0 || sub.length() == 0 || obs.length() == 0) {
+
+			AlertDialog.Builder builder;
+			builder = new AlertDialog.Builder(this);
+			builder.setIcon(android.R.drawable.ic_dialog_alert);
+			builder.setTitle("Erro");
+			builder.setMessage("É necessário preencher todos os campos!");
+			final AlertDialog dialog = builder.create();
+			dialog.setCanceledOnTouchOutside(true);
+			dialog.show();
+
+		} else {
+
+			tmb.setCodigo(Long.parseLong(codigo));
+			tmb.setSituacao(selecionado);
+			tmb.setSublocal(sub);
+			tmb.setObservacao(obs);
+			coleta = new ColetaController(this);
+			coleta.gerarColeta(tmb);
+
+		}
+
+	}
+
+	@Override
+	public void onActivityResult(final int request, final int result,
+			final Intent i) {
+
+		final IntentResult resultadoScan = IntentIntegrator
+				.parseActivityResult(request, result, i);
+
+		if (resultadoScan == null) {
+			Toast.makeText(this, R.string.scan_cancelado, Toast.LENGTH_LONG)
+					.show();
+		} else {
+
+			long cod = 0;
+
+			final TombamentoDAO tmbDAO = new TombamentoDAO(this);
+			tmbDAO.abrirConexao();
+
+			/*
+			 * Bloco de tratamento para verificar se o QRCode utilizado, contém
+			 * somente números.
+			 */
+			try {
+
+				cod = Long.parseLong(i.getStringExtra("SCAN_RESULT"));
+
+				tmb = tmbDAO.localizar(cod);
+
+				if (tmb != null) {
+					recuperaDados();
+				}
+
+			} catch (final NumberFormatException e) {
+				Log.e(ColetaActivity.class.getSimpleName(), "", e);
+				Toast.makeText(this, R.string.scan_invalido, Toast.LENGTH_LONG)
+						.show();
+			} finally {
+				tmbDAO.fecharConexao();
+			}
+
+			edtCodigo.setText(String.valueOf(cod));
+		}
+
+	}
+
 	@Override
 	protected void onCreate(final Bundle args) {
 		super.onCreate(args);
@@ -126,97 +211,9 @@ public final class ColetaActivity extends Activity {
 	}
 
 	/**
-	 * Classe que chama o aplicativo BarcodeScan para ler o QRCode.
-	 * 
-	 * @param view
-	 *            view que realizou o evento de clique e chamou esse método
+	 * Método que recupera dos dados quando é selecionado um código de
+	 * tombamento que já existe na base de dados.
 	 */
-	public void scanQRCode(final View view) {
-		final IntentIntegrator integrator = new IntentIntegrator(this);
-		integrator.initiateScan();
-	}
-
-	/**
-	 * Classe que confirma a ação para gravar o objeto <code>Tombamento</code>
-	 * em um arquivo <b>JSON</b>.
-	 * 
-	 * @param view
-	 *            view que realizou o evento de clique e chamou esse método
-	 */
-	public void confirmar(final View view) {
-
-		final String codigo = edtCodigo.getText().toString();
-		final String sub = sublocal.getText().toString();
-		final String obs = observacao.getText().toString();
-
-		/*
-		 * Se os campos forem nulos, inválidos, mostrará uma caixa de diálogo
-		 * informando o erro, senão gravará o objeto tombamento em um arquivo.
-		 */
-		if (codigo.length() == 0 || sub.length() == 0 || obs.length() == 0) {
-			AlertDialog.Builder builder;
-			builder = new AlertDialog.Builder(this);
-			builder.setIcon(android.R.drawable.ic_dialog_alert);
-			builder.setTitle("Erro");
-			builder.setMessage("É necessário preencher todos os campos!");
-			final AlertDialog dialog = builder.create();
-			dialog.setCanceledOnTouchOutside(true);
-			dialog.show();
-		} else {
-			tmb.setCodigo(Long.parseLong(codigo));
-			tmb.setSituacao(selecionado);
-			tmb.setSublocal(sub);
-			tmb.setObservacao(obs);
-			coleta = new ColetaController(this);
-			coleta.gerarColeta(tmb);
-		}
-
-	}
-
-	@Override
-	public void onActivityResult(final int request, final int result,
-			final Intent i) {
-
-		final IntentResult resultadoScan = IntentIntegrator
-				.parseActivityResult(request, result, i);
-
-		if (resultadoScan == null) {
-			Toast.makeText(this, "Cancelado o escaneamento", Toast.LENGTH_LONG)
-					.show();
-		} else {
-
-			long cod = 0;
-
-			final TombamentoDAO tmbDAO = new TombamentoDAO(this);
-			tmbDAO.abrirConexao();
-
-			/*
-			 * Bloco de tratamento para verificar se o QRCode utilizado, contém
-			 * somente números.
-			 */
-			try {
-
-				cod = Long.parseLong(i.getStringExtra("SCAN_RESULT"));
-
-				tmb = tmbDAO.localizar(cod);
-
-				if (tmb != null) {
-					recuperaDados();
-				}
-
-			} catch (final NumberFormatException e) {
-				Log.e(ColetaActivity.class.getSimpleName(), "", e);
-				Toast.makeText(this, "QRCode inválido", Toast.LENGTH_LONG)
-						.show();
-			} finally {
-				tmbDAO.fecharConexao();
-			}
-
-			edtCodigo.setText(String.valueOf(cod));
-		}
-
-	}
-
 	private void recuperaDados() {
 
 		sublocal.setText(tmb.getSublocal());
@@ -226,6 +223,9 @@ public final class ColetaActivity extends Activity {
 		final String[] arraySituacao = getResources().getStringArray(
 				R.array.nomes_array);
 
+		/*
+		 * Atribuição do spinner conforme gravado no banco de dados.
+		 */
 		if (tmb.getSituacao().equals(arraySituacao[0])) {
 			spinner.setSelection(0);
 		} else if (tmb.getSituacao().equals(arraySituacao[1])) {
@@ -233,6 +233,18 @@ public final class ColetaActivity extends Activity {
 		} else if (tmb.getSituacao().equals(arraySituacao[2])) {
 			spinner.setSelection(2);
 		}
+
+	}
+
+	/**
+	 * Classe que chama o aplicativo BarcodeScan para ler o QRCode.
+	 * 
+	 * @param view
+	 *            view que realizou o evento de clique e chamou esse método
+	 */
+	public void scanQRCode(final View view) {
+		final IntentIntegrator integrator = new IntentIntegrator(this);
+		integrator.initiateScan();
 	}
 
 }

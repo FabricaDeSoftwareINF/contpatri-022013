@@ -24,5 +24,7 @@
 	<string name="codigo">Código</string>
 	<string name="situacao">Situacao</string>
 	<string name="ultima_alteracao">Ultima Alteracao</string>
-	<string name="informa_es_do_tombamento">Informações do Tombamento</string>
+	<string name="informacoes_do_tombamento">Informações do Tombamento</string>
+	<string name="scan_cancelado">Cancelado o escaneamento</string>
+	<string name="scan_invalido">QR Code inválido</string>
 </resources>
