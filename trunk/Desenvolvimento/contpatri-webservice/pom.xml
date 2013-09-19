@@ -23,7 +23,7 @@
         <dependency>
             <groupId>br.ufg.inf.es.fs.contpatri</groupId>
             <artifactId>contpatri-model</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>br.ufg.inf.es.fs.contpatri</groupId>

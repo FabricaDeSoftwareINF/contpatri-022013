@@ -40,8 +40,7 @@ public class TombamentoJsonBuilder extends JsonBuilder<Tombamento> {
             if (nomeSubLocal != null) {
                 SubLocal subLocal = new SubLocal(nomeSubLocal);
                 System.out.println("Sublocal: " + nomeSubLocal);
-                //TODO: Remover comentário da atribuição do sublocal para o tombamento, quando o módulo de persistência for corrigido
-//                tombamento.setSubLocal(subLocal);
+                tombamento.setSubLocal(subLocal);
             }
 
             tombamentos.add(tombamento);
