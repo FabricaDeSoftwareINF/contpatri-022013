@@ -44,14 +44,16 @@ public class InventarioController {
 
     @RequestMapping(value = "/coletas", method = RequestMethod.POST)
     public void importarColetas(@RequestBody String json, HttpServletResponse response) throws IOException {
-        Tombamento tombamento = new TombamentoJsonBuilder().deJsonParaObjeto(json);
-        System.out.println(tombamento);
+        List<Tombamento> tombamentos = new TombamentoJsonBuilder().deJsonParaListaDeObjetos(json);
+        System.out.println(tombamentos);
         String retorno = "";
 
         try {
             TombamentoDAO tombamentoDAO = new TombamentoDAO();
-            tombamentoDAO.create(tombamento);
-            retorno = jsonBuilder.deObjetoParaJson(tombamento, true, "Coleta cadastrada com sucesso");
+            for (Tombamento tombamento : tombamentos) {
+                tombamentoDAO.create(tombamento);
+            }
+            retorno = jsonBuilder.deObjetoParaJson(tombamentos, true, "Coleta cadastrada com sucesso");
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception ex) {
             retorno = jsonBuilder.deObjetoParaJson(ex, "Houve um erro ao tentar exportar os inventários");
