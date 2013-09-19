@@ -57,9 +57,18 @@ public final class TombamentoDAO {
 	 * Método que realiza a abertura de uma conexão com o banco de dados.
 	 */
 	public void abrirConexao() {
-		if (conexao == null || conexao.isOpen() == false) {
+
+		if (conexao == null) {
 			conexao = BancoHelper.getInstance(contexto).getWritableDatabase();
+		} else {
+			if (conexao.isOpen() == false) {
+				conexao = BancoHelper.getInstance(contexto)
+						.getWritableDatabase();
+			} else {
+				Log.w(TombamentoDAO.class.getSimpleName(), "Conexão já ativa");
+			}
 		}
+
 	}
 
 	/**
@@ -90,6 +99,8 @@ public final class TombamentoDAO {
 	public void fecharConexao() {
 		if (conexao.isOpen()) {
 			conexao.close();
+		} else {
+			Log.w(TombamentoDAO.class.getSimpleName(), "Conexão já fechada");
 		}
 	}
 
