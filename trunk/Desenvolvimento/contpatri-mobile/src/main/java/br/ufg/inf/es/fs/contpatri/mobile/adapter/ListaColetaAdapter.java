@@ -42,7 +42,8 @@ import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
 public final class ListaColetaAdapter extends BaseAdapter {
 
 	/**
-	 * Design Pattern indicado pela Google para melhorar a performance.
+	 * Design Pattern indicado pela Google para melhorar a performance na
+	 * visualização de uma lista.
 	 * 
 	 * @author Rogério Tristão Junior
 	 * 
@@ -53,14 +54,16 @@ public final class ListaColetaAdapter extends BaseAdapter {
 		private TextView alteracao;
 	}
 
-	private List<Tombamento> lista;
 	private final TombamentoDAO tmbDAO;
 	private final LayoutInflater inflater;
+	private List<Tombamento> lista;
 
 	private ViewHolder holder;
 
 	/**
-	 * Construtor para instanciar o Adapter e inicializar as variáveis.
+	 * Construtor para instanciar o <code>Adapter</code> e inicializar as
+	 * variáveis necessárias para inflar o layout com os dados vindos do banco
+	 * de dados ou outra fonte emissora de informações.
 	 * 
 	 * @param contexto
 	 *            contexto usado para inicializar o redimensionador de layouts (
@@ -85,11 +88,6 @@ public final class ListaColetaAdapter extends BaseAdapter {
 		lista = tmbDAO.getTodos();
 		tmbDAO.fecharConexao();
 		return lista.get(paramInt);
-	}
-
-	@Override
-	public long getItemId(final int id) {
-		return id;
 	}
 
 	@Override
@@ -132,10 +130,19 @@ public final class ListaColetaAdapter extends BaseAdapter {
 
 	@Override
 	public void notifyDataSetChanged() {
+		/*
+		 * Esse método foi sobreescrito para recarregar a lista de forma mais
+		 * simplificada quando há alterações na lista de dados.
+		 */
 		tmbDAO.abrirConexao();
 		lista = tmbDAO.getTodos();
 		tmbDAO.fecharConexao();
 		super.notifyDataSetChanged();
+	}
+
+	@Override
+	public long getItemId(final int id) {
+		return id;
 	}
 
 }
