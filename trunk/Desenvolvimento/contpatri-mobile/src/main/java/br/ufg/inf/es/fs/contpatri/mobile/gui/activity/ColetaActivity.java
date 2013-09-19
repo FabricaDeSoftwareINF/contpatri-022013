@@ -18,12 +18,15 @@
  */
 package br.ufg.inf.es.fs.contpatri.mobile.gui.activity;
 
+import java.util.Map.Entry;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +37,6 @@ import br.ufg.inf.es.fs.contpatri.mobile.barcodescan.IntentIntegrator;
 import br.ufg.inf.es.fs.contpatri.mobile.barcodescan.IntentResult;
 import br.ufg.inf.es.fs.contpatri.mobile.controller.ColetaController;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
-import br.ufg.inf.es.fs.contpatri.mobile.tombamento.TombamentoDAO;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
 
 /**
@@ -111,34 +113,26 @@ public final class ColetaActivity extends Activity {
 					.show();
 		} else {
 
-			long cod = 0;
-
-			final TombamentoDAO tmbDAO = new TombamentoDAO(this);
-			tmbDAO.abrirConexao();
+			Entry<Boolean, Tombamento> valores = coleta
+					.verificaResultadoScan(this, i).entrySet().iterator()
+					.next();
+			tmb = valores.getValue();
 
 			/*
-			 * Bloco de tratamento para verificar se o QRCode utilizado, contém
-			 * somente números.
+			 * Se for verdadeiro, irá recuperar os dados do mesmo, caso
+			 * contrário irá inserir um novo registro (se o objeto tombamento
+			 * vier com o códig), caso contrário é um QRCode inválido.
 			 */
-			try {
-
-				cod = Long.parseLong(i.getStringExtra("SCAN_RESULT"));
-
-				tmb = tmbDAO.localizar(cod);
-
-				if (tmb != null) {
-					recuperaDados();
+			if (valores.getKey()) {
+				recuperaDados();
+			} else {
+				if (tmb == null) {
+					edtCodigo.setText(String.valueOf(0));
+				} else {
+					edtCodigo.setText(String.valueOf(tmb.getCodigo()));
 				}
 
-			} catch (final NumberFormatException e) {
-				Log.e(ColetaActivity.class.getSimpleName(), "", e);
-				Toast.makeText(this, R.string.scan_invalido, Toast.LENGTH_LONG)
-						.show();
-			} finally {
-				tmbDAO.fecharConexao();
 			}
-
-			edtCodigo.setText(String.valueOf(cod));
 		}
 
 	}
@@ -216,6 +210,7 @@ public final class ColetaActivity extends Activity {
 	 */
 	private void recuperaDados() {
 
+		edtCodigo.setText(String.valueOf(tmb.getCodigo()));
 		sublocal.setText(tmb.getSublocal());
 		observacao.setText(tmb.getObservacao());
 		alteracao.setText(String.valueOf(tmb.getUltimaAlteracao()));
@@ -245,6 +240,17 @@ public final class ColetaActivity extends Activity {
 	public void scanQRCode(final View view) {
 		final IntentIntegrator integrator = new IntentIntegrator(this);
 		integrator.initiateScan();
+	}
+
+	@Override
+	public void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		/*
+		 * Útil para uma melhor visualização do background em alguns
+		 * dispositivos.
+		 */
+		Window window = getWindow();
+		window.setFormat(PixelFormat.RGBA_8888);
 	}
 
 }

@@ -18,9 +18,18 @@
  */
 package br.ufg.inf.es.fs.contpatri.mobile.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
+import br.ufg.inf.es.fs.contpatri.mobile.R;
+import br.ufg.inf.es.fs.contpatri.mobile.gui.activity.ColetaActivity;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.TombamentoDAO;
 
@@ -79,6 +88,65 @@ public final class ColetaController {
 		dialog = builder.create();
 		dialog.setCanceledOnTouchOutside(true);
 		dialog.show();
+
+	}
+
+	/**
+	 * Método que verifica o resultado do scan do QRCode. Os possíveis
+	 * resultados são: <code>true</code> e não nulo para registro existente na
+	 * base de dados, <code>false</code> e não nulo para registro não existente
+	 * na base de dados e <code>false</code> e nulo para código inválido.
+	 * 
+	 * @param contexto
+	 *            contexto utilizado para instanciar a classe
+	 *            <code>TombamentoDAO</code> e <code>Toast</code>
+	 * @param i
+	 *            intent que pegará o resultado do processamento do QRCode.
+	 * @return retornará um <code>Map</code> onde, a chave é um booleano e
+	 *         indica se tem ou não registro na base, e o valor indica se existe
+	 *         ou foi criado com sucesso o registro com base no QRCode.
+	 */
+	public Map<Boolean, Tombamento> verificaResultadoScan(
+			final Context contexto, final Intent i) {
+
+		final Map<Boolean, Tombamento> verificador = new HashMap<Boolean, Tombamento>();
+		verificador.put(false, null);
+		long codigo;
+
+		final TombamentoDAO tmbDAO = new TombamentoDAO(contexto);
+		tmbDAO.abrirConexao();
+
+		/*
+		 * Bloco de tratamento para verificar se o QRCode utilizado, contém
+		 * somente números.
+		 */
+		try {
+
+			codigo = Long.parseLong(i.getStringExtra("SCAN_RESULT"));
+			Tombamento tmb = tmbDAO.localizar(codigo);
+
+			verificador.put(true, tmb);
+
+			/*
+			 * Se o resultado da localização for nulo, irá instanciar a variável
+			 * tmb para que seja criado um novo objeto com base no código do
+			 * QRCode.
+			 */
+			if (tmb == null) {
+				tmb = new Tombamento();
+				tmb.setCodigo(codigo);
+				verificador.put(false, tmb);
+			}
+
+		} catch (final NumberFormatException e) {
+			Log.e(ColetaActivity.class.getSimpleName(), "", e);
+			Toast.makeText(contexto, R.string.scan_invalido, Toast.LENGTH_LONG)
+					.show();
+		} finally {
+			tmbDAO.fecharConexao();
+		}
+
+		return verificador;
 
 	}
 
