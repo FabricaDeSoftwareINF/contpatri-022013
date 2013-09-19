@@ -22,9 +22,14 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
@@ -55,9 +60,6 @@ public final class ListaColetaActivity extends ListActivity {
 	 *            view que realizou o evento de clique e chamou esse método
 	 */
 	public void coletar(final View view) {
-		tmbDAO.abrirConexao();
-		Log.i("TESTE", tmbDAO.getTodosJson());
-		tmbDAO.fecharConexao();
 		intent = new Intent(this, ColetaActivity.class);
 		startActivity(intent);
 	}
@@ -140,8 +142,8 @@ public final class ListaColetaActivity extends ListActivity {
 
 	@Override
 	protected void onResume() {
-		super.onResume();
 		lca.notifyDataSetChanged();
+		super.onResume();
 	}
 
 	/**
@@ -155,5 +157,39 @@ public final class ListaColetaActivity extends ListActivity {
 		new EnviarColeta(this).execute(new Void[0]);
 		lca.notifyDataSetChanged();
 	}
+	
+	@Override
+	public void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		/*
+		 * Útil para uma melhor visualização do background em alguns
+		 * dispositivos.
+		 */
+		Window window = getWindow();
+		window.setFormat(PixelFormat.RGBA_8888);
+	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_lista_coleta, menu);
+        return true;
+    }
+     
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item){
+        switch (item.getItemId()) {
+        case R.id.menu_ajuda:
+            return true;
+        case R.id.menu_sobre:
+            return true;
+        case R.id.menu_inf:
+        	intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.inf.ufg.br/"));
+        	startActivity(intent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }   
 
 }

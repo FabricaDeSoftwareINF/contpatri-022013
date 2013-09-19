@@ -183,9 +183,33 @@ public final class TombamentoDAO {
 			conexao.insert(BancoHelper.TABELA_TOMBAMENTO, null, valores);
 
 		} else {
-			Log.w(TombamentoDAO.class.getSimpleName(),
-					"O registro já está no banco de dados");
+			alterar(tombamento);
 		}
+
+	}
+
+	/**
+	 * Método que realiza a alteração de um tombamento já existente na base de
+	 * dados. A alteração é feita utilizando o código do tombamento como
+	 * referência.
+	 * 
+	 * @param tombamento
+	 *            novo registro do tombamento que será alterado na base de dados
+	 */
+	public void alterar(final Tombamento tombamento) {
+
+		final ContentValues valores = new ContentValues();
+
+		valores.put(BancoHelper.TOMBAMENTO_OBSERVACAO,
+				tombamento.getObservacao());
+		valores.put(BancoHelper.TOMBAMENTO_SITUACAO, tombamento.getSituacao());
+		valores.put(BancoHelper.TOMBAMENTO_SUBLOCAL, tombamento.getSublocal());
+		valores.put(BancoHelper.TOMBAMENTO_ALTERACAO,
+				tombamento.getUltimaAlteracao());
+
+		conexao.update(BancoHelper.TABELA_TOMBAMENTO, valores,
+				BancoHelper.TOMBAMENTO_CODIGO + "=" + tombamento.getCodigo(),
+				null);
 
 	}
 
