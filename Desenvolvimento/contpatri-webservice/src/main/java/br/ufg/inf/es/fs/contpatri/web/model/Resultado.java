@@ -1,4 +1,4 @@
-package br.ufg.inf.es.fs.contpatri.web.model.autenticacao;
+package br.ufg.inf.es.fs.contpatri.web.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,34 @@ import java.util.Map;
 public class Resultado {
     private Boolean sucesso;
     private String mensagem;
+    private Integer status;
     private Map<String, Object> dados = new HashMap<String, Object>();
+
+    public Resultado() {
+    }
+
+    public Resultado(Boolean sucesso, String mensagem, Integer status) {
+        this(sucesso, mensagem, status, null);
+    }
+
+    public Resultado(Boolean sucesso, String mensagem, Integer status, Map<String, Object> dados) {
+        setSucesso(sucesso);
+        setMensagem(mensagem);
+        setStatus(status);
+        if (dados != null) {
+            for (Map.Entry<String, Object> dado : dados.entrySet()) {
+                setDado(dado.getKey(), dado.getValue());
+            }
+        }
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public Boolean getSucesso() {
         return sucesso;
