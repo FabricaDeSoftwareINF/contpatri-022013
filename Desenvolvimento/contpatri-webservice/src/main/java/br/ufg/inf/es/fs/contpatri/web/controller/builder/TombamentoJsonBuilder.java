@@ -1,9 +1,11 @@
 package br.ufg.inf.es.fs.contpatri.web.controller.builder;
 
+import br.ufg.inf.es.fs.contpatri.model.SubLocal;
 import br.ufg.inf.es.fs.contpatri.model.TipoTombamento;
 import br.ufg.inf.es.fs.contpatri.model.Tombamento;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
@@ -29,10 +31,20 @@ public class TombamentoJsonBuilder extends JsonBuilder<Tombamento> {
         List<Tombamento> tombamentos = new ArrayList<Tombamento>();
         Iterator iterator = array.iterator();
         while (iterator.hasNext()) {
-            JsonElement jsonElement = (JsonElement)iterator.next();
-            String codTombamento = jsonElement.getAsJsonObject().get("codigo").getAsString();
-            Date dataTombamento = new Date(jsonElement.getAsJsonObject().get("ultimaAlteracao").getAsLong());
-            tombamentos.add(new Tombamento(codTombamento, dataTombamento, TipoTombamento.INTERNO));
+            JsonObject jsonElement = ((JsonElement) iterator.next()).getAsJsonObject();
+            String codTombamento = jsonElement.get("codigo").getAsString();
+            Date dataTombamento = new Date(jsonElement.get("ultimaAlteracao").getAsLong());
+            Tombamento tombamento = new Tombamento(codTombamento, dataTombamento, TipoTombamento.INTERNO);
+
+            String nomeSubLocal = jsonElement.get("sublocal").getAsString();
+            if (nomeSubLocal != null) {
+                SubLocal subLocal = new SubLocal(nomeSubLocal);
+                System.out.println("Sublocal: " + nomeSubLocal);
+                //TODO: Remover comentário da atribuição do sublocal para o tombamento, quando o módulo de persistência for corrigido
+//                tombamento.setSubLocal(subLocal);
+            }
+
+            tombamentos.add(tombamento);
         }
 
         return tombamentos;
