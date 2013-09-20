@@ -1,13 +1,19 @@
 package br.ufg.inf.es.fs.contpatri.mobile.tombamento;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class TesteTombamento extends TestCase {
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class TesteTombamento {
 
 	private Tombamento tombamento;
 
-	@Override
-	public void setUp() {
+	@Before
+	public void setUp() throws Exception {
 		tombamento = new Tombamento();
 		tombamento.setUltimaAlteracao();
 		tombamento.setCodigo(12345);
@@ -16,6 +22,12 @@ public class TesteTombamento extends TestCase {
 		tombamento.setSublocal("SubLocal Teste");
 	}
 
+	@After
+	public void tearDown() throws Exception {
+		tombamento = null;
+	}
+
+	@Test
 	public void testEqualsObject() {
 
 		final Tombamento tombamento_teste_1 = new Tombamento();
@@ -23,25 +35,28 @@ public class TesteTombamento extends TestCase {
 		final Tombamento tombamento_teste_3 = new Tombamento();
 		tombamento_teste_3.setCodigo(1234);
 
-		assertFalse("Teste equals - 1/6", tombamento.equals(tombamento_teste_1));
-		assertTrue("Teste equals - 2/6", tombamento.equals(tombamento));
+		assertFalse("Esperado false", tombamento.equals(tombamento_teste_1));
+		assertTrue("Esperado true", tombamento.equals(tombamento));
 
-		assertFalse("Teste equals - 3/6", tombamento.equals(null));
-		assertFalse("Teste equals - 4/6", tombamento.equals(tombamento_teste_2));
+		assertFalse("Esperado false", tombamento.equals(null));
+		assertFalse("Esperado false", tombamento.equals(tombamento_teste_2));
 
-		assertFalse("Teste equals - 5/6", tombamento.equals(new String()));
-		assertFalse("Teste equals - 6/6", tombamento.equals(tombamento_teste_3));
+		assertFalse("Esperado false", tombamento.equals(new String()));
+		assertFalse("Esperado false", tombamento.equals(tombamento_teste_3));
 
 	}
 
-	public void testTombamentoConstructor2() {
+	@Test
+	public void testTombamentoConstructor() {
 		final Tombamento tombamento_teste_1 = new Tombamento(123, "Localizado",
 				"SubLocalTeste", "ObservaçãoTeste");
-		assertEquals("Teste construtor - 1/4", tombamento_teste_1.getCodigo(),
-				123);
-		assertEquals(tombamento_teste_1.getSituacao(), "Localizado");
-		assertEquals(tombamento_teste_1.getSublocal(), "SubLocalTeste");
-		assertEquals(tombamento_teste_1.getObservacao(), "ObservaçãoTeste");
-
+		assertEquals("Esperado 123", tombamento_teste_1.getCodigo(), 123);
+		assertEquals("Localizado", tombamento_teste_1.getSituacao(),
+				"Localizado");
+		assertEquals("SubLocalTeste", tombamento_teste_1.getSublocal(),
+				"SubLocalTeste");
+		assertEquals("ObservaçãoTeste", tombamento_teste_1.getObservacao(),
+				"ObservaçãoTeste");
 	}
+
 }

@@ -48,9 +48,27 @@ public final class TombamentoDAO {
 	 * @param context
 	 *            <code>Context</code> utilizado para realizar a conexão com o
 	 *            banco de dados.
+	 * @throws Exception
+	 *             exceção lançada caso o contexto utilizado como parâmetro,
+	 *             seja nulo
 	 */
-	public TombamentoDAO(final Context context) {
-		contexto = context;
+	public TombamentoDAO(final Context context) throws Exception {
+		if (context == null) {
+			throw new Exception(
+					"É necessário um contexto para iniciar o banco de dados");
+		} else {
+			contexto = context;
+		}
+	}
+
+	/**
+	 * Método que retorna a conexão utilizada com o banco de dados, caso não
+	 * haja conexão, retornará nulo ou um objeto sem conectividade com o banco.
+	 * 
+	 * @return retorna <code>SQLiteDatabase</code>
+	 */
+	public SQLiteDatabase getConexao() {
+		return conexao;
 	}
 
 	/**

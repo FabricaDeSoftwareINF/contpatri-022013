@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -112,7 +113,12 @@ public final class ListaColetaActivity extends ListActivity {
 	protected void onCreate(final Bundle args) {
 		super.onCreate(args);
 		setContentView(R.layout.activity_lista_coleta);
-		tmbDAO = new TombamentoDAO(this);
+
+		try {
+			tmbDAO = new TombamentoDAO(this);
+		} catch (final Exception e) {
+			Log.e(ListaColetaActivity.class.getSimpleName(), "", e);
+		}
 
 		final ListView lst = getListView();
 		lst.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -157,7 +163,7 @@ public final class ListaColetaActivity extends ListActivity {
 		new EnviarColeta(this).execute(new Void[0]);
 		lca.notifyDataSetChanged();
 	}
-	
+
 	@Override
 	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
@@ -165,31 +171,32 @@ public final class ListaColetaActivity extends ListActivity {
 		 * Útil para uma melhor visualização do background em alguns
 		 * dispositivos.
 		 */
-		Window window = getWindow();
+		final Window window = getWindow();
 		window.setFormat(PixelFormat.RGBA_8888);
 	}
-	
+
 	@Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_lista_coleta, menu);
-        return true;
-    }
-     
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item){
-        switch (item.getItemId()) {
-        case R.id.menu_ajuda:
-            return true;
-        case R.id.menu_sobre:
-            return true;
-        case R.id.menu_inf:
-        	intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.inf.ufg.br/"));
-        	startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }   
+	public boolean onCreateOptionsMenu(final Menu menu) {
+		final MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.menu_lista_coleta, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_ajuda:
+			return true;
+		case R.id.menu_sobre:
+			return true;
+		case R.id.menu_inf:
+			intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("http://www.inf.ufg.br/"));
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 
 }

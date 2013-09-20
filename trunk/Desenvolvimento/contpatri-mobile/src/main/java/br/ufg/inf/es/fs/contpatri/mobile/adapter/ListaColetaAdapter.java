@@ -21,6 +21,7 @@ package br.ufg.inf.es.fs.contpatri.mobile.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,8 +55,8 @@ public final class ListaColetaAdapter extends BaseAdapter {
 		private TextView alteracao;
 	}
 
-	private final TombamentoDAO tmbDAO;
 	private final LayoutInflater inflater;
+	private TombamentoDAO tmbDAO;
 	private List<Tombamento> lista;
 
 	private ViewHolder holder;
@@ -71,7 +72,11 @@ public final class ListaColetaAdapter extends BaseAdapter {
 	 */
 	public ListaColetaAdapter(final Context contexto) {
 		inflater = LayoutInflater.from(contexto);
-		tmbDAO = new TombamentoDAO(contexto);
+		try {
+			tmbDAO = new TombamentoDAO(contexto);
+		} catch (final Exception e) {
+			Log.e(ListaColetaAdapter.class.getSimpleName(), "", e);
+		}
 	}
 
 	@Override
