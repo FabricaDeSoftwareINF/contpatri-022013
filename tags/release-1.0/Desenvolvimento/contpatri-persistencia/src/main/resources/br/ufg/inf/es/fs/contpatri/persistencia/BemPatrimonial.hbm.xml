@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="br.ufg.inf.es.fs.contpatri.model.BemPatrimonial" table="BemPatrimonial" >
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="codigoSicop" type="java.lang.Long" lazy="false">
+            <column name="codigoSicop" not-null="true" />
+        </property>
+        <property name="descricao" type="string" lazy="false">
+            <column name="descricao" length="45" not-null="true" />
+        </property>
+        <property name="dataAquisicao" type="timestamp">
+            <column length="19" name="dataAquisicao"/>
+        </property>
+        <many-to-one class="br.ufg.inf.es.fs.contpatri.model.Inventario" fetch="select" name="inventario">
+            <column name="idInventario" />
+        </many-to-one>
+        <many-to-one class="br.ufg.inf.es.fs.contpatri.model.Origem" fetch="select" name="origem">
+            <column name="idOrigem" />
+        </many-to-one>
+        <many-to-one class="br.ufg.inf.es.fs.contpatri.model.Tombamento" fetch="select" name="tombamento">
+            <column name="idTombamento"/>
+        </many-to-one>
+        <many-to-one class="br.ufg.inf.es.fs.contpatri.model.SubLocal" fetch="select" name="subLocal">
+            <column name="idSubLocal"/>
+        </many-to-one>
+        <one-to-one  class="br.ufg.inf.es.fs.contpatri.model.Analise" name="analise"
+                     cascade="save-update">
+        </one-to-one>
+        <one-to-one  class="br.ufg.inf.es.fs.contpatri.model.Coleta" name="coleta"
+                     cascade="save-update">
+        </one-to-one>
+    </class>
+</hibernate-mapping>

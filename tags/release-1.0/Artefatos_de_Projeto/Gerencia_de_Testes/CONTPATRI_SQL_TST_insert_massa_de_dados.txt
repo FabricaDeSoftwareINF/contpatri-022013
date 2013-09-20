@@ -1,0 +1,28 @@
+INSERT INTO `contpatri`.`Agente` (`id`, `nome`, `matricula`, `email`, `senha`) VALUES (1, 'Agente Teste', '1203685', 'agenteteste@email.com', '12345');
+INSERT INTO `contpatri`.`Agente` (`id`, `nome`, `matricula`, `email`, `senha`) VALUES (2, 'Segundo agente teste', '1203686', 'segundo@email.com', '54321');
+INSERT INTO `contpatri`.`Gestor` (`id`, `nome`, `matricula`, `email`, `senha`) VALUES (2, 'Raul', '108', 'rmbarca@gmail.com', '123');
+INSERT INTO `contpatri`.`SubLocal` (`id`, `nome`) VALUES (1, 'Sala 154');
+INSERT INTO `contpatri`.`SubLocal` (`id`, `nome`) VALUES (2, 'Sala 155');
+INSERT INTO `contpatri`.`SubLocal` (`id`, `nome`) VALUES (3, 'Sala 159');
+INSERT INTO `contpatri`.`Origem` (`id`, `resumo`, `detalhe`) VALUES (1, 'INF', 'Sala 154');
+INSERT INTO `contpatri`.`Origem` (`id`, `resumo`, `detalhe`) VALUES (2, 'INF', 'Sala 155');
+INSERT INTO `contpatri`.`Inventario` (`id`, `dataEmissao`, `dataFechamento`, `idGestor`) VALUES (1, '2013-08-29', '2013-09-13', 1);
+INSERT INTO `contpatri`.`Tombamento` (`id`, `codTombamento`, `dataTombamento`) VALUES (1, '324506', '2011-03-14');
+INSERT INTO `contpatri`.`Tombamento` (`id`, `codTombamento`, `dataTombamento`) VALUES (2, '338117', '2011-03-14');
+INSERT INTO `contpatri`.`Tombamento` (`id`, `codTombamento`, `dataTombamento`) VALUES (3, '338122', '2011-03-14 00:00:00');
+INSERT INTO `contpatri`.`Tombamento` (`id`, `codTombamento`, `dataTombamento`) VALUES (4, '338141', '2011-03-14 00:00:00');
+INSERT INTO `contpatri`.`Tombamento` (`id`, `codTombamento`, `dataTombamento`) VALUES (5, '338142', '2011-03-14 00:00:00');
+INSERT INTO `contpatri`.`Tombamento` (`id`, `codTombamento`, `dataTombamento`) VALUES (6, '338144', '2011-03-14 00:00:00');
+INSERT INTO `contpatri`.`Tombamento` (`id`, `codTombamento`, `dataTombamento`) VALUES (7, '338145', '2011-03-14 00:00:00');
+INSERT INTO `contpatri`.`Tombamento` (`id`, `codTombamento`, `dataTombamento`) VALUES (8, '338146', '2011-03-14 00:00:00');
+INSERT INTO `contpatri`.`Tombamento` (`id`, `codTombamento`, `dataTombamento`) VALUES (9, '338147', '2011-03-14 00:00:00');
+INSERT INTO `contpatri`.`Tombamento` (`id`, `codTombamento`, `dataTombamento`) VALUES (10, '338148', '2011-03-14 00:00:00');
+INSERT INTO `contpatri`.`Tombamento` (`id`, `codTombamento`, `dataTombamento`) VALUES (11, '338149', '2011-03-14 00:00:00');
+INSERT INTO `contpatri`.`Tombamento` (`id`, `codTombamento`, `dataTombamento`) VALUES (12, '338150', '2011-03-14 00:00:00');
+INSERT INTO `contpatri`.`BemPatrimonial` (`id`, `codigoSicop`, `descricao`, `dataAquisicao`, `idInventario`, `idOrigem`, `idTombamento`, `idSubLocal`) VALUES (1, 1, 'Computador', '2012-12-30', 1, 1, 1, 1);
+INSERT INTO `contpatri`.`BemPatrimonial` (`id`, `codigoSicop`, `descricao`, `dataAquisicao`, `idInventario`, `idOrigem`, `idTombamento`, `idSubLocal`) VALUES (2, 2, 'Gabinete', '2011-02-01', 1, 1, 2, 1);
+INSERT INTO `contpatri`.`Coleta` (`idBemPatrimonial`, `idInventario`, `tipoSituacaoColeta`) VALUES (1, 1, 'REALOCADO');
+INSERT INTO `contpatri`.`Coleta` (`idBemPatrimonial`, `idInventario`, `tipoSituacaoColeta`) VALUES (2, 1, 'LOCALIZADO');
+INSERT INTO `contpatri`.`Analise` (`idBemPatrimonial`, `idInventario`, `tipoSituacaoAnalise`) VALUES (1, 1, 'REALOCADO');
+INSERT INTO `contpatri`.`Analise` (`idBemPatrimonial`, `idInventario`, `tipoSituacaoAnalise`) VALUES (2, 1, 'LOCALIZADO');
+

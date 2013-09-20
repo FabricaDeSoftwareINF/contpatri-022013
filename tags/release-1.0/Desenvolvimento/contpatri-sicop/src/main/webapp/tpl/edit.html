@@ -1,0 +1,30 @@
+<h2 ng-show="inventario.id">Editar Inventario</h2>
+<h2 ng-hide="inventario.id">Novo Inventario</h2>
+
+<form name="myForm">
+  <div class="control-group" ng-class="{error: myForm.name.$invalid}">
+    <label>Nome</label>
+    <input type="text" name="name" ng-model="inventario.name" required>
+    <span ng-show="myForm.name.$error.required" class="help-inline">
+        Requerido</span>
+  </div>
+ 
+  <div class="control-group" ng-class="{error: myForm.url.$invalid}">
+    <label>URL</label>
+    <input type="url" name="url" ng-model="inventario.url" required>
+    <span ng-show="myForm.url.$error.required" class="help-inline">
+        Requerido</span>
+    <span ng-show="myForm.url.$error.url" class="help-inline">
+        N�o URL</span>
+  </div>
+ 
+  <label>Descrição</label>
+  <textarea name="description" ng-model="inventario.description"></textarea>
+ 
+  <br>
+  <a href="#/" class="btn">Cancelar</a>
+  <button ng-click="save()" ng-disabled="isClean() || myForm.$invalid"
+          class="btn btn-primary">Salvar</button>
+  <button ng-click="destroy()"
+          ng-show="inventario.id" class="btn btn-danger">Deletar</button>
+</form>
