@@ -144,6 +144,8 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 		} catch (final JSONException e) {
 			Log.e(Autenticar.class.getSimpleName(), "", e);
 		}
+		
+		sucesso = true;
 
 		return null;
 	}
@@ -173,7 +175,7 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 	protected void onPreExecute() {
 		super.onPreExecute();
 		dialog.setTitle("Autenticando...");
-		dialog.setMessage("Realizando login com " + usuario);
+		dialog.setMessage("Realizando login com " + usuario.getLogin());
 		dialog.setIndeterminate(true);
 		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		dialog.setCancelable(false);

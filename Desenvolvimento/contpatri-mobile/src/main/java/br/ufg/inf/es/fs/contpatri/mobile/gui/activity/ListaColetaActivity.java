@@ -53,6 +53,7 @@ public final class ListaColetaActivity extends ListActivity {
 	private TombamentoDAO tmbDAO;
 	private ListaColetaAdapter lca;
 	private Intent intent;
+	private ListView lst;
 
 	/**
 	 * Método que responde ao evento de clique e exibe o <code>Dialog</code>
@@ -121,7 +122,7 @@ public final class ListaColetaActivity extends ListActivity {
 			Log.e(ListaColetaActivity.class.getSimpleName(), "", e);
 		}
 
-		final ListView lst = getListView();
+		lst = getListView();
 		lst.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
@@ -150,6 +151,7 @@ public final class ListaColetaActivity extends ListActivity {
 	@Override
 	protected void onResume() {
 		lca.notifyDataSetChanged();
+		lst.setAdapter(lca);
 		super.onResume();
 	}
 

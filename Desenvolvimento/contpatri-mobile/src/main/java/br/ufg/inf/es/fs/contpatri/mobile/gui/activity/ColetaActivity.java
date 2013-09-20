@@ -69,7 +69,7 @@ public final class ColetaActivity extends Activity {
 	 */
 	public void confirmar(final View view) {
 
-		final String codigo = edtCodigo.getText().toString();
+		final long codigo = Long.parseLong(edtCodigo.getText().toString());
 		final String sub = sublocal.getText().toString();
 		final String obs = observacao.getText().toString();
 
@@ -77,20 +77,20 @@ public final class ColetaActivity extends Activity {
 		 * Se os campos forem nulos, inválidos, mostrará uma caixa de diálogo
 		 * informando o erro, senão gravará o objeto tombamento em um arquivo.
 		 */
-		if (codigo.length() == 0 || sub.length() == 0 || obs.length() == 0) {
+		if (sub.length() == 0 || obs.length() == 0 || codigo <= 0) {
 
 			AlertDialog.Builder builder;
 			builder = new AlertDialog.Builder(this);
 			builder.setIcon(android.R.drawable.ic_dialog_alert);
 			builder.setTitle("Erro");
-			builder.setMessage("É necessário preencher todos os campos!");
+			builder.setMessage("Há campos vazios ou com valores errados!");
 			final AlertDialog dialog = builder.create();
 			dialog.setCanceledOnTouchOutside(true);
 			dialog.show();
 
 		} else {
 
-			tmb.setCodigo(Long.parseLong(codigo));
+			tmb.setCodigo(codigo);
 			tmb.setSituacao(selecionado);
 			tmb.setSublocal(sub);
 			tmb.setObservacao(obs);
