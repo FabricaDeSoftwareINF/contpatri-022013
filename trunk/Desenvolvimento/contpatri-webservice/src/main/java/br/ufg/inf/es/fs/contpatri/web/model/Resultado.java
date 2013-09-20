@@ -40,6 +40,10 @@ public class Resultado {
         this.status = status;
     }
 
+    public Boolean isSucesso() {
+        return getSucesso();
+    }
+
     public Boolean getSucesso() {
         return sucesso;
     }

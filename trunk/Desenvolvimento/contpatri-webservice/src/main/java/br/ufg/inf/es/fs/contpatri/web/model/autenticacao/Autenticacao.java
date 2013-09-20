@@ -9,6 +9,14 @@ public class Autenticacao {
     private String login;
     private String senha;
 
+    public Autenticacao() {
+    }
+
+    public Autenticacao(String login, String senha) {
+        this.login = login;
+        this.senha = senha;
+    }
+
     public String getSenha() {
         return senha;
     }

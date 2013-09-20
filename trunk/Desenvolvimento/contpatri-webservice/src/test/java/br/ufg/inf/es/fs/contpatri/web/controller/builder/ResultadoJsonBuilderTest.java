@@ -1,4 +1,4 @@
-package br.ufg.inf.es.fs.contpatri.web.controller.inventario;
+package br.ufg.inf.es.fs.contpatri.web.controller.builder;
 
 import br.ufg.inf.es.fs.contpatri.model.Gestor;
 import br.ufg.inf.es.fs.contpatri.model.Inventario;
