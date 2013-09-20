@@ -27,7 +27,7 @@ class DBunitTest extends DatabaseTestCase {
 	private IDatabaseConnection conn;
 	private IDataSet dataSet;
 	private FileInputStream loadFile;
-
+/*
 	public DBunitTest() {
 
 		try {
@@ -41,7 +41,9 @@ class DBunitTest extends DatabaseTestCase {
 		}
 
 	}
+   */
 
+/*
 	@Before
 	public void setUp() throws Exception {
 
@@ -49,8 +51,9 @@ class DBunitTest extends DatabaseTestCase {
 
 		getSetUpOperation();
 
-	}
+	}*/
 
+/*
 	// Limpa tudo que tem nas tabelas e faz um insert
 	@Override
 	protected DatabaseOperation getSetUpOperation() throws Exception {
@@ -90,5 +93,6 @@ class DBunitTest extends DatabaseTestCase {
              int rowCount = getDataSet().getTable(â€œAgenteâ€).getRowCount();
 
              assertTrue(rowCount!=0);   }
+  */
 
 }
