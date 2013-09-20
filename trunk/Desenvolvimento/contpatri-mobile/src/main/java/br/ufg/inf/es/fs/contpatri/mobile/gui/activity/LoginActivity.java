@@ -26,6 +26,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import br.ufg.inf.es.fs.contpatri.mobile.R;
+import br.ufg.inf.es.fs.contpatri.mobile.gui.dialog.DialogSair;
+import br.ufg.inf.es.fs.contpatri.mobile.usuario.Usuario;
 import br.ufg.inf.es.fs.contpatri.mobile.util.ConexaoRede;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Preferencias;
 import br.ufg.inf.es.fs.contpatri.mobile.webservice.Autenticar;
@@ -54,7 +56,8 @@ public final class LoginActivity extends Activity {
 
 		final String login = edtLogin.getText().toString();
 		final String senha = edtSenha.getText().toString();
-
+		final Usuario usuario = new Usuario(login, senha);
+			
 		/*
 		 * Verifica se há algo digitado nos campos, se não houver, responderá
 		 * com um diálogo dizendo para inserir as credenciais.
@@ -76,7 +79,7 @@ public final class LoginActivity extends Activity {
 				if (!ConexaoRede.isConnectedInternet(this)) {
 					Autenticar.mostrarDialogo(this, "Não foi possível autenticar devido à limitação na comunicação com o servidor ou ausência da mesma.");
 				} else {
-					new Autenticar(this, login, senha).execute(new Void[0]);
+					new Autenticar(this, usuario).execute(new Void[0]);
 				}
 
 			} else {
@@ -117,5 +120,10 @@ public final class LoginActivity extends Activity {
 		Window window = getWindow();
 		window.setFormat(PixelFormat.RGBA_8888);
 	}
+	
+    @Override
+    public void onBackPressed() {
+    	new DialogSair(this).confirmaSaida();
+    }
 
 }

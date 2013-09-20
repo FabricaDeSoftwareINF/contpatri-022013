@@ -9,7 +9,7 @@ package br.ufg.inf.es.fs.contpatri.mobile;
 
 public final class R {
     public static final class array {
-        public static final int nomes_array=0x7f060000;
+        public static final int nomes_array=0x7f070000;
     }
     public static final class attr {
     }
@@ -27,6 +27,12 @@ public final class R {
         public static final int preto=0x7f040004;
         public static final int turquesa=0x7f040002;
     }
+    public static final class dimen {
+        /**  Default screen margins, per the Android Design guidelines. 
+         */
+        public static final int activity_horizontal_margin=0x7f050000;
+        public static final int activity_vertical_margin=0x7f050001;
+    }
     public static final class drawable {
         public static final int gradiente_background=0x7f020000;
         public static final int ic_launcher=0x7f020001;
@@ -34,21 +40,21 @@ public final class R {
         public static final int selector_table_row=0x7f020003;
     }
     public static final class id {
-        public static final int btnConfirmar=0x7f090006;
-        public static final int btnScanQrCode=0x7f090001;
-        public static final int edtObservacao=0x7f090005;
-        public static final int edtSubLocal=0x7f090004;
-        public static final int edtTombamento=0x7f090000;
-        public static final int edtUltimaAlteracao=0x7f090003;
-        public static final int edt_login=0x7f090007;
-        public static final int edt_senha=0x7f090008;
-        public static final int menu_ajuda=0x7f09000d;
-        public static final int menu_inf=0x7f09000e;
-        public static final int menu_sobre=0x7f09000c;
-        public static final int spnSituacao=0x7f090002;
-        public static final int txtCodigo=0x7f090009;
-        public static final int txtSituacao=0x7f09000a;
-        public static final int txtUltimaAlteracao=0x7f09000b;
+        public static final int btnConfirmar=0x7f0a0006;
+        public static final int btnScanQrCode=0x7f0a0001;
+        public static final int edtObservacao=0x7f0a0005;
+        public static final int edtSubLocal=0x7f0a0004;
+        public static final int edtTombamento=0x7f0a0000;
+        public static final int edtUltimaAlteracao=0x7f0a0003;
+        public static final int edt_login=0x7f0a0007;
+        public static final int edt_senha=0x7f0a0008;
+        public static final int menu_ajuda=0x7f0a000d;
+        public static final int menu_inf=0x7f0a000e;
+        public static final int menu_sobre=0x7f0a000c;
+        public static final int spnSituacao=0x7f0a0002;
+        public static final int txtCodigo=0x7f0a0009;
+        public static final int txtSituacao=0x7f0a000a;
+        public static final int txtUltimaAlteracao=0x7f0a000b;
     }
     public static final class layout {
         public static final int activity_coleta=0x7f030000;
@@ -57,42 +63,42 @@ public final class R {
         public static final int linha_lista_sub_locais=0x7f030003;
     }
     public static final class menu {
-        public static final int menu_lista_coleta=0x7f080000;
+        public static final int menu_lista_coleta=0x7f090000;
     }
     public static final class string {
-        public static final int acao=0x7f050008;
-        public static final int ajuda=0x7f050017;
-        public static final int barra_tela_login=0x7f050015;
-        public static final int codigo=0x7f05000f;
-        public static final int coletar=0x7f050001;
-        public static final int confirmar=0x7f05000e;
-        public static final int exibirColeta=0x7f050003;
-        public static final int informacoes_do_tombamento=0x7f050012;
-        public static final int logar=0x7f050004;
-        public static final int login=0x7f050006;
-        public static final int nome_aplicativo=0x7f050000;
-        public static final int observacaoHint=0x7f05000c;
-        public static final int pagina_inf=0x7f050018;
-        public static final int relatorio=0x7f050002;
-        public static final int scanQrcode=0x7f05000d;
-        public static final int scan_cancelado=0x7f050013;
-        public static final int scan_invalido=0x7f050014;
-        public static final int senha=0x7f050005;
-        public static final int sincronizar=0x7f050007;
-        public static final int situacao=0x7f050010;
-        public static final int sobre=0x7f050016;
-        public static final int sublocalHint=0x7f05000b;
+        public static final int acao=0x7f060008;
+        public static final int ajuda=0x7f060017;
+        public static final int barra_tela_login=0x7f060015;
+        public static final int codigo=0x7f06000f;
+        public static final int coletar=0x7f060001;
+        public static final int confirmar=0x7f06000e;
+        public static final int exibirColeta=0x7f060003;
+        public static final int informacoes_do_tombamento=0x7f060012;
+        public static final int logar=0x7f060004;
+        public static final int login=0x7f060006;
+        public static final int nome_aplicativo=0x7f060000;
+        public static final int observacaoHint=0x7f06000c;
+        public static final int pagina_inf=0x7f060018;
+        public static final int relatorio=0x7f060002;
+        public static final int scanQrcode=0x7f06000d;
+        public static final int scan_cancelado=0x7f060013;
+        public static final int scan_invalido=0x7f060014;
+        public static final int senha=0x7f060005;
+        public static final int sincronizar=0x7f060007;
+        public static final int situacao=0x7f060010;
+        public static final int sobre=0x7f060016;
+        public static final int sublocalHint=0x7f06000b;
         /**  Tela Coleta 
          */
-        public static final int tombamentoHint=0x7f050009;
-        public static final int ultimaAlteracaoHint=0x7f05000a;
-        public static final int ultima_alteracao=0x7f050011;
+        public static final int tombamentoHint=0x7f060009;
+        public static final int ultimaAlteracaoHint=0x7f06000a;
+        public static final int ultima_alteracao=0x7f060011;
     }
     public static final class style {
-        public static final int AppBaseTheme=0x7f070000;
-        public static final int AppTheme=0x7f070001;
+        public static final int AppBaseTheme=0x7f080000;
+        public static final int AppTheme=0x7f080001;
         /**  Estilo para Botões 
          */
-        public static final int botao=0x7f070002;
+        public static final int botao=0x7f080002;
     }
 }

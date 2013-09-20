@@ -17,6 +17,7 @@
     <string name="login">Login</string>
     <string name="sincronizar">Sincronizar</string>
     <string name="acao">Ação</string>
+    
     <!-- Tela Coleta -->
     <string name="tombamentoHint">Tombamento</string>
     <string name="ultimaAlteracaoHint">Ultima Alteração</string>
@@ -28,7 +29,7 @@
     <string name="situacao">Situacao</string>
     <string name="ultima_alteracao">Ultima Alteracao</string>
     <string name="informacoes_do_tombamento">Informações do Tombamento</string>
-    <string name="scan_cancelado">Cancelado o escaneamento</string>
+    <string name="scan_cancelado">Escaneamento Cancelado</string>
     <string name="scan_invalido">QR Code inválido</string>
     <string name="barra_tela_login">Instituto de Informática - UFG</string>
     <string name="sobre">Sobre</string>
