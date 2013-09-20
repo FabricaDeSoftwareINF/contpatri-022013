@@ -135,7 +135,8 @@ public final class TombamentoDAO {
 		Tombamento tombamento;
 
 		final Cursor cursor = conexao.query(BancoHelper.TABELA_TOMBAMENTO,
-				BancoHelper.TOMBAMENTO_COLUNAS, null, null, null, null, null);
+				BancoHelper.TOMBAMENTO_COLUNAS, null, null, null, null,
+				BancoHelper.TOMBAMENTO_CODIGO);
 
 		cursor.moveToFirst();
 
