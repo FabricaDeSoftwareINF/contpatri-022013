@@ -18,13 +18,12 @@
  */
 package br.ufg.inf.es.fs.contpatri.mobile.gui.activity;
 
-import java.util.Map.Entry;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -37,6 +36,7 @@ import br.ufg.inf.es.fs.contpatri.mobile.barcodescan.IntentIntegrator;
 import br.ufg.inf.es.fs.contpatri.mobile.barcodescan.IntentResult;
 import br.ufg.inf.es.fs.contpatri.mobile.controller.ColetaController;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
+import br.ufg.inf.es.fs.contpatri.mobile.tombamento.TombamentoDAO;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
 
 /**
@@ -105,34 +105,46 @@ public final class ColetaActivity extends Activity {
 	public void onActivityResult(final int request, final int result,
 			final Intent i) {
 
-		final IntentResult resultadoScan = IntentIntegrator
-				.parseActivityResult(request, result, i);
+		final IntentResult scanResult = IntentIntegrator.parseActivityResult(
+				request, result, i);
 
-		if (resultadoScan == null) {
-			Toast.makeText(this, R.string.scan_cancelado, Toast.LENGTH_LONG)
+		long codigo;
+
+		if (scanResult == null) {
+			Toast.makeText(this, "Cancelado o escaneamento", Toast.LENGTH_LONG)
 					.show();
 		} else {
 
-			Entry<Boolean, Tombamento> valores = coleta
-					.verificaResultadoScan(this, i).entrySet().iterator()
-					.next();
-			tmb = valores.getValue();
-
 			/*
-			 * Se for verdadeiro, irá recuperar os dados do mesmo, caso
-			 * contrário irá inserir um novo registro (se o objeto tombamento
-			 * vier com o códig), caso contrário é um QRCode inválido.
+			 * Bloco de tratamento para verificar se o QRCode utilizado, contém
+			 * somente números.
 			 */
-			if (valores.getKey()) {
-				recuperaDados();
-			} else {
+			try {
+
+				codigo = Long.parseLong(i.getStringExtra("SCAN_RESULT"));
+
+				TombamentoDAO tmbDAO;
+
+				tmbDAO = new TombamentoDAO(this);
+				tmbDAO.abrirConexao();
+				tmb = tmbDAO.localizar(codigo);
+
 				if (tmb == null) {
-					edtCodigo.setText(String.valueOf(0));
+					tmb = new Tombamento();
+					tmb.setCodigo(codigo);
+					edtCodigo.setText(String.valueOf(codigo));
 				} else {
-					edtCodigo.setText(String.valueOf(tmb.getCodigo()));
+					recuperaDados();
 				}
 
+				tmbDAO.fecharConexao();
+
+			} catch (final Exception e) {
+				Log.e(ColetaActivity.class.getSimpleName(), "", e);
+				Toast.makeText(this, R.string.scan_invalido, Toast.LENGTH_LONG)
+						.show();
 			}
+
 		}
 
 	}
@@ -249,7 +261,7 @@ public final class ColetaActivity extends Activity {
 		 * Útil para uma melhor visualização do background em alguns
 		 * dispositivos.
 		 */
-		Window window = getWindow();
+		final Window window = getWindow();
 		window.setFormat(PixelFormat.RGBA_8888);
 	}
 

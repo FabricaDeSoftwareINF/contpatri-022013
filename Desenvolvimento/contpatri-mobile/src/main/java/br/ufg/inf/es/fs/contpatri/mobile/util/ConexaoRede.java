@@ -40,21 +40,25 @@ public final class ConexaoRede {
 	 */
 	public static boolean isConnectedInternet(final Context contexto) {
 
-		ConnectivityManager conectividade = (ConnectivityManager) contexto
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (contexto == null) {
+			return false;
+		} else {
+			final ConnectivityManager conectividade = (ConnectivityManager) contexto
+					.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		if (conectividade != null) {
-			NetworkInfo[] info = conectividade.getAllNetworkInfo();
-			if (info != null) {
-				for (int i = 0; i < info.length; i++) {
-					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-						return true;
+			if (conectividade != null) {
+				final NetworkInfo[] info = conectividade.getAllNetworkInfo();
+				if (info != null) {
+					for (final NetworkInfo element : info) {
+						if (element.getState() == NetworkInfo.State.CONNECTED) {
+							return true;
+						}
 					}
 				}
 			}
+			return false;
 		}
 
-		return false;
 	}
 
 	/**
