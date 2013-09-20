@@ -18,19 +18,16 @@
  */
 package br.ufg.inf.es.fs.contpatri.mobile.webservice;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -46,6 +43,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import br.ufg.inf.es.fs.contpatri.mobile.gui.activity.ListaColetaActivity;
+import br.ufg.inf.es.fs.contpatri.mobile.usuario.Usuario;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Preferencias;
 
 /**
@@ -56,40 +54,38 @@ import br.ufg.inf.es.fs.contpatri.mobile.util.Preferencias;
  * 
  */
 public final class Autenticar extends AsyncTask<Void, Integer, Void> {
-	
+
 	private final ProgressDialog dialog;
-	private final String usuario;
-	private final String senha;
+	private final Usuario usuario;
+	/**
+	 * Timeout para o servidor.
+	 */
 	private final int timeout = 10000;
-	
+
 	private Activity activity;
 	private String mensagem;
 	private boolean sucesso;
-	
+
 	/**
-	 * Construtor padrão para instanciar e inicializar o objeto.
+	 * Construtor que irá instanciar a classe e inicializar as variáveis
+	 * necessárias para poder realizar o processo de autenticação no
+	 * <b>WebService</b>.
 	 * 
 	 * @param actv
-	 *            contexto necessário para iniciar o <code>ProgressDialog</code>
-	 * @param url
-	 *            url para conexão com o WebService
+	 *            <code>Activity</code> necessária para instanciar a
+	 *            <code>ProgressDialog</code> e iniciar a tela de lista de
+	 *            coletas de tombamentos caso a autenticação seja bem sucedida
+	 * @param user
+	 *            usuário da aplicação que tentará logar pelo <b>WebService</b>
 	 */
-	public Autenticar(final Activity actv, final String user, final String pass) {
+	public Autenticar(final Activity actv, final Usuario user) {
 		dialog = new ProgressDialog(actv);
 		usuario = user;
-		senha = pass;
 		activity = actv;
 	}
 
 	@Override
 	protected Void doInBackground(final Void... params) {
-
-		/*
-		 * Parâmetros a serem utilizados.
-		 */
-		final ArrayList<NameValuePair> listaParametros = new ArrayList<NameValuePair>();
-		listaParametros.add(new BasicNameValuePair("login", usuario));
-		listaParametros.add(new BasicNameValuePair("senha", senha));
 
 		/*
 		 * Ajuste de timeout.
@@ -103,30 +99,40 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 		 */
 		final DefaultHttpClient httpCliente = new DefaultHttpClient(httpParams);
 		final HttpPost httpPost = new HttpPost(ListaLinks.URL_AUTENTICAR);
+		httpPost.setHeader("Accept", "application/json");
+		httpPost.setHeader("Content-type", "application/json");
+
 		HttpResponse httpResponse;
 
 		try {
 
-			httpPost.setEntity(new UrlEncodedFormEntity(listaParametros));
+			httpPost.setEntity(new StringEntity(usuario.toJson()));
 			httpResponse = httpCliente.execute(httpPost);
 
+			/*
+			 * Se a resposta ao servidor for uma de código maior ou igual a 400,
+			 * significa que houve erro que não houve comunicação com o
+			 * WebService. Caso contrário a comunicação foi bem sucedida.
+			 */
 			if (httpResponse.getStatusLine().getStatusCode() >= 400) {
 				sucesso = false;
 				mensagem = httpResponse.getStatusLine().getReasonPhrase();
 			} else {
 
-				final ResponseHandler<String> handlerResposta = new BasicResponseHandler();
-				final String resposta = handlerResposta
-						.handleResponse(httpResponse);
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(httpResponse.getEntity()
+								.getContent(), "UTF-8"));
+				StringBuilder builder = new StringBuilder();
 
-				/*
-				 * Pega a resposta e transforma para JSON. Depois pega as TAG's
-				 * para que depois seja repassada para a tela de login.
-				 */
-				final JSONObject json = new JSONObject(resposta);
+				for (String line = null; (line = reader.readLine()) != null;) {
+					builder.append(line).append("\n");
+				}
+
+				final JSONObject json = new JSONObject(builder.toString());
+
 				sucesso = json.getBoolean("sucesso");
 				mensagem = json.getString("mensagem");
-
+				
 			}
 
 		} catch (final UnsupportedEncodingException e) {
@@ -138,9 +144,7 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 		} catch (final JSONException e) {
 			Log.e(Autenticar.class.getSimpleName(), "", e);
 		}
-		
-		sucesso = true; // Apenas para teste
-		
+
 		return null;
 	}
 
@@ -148,21 +152,21 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 	protected void onPostExecute(final Void result) {
 		super.onPostExecute(result);
 		dialog.dismiss();
-		
+
 		/*
 		 * Verifica se a resposta do WebService for verdadeiro, se for, as
 		 * credenciais foram autenticadas e serão armazenadas no Android, caso
 		 * contrário exibirá o erro retornado pelo WebService.
 		 */
 		if (sucesso) {
-			Preferencias.gravarUsuario(usuario, senha);
+			Preferencias.gravarUsuario(usuario.getLogin(), usuario.getSenha());
 			final Intent troca = new Intent(activity, ListaColetaActivity.class);
 			activity.startActivity(troca);
 			activity.finish();
 		} else {
 			mostrarDialogo(activity, mensagem);
 		}
-		
+
 	}
 
 	@Override
@@ -175,17 +179,21 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 		dialog.setCancelable(false);
 		dialog.show();
 	}
-	
+
 	/**
 	 * Método que exibe um <code>Dialog</code> caso haja erro no login do
 	 * usuário no aplicativo.
 	 * 
+	 * @param contexto
+	 *            <code>Context</code> necessário para criar e exibir a caixa de
+	 *            diálogo.
 	 * @param mensagem
 	 *            mensagem de erro que será exibida na <code>Dialog</code> para
 	 *            informar o motivo de a aplicação não realizar o login
 	 *            corretamente
 	 */
-	public static void mostrarDialogo(final Context contexto, final String mensagem) {
+	public static void mostrarDialogo(final Context contexto,
+			final String mensagem) {
 
 		AlertDialog.Builder builder;
 		builder = new AlertDialog.Builder(contexto);

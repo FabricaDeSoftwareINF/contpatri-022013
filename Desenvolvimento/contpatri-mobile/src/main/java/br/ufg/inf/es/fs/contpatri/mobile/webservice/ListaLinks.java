@@ -39,8 +39,7 @@ public final class ListaLinks {
 	/**
 	 * Endereço para envio das coletas realizadas ao WebService.
 	 */
-	public static final String URL_ENVIAR_COLETA = URL_BASE
-			+ "inventario/coletas";
+	public static final String URL_ENVIAR_COLETA = URL_BASE + "inventario/coletas";
 
 	/**
 	 * Construtor privado para não instanciar a classe.

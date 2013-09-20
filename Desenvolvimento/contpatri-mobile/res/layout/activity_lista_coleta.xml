@@ -15,7 +15,12 @@
         <ListView
             android:id="@android:id/list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="3dp" >
+
         </ListView>
     </LinearLayout>
 
@@ -38,7 +43,9 @@
                 android:layout_margin="3dp"
                 android:onClick="sincronizar"
                 android:text="@string/sincronizar"
-                android:textColor="@color/letras" />
+                android:textColor="@color/letras"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -54,7 +61,9 @@
                 android:layout_margin="3dp"
                 android:onClick="coletar"
                 android:text="@string/coletar"
-                android:textColor="@color/letras" />
+                android:textColor="@color/letras"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 

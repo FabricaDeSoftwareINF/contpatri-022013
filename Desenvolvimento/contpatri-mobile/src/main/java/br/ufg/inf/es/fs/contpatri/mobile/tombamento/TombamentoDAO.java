@@ -48,13 +48,13 @@ public final class TombamentoDAO {
 	 * @param context
 	 *            <code>Context</code> utilizado para realizar a conexão com o
 	 *            banco de dados.
-	 * @throws Exception
+	 * @throws IllegalArgumentException
 	 *             exceção lançada caso o contexto utilizado como parâmetro,
 	 *             seja nulo
 	 */
-	public TombamentoDAO(final Context context) throws Exception {
+	public TombamentoDAO(final Context context) throws IllegalArgumentException {
 		if (context == null) {
-			throw new Exception(
+			throw new IllegalArgumentException(
 					"É necessário um contexto para iniciar o banco de dados");
 		} else {
 			contexto = context;

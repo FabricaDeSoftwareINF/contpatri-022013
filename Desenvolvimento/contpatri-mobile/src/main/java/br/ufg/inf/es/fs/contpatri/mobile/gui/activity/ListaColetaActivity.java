@@ -36,6 +36,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import br.ufg.inf.es.fs.contpatri.mobile.R;
 import br.ufg.inf.es.fs.contpatri.mobile.adapter.ListaColetaAdapter;
+import br.ufg.inf.es.fs.contpatri.mobile.gui.dialog.DialogSair;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.TombamentoDAO;
 import br.ufg.inf.es.fs.contpatri.mobile.webservice.EnviarColeta;
@@ -198,5 +199,10 @@ public final class ListaColetaActivity extends ListActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+    @Override
+    public void onBackPressed() {
+    	new DialogSair(this).confirmaSaida();
+    }
 
 }

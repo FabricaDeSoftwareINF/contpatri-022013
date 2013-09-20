@@ -19,7 +19,8 @@
             android:gravity="center"
             android:text="@string/nome_aplicativo"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/letras" />
+            android:textColor="@color/letras"
+            android:textSize="32sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -58,7 +59,8 @@
                 android:onClick="logar"
                 android:text="@string/logar"
                 android:textColor="@color/letras"
-                android:textSize="16sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 

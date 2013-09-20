@@ -18,16 +18,29 @@
  */
 package br.ufg.inf.es.fs.contpatri.mobile.webservice;
 
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
-import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
+import android.util.Log;
+import br.ufg.inf.es.fs.contpatri.mobile.tombamento.TombamentoDAO;
 
 /**
  * Classe que cria uma Thread para comunicar com o WebService e enviar todas as
@@ -39,27 +52,22 @@ import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
 public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 
 	private final int timeout = 10000;
+	private final Activity activity;
 	private final ProgressDialog dialog;
-	private List<Tombamento> listaTombamento;
+	private String mensagem;
+	private boolean sucesso;
+	private TombamentoDAO tmbDAO;
 
-	/**
-	 * Construtor padrão para instanciar e inicializar o objeto.
-	 * 
-	 * @param context
-	 *            contexto necessário para iniciar o <code>ProgressDialog</code>
-	 */
-	public EnviarColeta(final Context context) {
-		dialog = new ProgressDialog(context);
+	public EnviarColeta(final Activity actv) {
+		dialog = new ProgressDialog(actv);
+		tmbDAO = new TombamentoDAO(actv);
+		activity = actv;
 	}
 
 	@Override
 	protected Void doInBackground(final Void... params) {
+
 		/*
-		 * final boolean sucesso; final String mensagem;
-		 * 
-		 * try {
-		 * 
-		 * 
 		 * Ajuste de timeout.
 		 */
 		final HttpParams httpParams = new BasicHttpParams();
@@ -68,38 +76,54 @@ public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 
 		/*
 		 * Configurações iniciais para estabelecer uma conexão HTTP.
-		 * 
-		 * final DefaultHttpClient httpCliente = new DefaultHttpClient(
-		 * httpParams); final HttpPost httpPost = new
-		 * HttpPost(NucleoApp.URL_ENVIAR_COLETA);
-		 * 
-		 * 
-		 * 
-		 * /* Colocando o json do tombamento na requisição.
 		 */
-		/*
-		 * httpPost.setEntity(new ByteArrayEntity(listaTombamento.
-		 * .getBytes("UTF8"))); httpPost.setHeader("json", tombamento.toJson());
-		 * final ResponseHandler<String> handlerResposta = new
-		 * BasicResponseHandler(); final String responseBody =
-		 * httpCliente.execute(httpPost, handlerResposta);
-		 * 
-		 * /* Pega a resposta e transforma para JSON. Depois pega as TAG's para
-		 * que depois seja repassada para a tela de login.
-		 * 
-		 * final JSONObject json = new JSONObject(responseBody); sucesso =
-		 * json.getBoolean("sucesso"); mensagem = json.getString("mensagem");
-		 * 
-		 * publishProgress(1);
-		 * 
-		 * 
-		 * } catch (final UnsupportedEncodingException e) {
-		 * Log.e(Autenticar.class.getSimpleName(), "", e); } catch (final
-		 * ClientProtocolException e) { Log.e(Autenticar.class.getSimpleName(),
-		 * "", e); } catch (final IOException e) {
-		 * Log.e(Autenticar.class.getSimpleName(), "", e); } catch (final
-		 * JSONException e) { Log.e(Autenticar.class.getSimpleName(), "", e); }
-		 */
+		final DefaultHttpClient httpCliente = new DefaultHttpClient(httpParams);
+		final HttpPost httpPost = new HttpPost(ListaLinks.URL_ENVIAR_COLETA);
+		httpPost.setHeader("Accept", "application/json");
+		httpPost.setHeader("Content-type", "application/json");
+
+		HttpResponse httpResponse;
+
+		try {
+
+			httpPost.setEntity(new StringEntity(tmbDAO.getTodosJson()));
+			httpResponse = httpCliente.execute(httpPost);
+
+			/*
+			 * Se a resposta ao servidor for uma de código maior ou igual a 400,
+			 * significa que houve erro que não houve comunicação com o
+			 * WebService. Caso contrário a comunicação foi bem sucedida.
+			 */
+			if (httpResponse.getStatusLine().getStatusCode() >= 400) {
+				sucesso = false;
+				mensagem = httpResponse.getStatusLine().getReasonPhrase();
+			} else {
+
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(httpResponse.getEntity()
+								.getContent(), "UTF-8"));
+				StringBuilder builder = new StringBuilder();
+
+				for (String line = null; (line = reader.readLine()) != null;) {
+					builder.append(line).append("\n");
+				}
+
+				final JSONObject json = new JSONObject(builder.toString());
+
+				sucesso = json.getBoolean("sucesso");
+				mensagem = json.getString("mensagem");
+
+			}
+
+		} catch (final UnsupportedEncodingException e) {
+			Log.e(EnviarColeta.class.getSimpleName(), "", e);
+		} catch (final ClientProtocolException e) {
+			Log.e(EnviarColeta.class.getSimpleName(), "", e);
+		} catch (final IOException e) {
+			Log.e(EnviarColeta.class.getSimpleName(), "", e);
+		} catch (final JSONException e) {
+			Log.e(EnviarColeta.class.getSimpleName(), "", e);
+		}
 
 		return null;
 	}
@@ -107,23 +131,57 @@ public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 	@Override
 	protected void onPostExecute(final Void result) {
 		super.onPostExecute(result);
+		tmbDAO.fecharConexao();
+
+		/*
+		 * Verifica se teve sucesso no envio, se teve, apenas fechará a caixa de
+		 * diálogo, caso contrário irá mostrar uma outra caixa de diálogo que
+		 * informará o erro.
+		 */
+		if (sucesso) {
+			Log.v(EnviarColeta.class.getSimpleName(),
+					"Envio de realizado com sucesso");
+		} else {
+			mostrarDialogo();
+		}
+
 		dialog.dismiss();
 	}
 
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
+		tmbDAO.abrirConexao();
 		dialog.setTitle("Sincronizando...");
 		dialog.setMessage("Aguarde a sincronização");
-		dialog.setIndeterminate(false);
-		dialog.setMax(listaTombamento.size());
+		dialog.setIndeterminate(true);
 		dialog.show();
 	}
 
-	@Override
-	protected void onProgressUpdate(final Integer... progresso) {
-		dialog.setProgress(progresso[0]);
-		dialog.setMessage("Enviando item " + progresso[0]);
+	/**
+	 * Método que exibe um <code>Dialog</code> caso haja erro no login do
+	 * usuário no aplicativo.
+	 */
+	private void mostrarDialogo() {
+
+		AlertDialog.Builder builder;
+		builder = new AlertDialog.Builder(activity);
+
+		builder.setTitle("Erro");
+		builder.setMessage(mensagem);
+		builder.setIcon(android.R.drawable.ic_dialog_alert);
+
+		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface dialog, final int which) {
+				dialog.dismiss();
+			}
+		});
+
+		final AlertDialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(true);
+		dialog.show();
+
 	}
 
 }
