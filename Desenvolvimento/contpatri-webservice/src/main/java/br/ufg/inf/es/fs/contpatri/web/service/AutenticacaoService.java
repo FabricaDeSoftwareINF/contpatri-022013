@@ -2,6 +2,8 @@ package br.ufg.inf.es.fs.contpatri.web.service;
 
 import br.ufg.inf.es.fs.contpatri.web.model.Resultado;
 import br.ufg.inf.es.fs.contpatri.web.model.autenticacao.Autenticacao;
+import br.ufg.inf.es.fs.contpatri.web.model.autenticacao.estrategia.EstrategiaDeAutenticacao;
+import br.ufg.inf.es.fs.contpatri.web.model.autenticacao.estrategia.EstrategiaDeAutenticacaoFake;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,7 +17,7 @@ public class AutenticacaoService {
         Resultado resultado = new Resultado(true, "Login realizado com sucesso", HttpServletResponse.SC_OK);
 
         if (!autenticouComSucesso(autenticacao.getLogin(), autenticacao.getSenha())) {
-            resultado.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resultado.setStatus(HttpServletResponse.SC_FORBIDDEN);
             resultado.setMensagem("Erro ao tentar realizar o login");
         }
 
@@ -23,7 +25,8 @@ public class AutenticacaoService {
     }
 
     private boolean autenticouComSucesso(String login, String senha) {
-        //TODO: Implementar autenticação real
-        return (login.equals("admin@inf.ufg.br") && (senha.equals("S&CR&7")));
+        //TODO: Substituir por EstrategiaDeAutenticacaoBD
+        EstrategiaDeAutenticacao estrategiaDeAutenticacao = new EstrategiaDeAutenticacaoFake();
+        return estrategiaDeAutenticacao.autenticouComSucesso(login, senha);
     }
 }
