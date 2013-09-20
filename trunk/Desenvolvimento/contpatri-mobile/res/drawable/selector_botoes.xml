@@ -6,9 +6,9 @@
 
             <corners android:radius="10dp" />
 
-            <solid android:color="@color/laranja" />
+            <solid android:color="@color/azul" />
 
-            <stroke android:width="3dp" android:color="@color/laranja" />
+            <stroke android:width="3dp" android:color="@color/azul" />
         </shape></item>
     <item><shape android:shape="rectangle">
             <size android:height="45dp" />
