@@ -9,9 +9,10 @@
   <modules>
 	  <module>contpatri-mobile</module>
       <module>contpatri-model</module>
+      <module>contpatri-persistencia</module>
       <module>contpatri-sicop</module>
       <module>contpatri-web</module>
       <module>contpatri-webservice</module>
-	  <module>contpatri-persistencia</module>
+        
   </modules>
 </project>
