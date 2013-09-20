@@ -13,11 +13,27 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 20:30
  */
 public class AutenticacaoService {
+    private EstrategiaDeAutenticacao estrategiaDeAutenticacao;
+
+    public AutenticacaoService() {
+        //TODO: Substituir por EstrategiaDeAutenticacaoBD
+        estrategiaDeAutenticacao = new EstrategiaDeAutenticacaoFake();
+    }
+
+    public AutenticacaoService(EstrategiaDeAutenticacao estrategiaDeAutenticacao) {
+        this.estrategiaDeAutenticacao = estrategiaDeAutenticacao;
+    }
+
+    public Resultado autenticar(String login, String senha) {
+        return autenticar(new Autenticacao(login, senha));
+    }
+
     public Resultado autenticar(Autenticacao autenticacao) {
         Resultado resultado = new Resultado(true, "Login realizado com sucesso", HttpServletResponse.SC_OK);
 
         if (!autenticouComSucesso(autenticacao.getLogin(), autenticacao.getSenha())) {
             resultado.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            resultado.setSucesso(false);
             resultado.setMensagem("Erro ao tentar realizar o login");
         }
 
@@ -25,8 +41,6 @@ public class AutenticacaoService {
     }
 
     private boolean autenticouComSucesso(String login, String senha) {
-        //TODO: Substituir por EstrategiaDeAutenticacaoBD
-        EstrategiaDeAutenticacao estrategiaDeAutenticacao = new EstrategiaDeAutenticacaoFake();
         return estrategiaDeAutenticacao.autenticouComSucesso(login, senha);
     }
 }
