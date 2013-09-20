@@ -42,7 +42,7 @@ class DBunitTest extends DatabaseTestCase {
 
 	}
 
-	//@Before
+	@Before
 	public void setUp() throws Exception {
 
 		// A cada execuÃ§Ã£o dos testes limpa e insere
