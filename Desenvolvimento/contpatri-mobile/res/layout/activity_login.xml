@@ -1,81 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradiente_background"
-    android:orientation="vertical" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="15"
-        android:orientation="vertical" >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
-            android:layout_marginTop="110dp"
-            android:gravity="center"
-            android:text="@string/nome_aplicativo"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/letras" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical" >
-
-            <EditText
-                android:id="@+id/edt_login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:ems="10"
-                android:hint="@string/login"
-                android:inputType="text"
-                android:textColor="@color/letras"
-                android:textSize="18sp" >
-
-                <requestFocus />
-            </EditText>
-
-            <EditText
-                android:id="@+id/edt_senha"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/senha"
-                android:inputType="textPassword"
-                android:textSize="18sp" />
-
-            <Button
-                style="@style/botao"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:onClick="logar"
-                android:text="@string/logar"
-                android:textColor="@color/letras"
-                android:textSize="16sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_marginBottom="10dp"
-        android:layout_weight="0.5"
-        android:orientation="vertical" >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/barra_tela_login"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-    </LinearLayout>
-
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@drawable/gradiente_background"
+	android:orientation="vertical" >
+	<EditText
+		android:id="@+id/edt_senha"
+		android:layout_width="209dp"
+		android:layout_height="46dp"
+		android:layout_centerHorizontal="true"
+		android:layout_centerVertical="true"
+		android:ems="10"
+		android:hint="@string/senha"
+		android:inputType="textPassword"
+		android:textSize="18sp" >
+	</EditText>
+	<Button
+		style="@style/botao"
+		android:layout_width="100dp"
+		android:layout_height="43dp"
+		android:layout_below="@+id/edt_senha"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="63dp"
+		android:onClick="logar"
+		android:text="@string/logar"
+		android:textColor="@color/letras"
+		android:textSize="16sp" />
+	<EditText
+		android:id="@+id/edt_login"
+		android:layout_width="209dp"
+		android:layout_height="wrap_content"
+		android:layout_above="@+id/edt_senha"
+		android:layout_alignLeft="@+id/edt_senha"
+		android:ems="10"
+		android:hint="@string/login"
+		android:inputType="text"
+		android:textColor="@color/letras"
+		android:textSize="18sp" >
+		<requestFocus />
+	</EditText>
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@+id/edt_login"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="20dp"
+		android:text="@string/nome_aplicativo"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:textColor="@color/letras" />
+</RelativeLayout>

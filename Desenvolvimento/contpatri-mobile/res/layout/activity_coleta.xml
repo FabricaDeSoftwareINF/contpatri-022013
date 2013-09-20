@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="@string/informacoes_do_tombamento"
+        android:text="@string/informa_es_do_tombamento"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/letras" />
 
@@ -29,6 +29,7 @@
             android:ems="10"
             android:hint="@string/tombamentoHint"
             android:inputType="numberSigned" >
+
         </EditText>
 
         <Button
@@ -90,20 +91,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         android:layout_weight="5"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/btnConfirmar"
             style="@style/botao"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="19dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:onClick="confirmar"
             android:text="@string/confirmar"
             android:textColor="@color/letras" />

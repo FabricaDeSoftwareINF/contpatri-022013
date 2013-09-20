@@ -1,7 +1,7 @@
 package br.ufg.inf.es.fs.contpatri.web.controller.builder;
 
 import br.ufg.inf.es.fs.contpatri.model.Inventario;
-import br.ufg.inf.es.fs.contpatri.web.model.Resultado;
+import br.ufg.inf.es.fs.contpatri.web.model.autenticacao.Resultado;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
 import java.util.List;
@@ -50,10 +50,6 @@ public class ResultadoJsonBuilder extends JsonBuilder {
         if (object != null)
             resultado.setDado("object", object);
         return deObjetoParaJson(resultado);
-    }
-
-    public String deObjetoParaJson(Resultado resultado) {
-        return super.deObjetoParaJson(resultado);
     }
 
     public Resultado deJsonParaObjeto(String json) {

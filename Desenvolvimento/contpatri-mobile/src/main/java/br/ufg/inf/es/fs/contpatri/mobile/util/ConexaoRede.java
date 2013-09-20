@@ -39,26 +39,22 @@ public final class ConexaoRede {
 	 * @return verdadeiro para conexão validada, caso contrário será falsa
 	 */
 	public static boolean isConnectedInternet(final Context contexto) {
-
-		if (contexto == null) {
-			return false;
-		} else {
-			final ConnectivityManager conectividade = (ConnectivityManager) contexto
-					.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-			if (conectividade != null) {
-				final NetworkInfo[] info = conectividade.getAllNetworkInfo();
-				if (info != null) {
-					for (final NetworkInfo element : info) {
-						if (element.getState() == NetworkInfo.State.CONNECTED) {
-							return true;
-						}
+		
+		ConnectivityManager conectividade = (ConnectivityManager) contexto
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		if (conectividade != null) {
+			NetworkInfo[] info = conectividade.getAllNetworkInfo();
+			if (info != null) {
+				for (int i = 0; i < info.length; i++) {
+					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+						return true;
 					}
 				}
 			}
-			return false;
 		}
-
+		
+		return false;
 	}
 
 	/**

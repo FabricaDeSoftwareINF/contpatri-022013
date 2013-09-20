@@ -18,14 +18,17 @@
  */
 package br.ufg.inf.es.fs.contpatri.mobile.gui.activity;
 
+import java.util.Iterator;
+import java.util.Map.Entry;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import br.ufg.inf.es.fs.contpatri.mobile.R;
+import br.ufg.inf.es.fs.contpatri.mobile.gui.dialog.LoginDialog;
 import br.ufg.inf.es.fs.contpatri.mobile.util.ConexaoRede;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Preferencias;
 import br.ufg.inf.es.fs.contpatri.mobile.webservice.Autenticar;
@@ -40,8 +43,27 @@ import br.ufg.inf.es.fs.contpatri.mobile.webservice.Autenticar;
  */
 public final class LoginActivity extends Activity {
 
+	private LoginDialog loginDialog;
 	private EditText edtLogin;
 	private EditText edtSenha;
+	private Context contexto;
+
+	@Override
+	protected void onCreate(final Bundle args) {
+		super.onCreate(args);
+		setContentView(R.layout.activity_login);
+		contexto = this;
+		edtLogin = (EditText) findViewById(R.id.edt_login);
+		edtSenha = (EditText) findViewById(R.id.edt_senha);
+		Preferencias.criarConfiguracoes(this);
+		loginDialog = new LoginDialog(this);
+	}
+
+	@Override
+	protected void onPause() {
+		finish();
+		super.onPause();
+	}
 
 	/**
 	 * Método que responde ao evento do botão para autenticar as credenciais
@@ -74,9 +96,31 @@ public final class LoginActivity extends Activity {
 				 * diálogo informando o problema.
 				 */
 				if (!ConexaoRede.isConnectedInternet(this)) {
-					Autenticar.mostrarDialogo(this, "Não foi possível autenticar devido à limitação na comunicação com o servidor ou ausência da mesma.");
+					loginDialog
+							.mostrar("Não foi possível autenticar devido à limitação na comunicação com o servidor ou ausência da mesma.");
 				} else {
-					new Autenticar(this, login, senha).execute(new Void[0]);
+
+					final Autenticar autentica = new Autenticar(contexto,
+							login, senha);
+					autentica.execute(new Void[0]);
+					final Iterator<Entry<Boolean, String>> iterator = autentica
+							.getRetorno().entrySet().iterator();
+
+					/*
+					 * Verifica se a resposta do WebService for verdadeiro, se
+					 * for, as credenciais foram autenticadas e serão
+					 * armazenadas no Android, caso contrário exibirá o erro
+					 * retornado pelo WebService.
+					 */
+					if (iterator.next().getKey()) {
+						Preferencias.gravarUsuario(login, senha);
+						final Intent troca = new Intent(LoginActivity.this,
+								ListaColetaActivity.class);
+						startActivity(troca);
+						finish();
+					} else {
+						loginDialog.mostrar(iterator.next().getValue());
+					}
 				}
 
 			} else {
@@ -86,36 +130,8 @@ public final class LoginActivity extends Activity {
 			}
 
 		} else {
-			Autenticar.mostrarDialogo(this, "Insira as credenciais!");
+			loginDialog.mostrar("Insira as credenciais!");
 		}
 
 	}
-
-	@Override
-	protected void onCreate(final Bundle args) {
-		super.onCreate(args);
-		setContentView(R.layout.activity_login);
-		edtLogin = (EditText) findViewById(R.id.edt_login);
-		edtSenha = (EditText) findViewById(R.id.edt_senha);
-		Preferencias.criarConfiguracoes(this);
-	}
-
-	@Override
-	protected void onPause() {
-		finish();
-		super.onPause();
-	}
-
-	@Override
-	public void onAttachedToWindow() {
-		super.onAttachedToWindow();
-		
-		/*
-		 * Útil para uma melhor visualização do background em alguns
-		 * dispositivos.
-		 */
-		Window window = getWindow();
-		window.setFormat(PixelFormat.RGBA_8888);
-	}
-
 }

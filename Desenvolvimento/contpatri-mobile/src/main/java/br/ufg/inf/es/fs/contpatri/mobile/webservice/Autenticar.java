@@ -21,6 +21,8 @@ package br.ufg.inf.es.fs.contpatri.mobile.webservice;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -37,16 +39,11 @@ import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import br.ufg.inf.es.fs.contpatri.mobile.gui.activity.ListaColetaActivity;
-import br.ufg.inf.es.fs.contpatri.mobile.util.Preferencias;
+import br.ufg.inf.es.fs.contpatri.mobile.nucleo.NucleoApp;
 
 /**
  * Classe que cria uma Thread para comunicar com o WebService e enviar todas as
@@ -56,29 +53,38 @@ import br.ufg.inf.es.fs.contpatri.mobile.util.Preferencias;
  * 
  */
 public final class Autenticar extends AsyncTask<Void, Integer, Void> {
-	
+
 	private final ProgressDialog dialog;
 	private final String usuario;
 	private final String senha;
-	private final int timeout = 10000;
-	
-	private Activity activity;
-	private String mensagem;
+	private Map<Boolean, String> retorno;
 	private boolean sucesso;
-	
+	private String mensagem;
+	private final int timeout = 10000;
+
 	/**
 	 * Construtor padrão para instanciar e inicializar o objeto.
 	 * 
-	 * @param actv
+	 * @param context
 	 *            contexto necessário para iniciar o <code>ProgressDialog</code>
 	 * @param url
 	 *            url para conexão com o WebService
 	 */
-	public Autenticar(final Activity actv, final String user, final String pass) {
-		dialog = new ProgressDialog(actv);
+	public Autenticar(final Context context, final String user,
+			final String pass) {
+		dialog = new ProgressDialog(context);
+		retorno = new HashMap<Boolean, String>();
 		usuario = user;
 		senha = pass;
-		activity = actv;
+	}
+
+	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		dialog.setTitle("Autenticando...");
+		dialog.setMessage("Realizando login com " + usuario);
+		dialog.setIndeterminate(true);
+		dialog.show();
 	}
 
 	@Override
@@ -87,22 +93,22 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 		/*
 		 * Parâmetros a serem utilizados.
 		 */
-		final ArrayList<NameValuePair> listaParametros = new ArrayList<NameValuePair>();
+		ArrayList<NameValuePair> listaParametros = new ArrayList<NameValuePair>();
 		listaParametros.add(new BasicNameValuePair("login", usuario));
 		listaParametros.add(new BasicNameValuePair("senha", senha));
 
 		/*
 		 * Ajuste de timeout.
 		 */
-		final HttpParams httpParams = new BasicHttpParams();
+		HttpParams httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
 		HttpConnectionParams.setSoTimeout(httpParams, timeout);
 
 		/*
 		 * Configurações iniciais para estabelecer uma conexão HTTP.
 		 */
-		final DefaultHttpClient httpCliente = new DefaultHttpClient(httpParams);
-		final HttpPost httpPost = new HttpPost(ListaLinks.URL_AUTENTICAR);
+		DefaultHttpClient httpCliente = new DefaultHttpClient(httpParams);
+		HttpPost httpPost = new HttpPost(NucleoApp.URL_AUTENTICAR);
 		HttpResponse httpResponse;
 
 		try {
@@ -115,15 +121,14 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 				mensagem = httpResponse.getStatusLine().getReasonPhrase();
 			} else {
 
-				final ResponseHandler<String> handlerResposta = new BasicResponseHandler();
-				final String resposta = handlerResposta
-						.handleResponse(httpResponse);
+				ResponseHandler<String> handlerResposta = new BasicResponseHandler();
+				String resposta = handlerResposta.handleResponse(httpResponse);
 
 				/*
 				 * Pega a resposta e transforma para JSON. Depois pega as TAG's
 				 * para que depois seja repassada para a tela de login.
 				 */
-				final JSONObject json = new JSONObject(resposta);
+				JSONObject json = new JSONObject(resposta);
 				sucesso = json.getBoolean("sucesso");
 				mensagem = json.getString("mensagem");
 
@@ -138,9 +143,7 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 		} catch (final JSONException e) {
 			Log.e(Autenticar.class.getSimpleName(), "", e);
 		}
-		
-		sucesso = true; // Apenas para teste
-		
+
 		return null;
 	}
 
@@ -148,63 +151,20 @@ public final class Autenticar extends AsyncTask<Void, Integer, Void> {
 	protected void onPostExecute(final Void result) {
 		super.onPostExecute(result);
 		dialog.dismiss();
-		
-		/*
-		 * Verifica se a resposta do WebService for verdadeiro, se for, as
-		 * credenciais foram autenticadas e serão armazenadas no Android, caso
-		 * contrário exibirá o erro retornado pelo WebService.
-		 */
-		if (sucesso) {
-			Preferencias.gravarUsuario(usuario, senha);
-			final Intent troca = new Intent(activity, ListaColetaActivity.class);
-			activity.startActivity(troca);
-			activity.finish();
-		} else {
-			mostrarDialogo(activity, mensagem);
-		}
-		
 	}
 
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-		dialog.setTitle("Autenticando...");
-		dialog.setMessage("Realizando login com " + usuario);
-		dialog.setIndeterminate(true);
-		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		dialog.setCancelable(false);
-		dialog.show();
-	}
-	
 	/**
-	 * Método que exibe um <code>Dialog</code> caso haja erro no login do
-	 * usuário no aplicativo.
+	 * Método que retorna o resultado da requisição de autenticação.
 	 * 
-	 * @param mensagem
-	 *            mensagem de erro que será exibida na <code>Dialog</code> para
-	 *            informar o motivo de a aplicação não realizar o login
-	 *            corretamente
+	 * @return retorna um <code>Map> do tipo <code>Boolean</code> e
+	 *         <code>String</code> onde, o primeiro se for verdadeiro, a
+	 *         autenticação foi bem sucedida, caso contrário será falso e, no
+	 *         segundo elemento, será a mensagem de retorno de erro
 	 */
-	public static void mostrarDialogo(final Context contexto, final String mensagem) {
-
-		AlertDialog.Builder builder;
-		builder = new AlertDialog.Builder(contexto);
-
-		builder.setTitle("Erro");
-		builder.setMessage(mensagem);
-		builder.setIcon(android.R.drawable.ic_dialog_alert);
-
-		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(final DialogInterface dialog, final int which) {
-				dialog.dismiss();
-			}
-		});
-
-		final AlertDialog dialog = builder.create();
-		dialog.setCanceledOnTouchOutside(true);
-		dialog.show();
-
+	public Map<Boolean, String> getRetorno() {
+		//retorno.put(sucesso, mensagem);
+		retorno.put(true, mensagem);
+		return retorno;
 	}
 
 }

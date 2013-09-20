@@ -23,6 +23,9 @@ import java.sql.Timestamp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 /**
  * Classe que abstrai o Tombamento. É nela que é feita as operações de envio
  * para o WebService, coleta de informações e exibição de informações.
@@ -32,30 +35,17 @@ import android.os.Parcelable;
  */
 public final class Tombamento implements Parcelable {
 
+	public static final String CODIGO = "codigo";
+	public static final String SITUACAO = "situacao";
+	public static final String SUBLOCAL = "subLocal";
+	public static final String ULTIMA_ALTERACAO = "timestamp";
+	public static final String OBSERVACAO = "observacao";
+
 	private long codigo;
 	private String situacao;
 	private String sublocal;
 	private String observacao;
 	private long ultimaAlteracao;
-
-	/**
-	 * Método utilizado pela interface Parcelable para ser possível ler os dados
-	 * da classe <code>Tombamento</code> e repassar para <code>Adapter</code>,
-	 * <code>List</code> ou outras que utilizem a interface Parcelable para
-	 * comunicação ou usos afins.
-	 */
-	public static final Parcelable.Creator<Tombamento> CREATOR = new Parcelable.Creator<Tombamento>() {
-
-		@Override
-		public Tombamento createFromParcel(final Parcel source) {
-			return new Tombamento(source);
-		}
-
-		@Override
-		public Tombamento[] newArray(final int size) {
-			return new Tombamento[size];
-		}
-	};
 
 	/**
 	 * Construtor padrão.
@@ -100,141 +90,77 @@ public final class Tombamento implements Parcelable {
 		ultimaAlteracao = source.readLong();
 	}
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final Tombamento other = (Tombamento) obj;
-		if (codigo != other.codigo) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * 
-	 * @return o código do tombamento
-	 */
 	public long getCodigo() {
 		return codigo;
 	}
 
-	/**
-	 * 
-	 * @return a observação do tombamento
-	 */
-	public String getObservacao() {
-		return observacao;
-	}
-
-	/**
-	 * 
-	 * @return a situação do tombamento
-	 */
-	public String getSituacao() {
-		return situacao;
-	}
-
-	/**
-	 * 
-	 * @return o sublocal do tombamento
-	 */
-	public String getSublocal() {
-		return sublocal;
-	}
-
-	/**
-	 * 
-	 * @return a última alteração do tombamento
-	 */
-	public long getUltimaAlteracao() {
-		return ultimaAlteracao;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (codigo ^ codigo >>> 32);
-		return result;
-	}
-
-	/**
-	 * Atribui um código ao tombamento.
-	 * 
-	 * @param codigo
-	 *            novo código
-	 */
 	public void setCodigo(final long codigo) {
 		this.codigo = codigo;
 	}
 
-	/**
-	 * Atribui uma nova observação ao tombamento.
-	 * 
-	 * @param observacao
-	 *            nova observação
-	 */
+	public long getUltimaAlteracao() {
+		return ultimaAlteracao;
+	}
+
+	public void setUltimaAlteracao() {
+		this.ultimaAlteracao = new Timestamp(System.currentTimeMillis())
+				.getTime();
+	}
+
+	public String getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(final String situacao) {
+		this.situacao = situacao;
+	}
+
+	public String getSublocal() {
+		return sublocal;
+	}
+
+	public void setSublocal(final String sublocal) {
+		this.sublocal = sublocal;
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
 	public void setObservacao(final String observacao) {
 		this.observacao = observacao;
 	}
 
 	/**
-	 * Atribui uma nova situação ao tombamento.
+	 * Método que retorna uma <code>String</code> em <b>JSON</b> do objeto
+	 * <code>Tombamento</code>.
 	 * 
-	 * @param situacao
-	 *            nova situação
+	 * @return retorna a <code>String</code> do objeto
 	 */
-	public void setSituacao(final String situacao) {
-		this.situacao = situacao;
+	public String toJson() {
+		return new GsonBuilder().setPrettyPrinting().create().toJson(this);
 	}
 
 	/**
-	 * Atribui um novo sublocal ao tombamento.
+	 * Transforma a <code>String</code> do <b>JSON</b> no objeto atual.
 	 * 
-	 * @param sublocal
-	 *            novo sublocal
+	 * @param json <code>String</code> <b>JSON</b>
 	 */
-	public void setSublocal(final String sublocal) {
-		this.sublocal = sublocal;
+	public void fromJson(final String json) {
+		Gson gson = new Gson();
+		Tombamento tmp = (Tombamento) gson.fromJson(json, Tombamento.class);
+		codigo = tmp.getCodigo();
+		situacao = tmp.getSituacao();
+		sublocal = tmp.getSublocal();
+		ultimaAlteracao = tmp.getUltimaAlteracao();
+		observacao = tmp.getObservacao();
 	}
-
-	/**
-	 * Define a última alteração do tombamento.
-	 */
-	public void setUltimaAlteracao() {
-		ultimaAlteracao = new Timestamp(System.currentTimeMillis()).getTime();
-	}
-
-	/**
-	 * Atribui a data da última alteração do tombamento.
-	 * 
-	 * @param alteracao
-	 *            nova data da última alteração
-	 */
-	public void setUltimaAlteracao(final long alteracao) {
-		ultimaAlteracao = alteracao;
-	}
-
+	
 	@Override
-	public String toString() {
-		return "Tombamento [codigo=" + codigo + ", situacao=" + situacao
-				+ ", sublocal=" + sublocal + ", observacao=" + observacao
-				+ ", ultimaAlteracao=" + ultimaAlteracao + "]";
+	public int describeContents() {
+		return 0;
 	}
-
+	
 	@Override
 	public void writeToParcel(final Parcel paramParcel, final int paramInt) {
 		paramParcel.writeLong(codigo);
@@ -243,5 +169,18 @@ public final class Tombamento implements Parcelable {
 		paramParcel.writeString(observacao);
 		paramParcel.writeLong(ultimaAlteracao);
 	}
+
+	public static final Parcelable.Creator<Tombamento> CREATOR = new Parcelable.Creator<Tombamento>() {
+		
+		@Override
+		public Tombamento createFromParcel(final Parcel source) {
+			return new Tombamento(source);
+		}
+		
+		@Override
+		public Tombamento[] newArray(final int size) {
+			return new Tombamento[size];
+		}
+	};
 
 }

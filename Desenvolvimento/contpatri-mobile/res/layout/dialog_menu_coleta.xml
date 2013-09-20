@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/azulClaro"
+	android:orientation="vertical" >
+	<TableRow
+		android:layout_width="250dp"
+		android:layout_height="60dp"
+		android:background="@color/azul"
+		android:gravity="center" >
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/acao"
+			android:textColor="@color/letras"
+			android:textSize="35sp" />
+	</TableRow>
+	<TableRow
+		android:id="@+id/tbrColeta"
+		android:layout_width="match_parent"
+		android:layout_height="50dp"
+		android:background="@drawable/selector_table_row"
+		android:gravity="center_vertical" >
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="15dp"
+			android:text="@string/coletar"
+			android:textColor="@color/letras"
+			android:textSize="28sp" />
+	</TableRow>
+	<TableRow
+		android:layout_width="match_parent"
+		android:layout_height="2dp"
+		android:background="@color/azul" >
+	</TableRow>
+	<TableRow
+		android:id="@+id/tbrRelatorio"
+		android:layout_width="match_parent"
+		android:layout_height="50dp"
+		android:background="@drawable/selector_table_row"
+		android:gravity="center_vertical" >
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="15dp"
+			android:text="@string/relatorio"
+			android:textColor="@color/letras"
+			android:textSize="28sp" />
+	</TableRow>
+	<TableRow
+		android:layout_width="match_parent"
+		android:layout_height="2dp"
+		android:background="@color/azul" >
+	</TableRow>
+	<TableRow
+		android:id="@+id/tbrExibir"
+		android:layout_width="match_parent"
+		android:layout_height="50dp"
+		android:background="@drawable/selector_table_row"
+		android:gravity="center_vertical" >
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="15dp"
+			android:text="@string/exibirColeta"
+			android:textColor="@color/letras"
+			android:textSize="28sp" />
+	</TableRow>
+	<TableRow
+		android:layout_width="fill_parent"
+		android:layout_height="2dp"
+		android:background="@color/azul" >
+	</TableRow>
+</LinearLayout>

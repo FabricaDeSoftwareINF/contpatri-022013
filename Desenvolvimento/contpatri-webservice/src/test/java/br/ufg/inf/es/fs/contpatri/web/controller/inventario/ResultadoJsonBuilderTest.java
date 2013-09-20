@@ -3,7 +3,7 @@ package br.ufg.inf.es.fs.contpatri.web.controller.inventario;
 import br.ufg.inf.es.fs.contpatri.model.Gestor;
 import br.ufg.inf.es.fs.contpatri.model.Inventario;
 import br.ufg.inf.es.fs.contpatri.web.controller.builder.ResultadoJsonBuilder;
-import br.ufg.inf.es.fs.contpatri.web.model.Resultado;
+import br.ufg.inf.es.fs.contpatri.web.model.autenticacao.Resultado;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;

@@ -55,19 +55,19 @@ public final class IntentResult {
 	}
 
 	/**
-	 * @return name of the error correction level used in the barcode, if
-	 *         applicable
-	 */
-	public String getErrorCorrectionLevel() {
-		return errorCorrectionLevel;
-	}
-
-	/**
 	 * @return name of format, like "QR_CODE", "UPC_A". See
 	 *         {@code BarcodeFormat} for more format names.
 	 */
 	public String getFormatName() {
 		return formatName;
+	}
+
+	/**
+	 * @return raw bytes of the barcode content, if applicable, or null
+	 *         otherwise
+	 */
+	public byte[] getRawBytes() {
+		return rawBytes;
 	}
 
 	/**
@@ -79,11 +79,11 @@ public final class IntentResult {
 	}
 
 	/**
-	 * @return raw bytes of the barcode content, if applicable, or null
-	 *         otherwise
+	 * @return name of the error correction level used in the barcode, if
+	 *         applicable
 	 */
-	public byte[] getRawBytes() {
-		return rawBytes;
+	public String getErrorCorrectionLevel() {
+		return errorCorrectionLevel;
 	}
 
 	@Override

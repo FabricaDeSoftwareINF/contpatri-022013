@@ -192,60 +192,12 @@ public class IntentIntegrator {
 	 */
 	BS_PACKAGE);
 
-	private static boolean contains(final Iterable<ResolveInfo> availableApps,
-			final String targetApp) {
-		for (final ResolveInfo availableApp : availableApps) {
-			final String packageName = availableApp.activityInfo.packageName;
-			if (targetApp.equals(packageName)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	private static List<String> list(final String... values) {
-		return Collections.unmodifiableList(Arrays.asList(values));
-	}
-	/**
-	 * <p>
-	 * Call this from your {@link Activity}'s
-	 * {@link Activity#onActivityResult(int, int, Intent)} method.
-	 * </p>
-	 * 
-	 * @return null if the event handled here was not related to this class, or
-	 *         else an {@link IntentResult} containing the result of the scan.
-	 *         If the user cancelled scanning, the fields will be null.
-	 */
-	public static IntentResult parseActivityResult(final int requestCode,
-			final int resultCode, final Intent intent) {
-		if (requestCode == REQUEST_CODE) {
-			if (resultCode == Activity.RESULT_OK) {
-				final String contents = intent.getStringExtra("SCAN_RESULT");
-				final String formatName = intent
-						.getStringExtra("SCAN_RESULT_FORMAT");
-				final byte[] rawBytes = intent
-						.getByteArrayExtra("SCAN_RESULT_BYTES");
-				final int intentOrientation = intent.getIntExtra(
-						"SCAN_RESULT_ORIENTATION", Integer.MIN_VALUE);
-				final Integer orientation = intentOrientation == Integer.MIN_VALUE ? null
-						: intentOrientation;
-				final String errorCorrectionLevel = intent
-						.getStringExtra("SCAN_RESULT_ERROR_CORRECTION_LEVEL");
-				return new IntentResult(contents, formatName, rawBytes,
-						orientation, errorCorrectionLevel);
-			}
-			return null;
-		}
-		return null;
-	}
 	private final Activity activity;
 	private String title;
 	private String message;
 	private String buttonYes;
-
 	private String buttonNo;
-
 	private List<String> targetApplications;
-
 	private final Map<String, Object> moreExtras;
 
 	public IntentIntegrator(final Activity activity) {
@@ -258,69 +210,76 @@ public class IntentIntegrator {
 		moreExtras = new HashMap<String, Object>(3);
 	}
 
-	public final void addExtra(final String key, final Object value) {
-		moreExtras.put(key, value);
+	public String getTitle() {
+		return title;
 	}
 
-	private void attachMoreExtras(final Intent intent) {
-		for (final Map.Entry<String, Object> entry : moreExtras.entrySet()) {
-			final String key = entry.getKey();
-			final Object value = entry.getValue();
-			// Kind of hacky
-			if (value instanceof Integer) {
-				intent.putExtra(key, (Integer) value);
-			} else if (value instanceof Long) {
-				intent.putExtra(key, (Long) value);
-			} else if (value instanceof Boolean) {
-				intent.putExtra(key, (Boolean) value);
-			} else if (value instanceof Double) {
-				intent.putExtra(key, (Double) value);
-			} else if (value instanceof Float) {
-				intent.putExtra(key, (Float) value);
-			} else if (value instanceof Bundle) {
-				intent.putExtra(key, (Bundle) value);
-			} else {
-				intent.putExtra(key, value.toString());
-			}
-		}
+	public void setTitle(final String title) {
+		this.title = title;
 	}
 
-	private String findTargetAppPackage(final Intent intent) {
-		final PackageManager pm = activity.getPackageManager();
-		final List<ResolveInfo> availableApps = pm.queryIntentActivities(
-				intent, PackageManager.MATCH_DEFAULT_ONLY);
-		if (availableApps != null) {
-			for (final String targetApp : targetApplications) {
-				if (contains(availableApps, targetApp)) {
-					return targetApp;
-				}
-			}
-		}
-		return null;
-	}
-
-	public String getButtonNo() {
-		return buttonNo;
-	}
-
-	public String getButtonYes() {
-		return buttonYes;
+	public void setTitleByID(final int titleID) {
+		title = activity.getString(titleID);
 	}
 
 	public String getMessage() {
 		return message;
 	}
 
-	public Map<String, ?> getMoreExtras() {
-		return moreExtras;
+	public void setMessage(final String message) {
+		this.message = message;
+	}
+
+	public void setMessageByID(final int messageID) {
+		message = activity.getString(messageID);
+	}
+
+	public String getButtonYes() {
+		return buttonYes;
+	}
+
+	public void setButtonYes(final String buttonYes) {
+		this.buttonYes = buttonYes;
+	}
+
+	public void setButtonYesByID(final int buttonYesID) {
+		buttonYes = activity.getString(buttonYesID);
+	}
+
+	public String getButtonNo() {
+		return buttonNo;
+	}
+
+	public void setButtonNo(final String buttonNo) {
+		this.buttonNo = buttonNo;
+	}
+
+	public void setButtonNoByID(final int buttonNoID) {
+		buttonNo = activity.getString(buttonNoID);
 	}
 
 	public Collection<String> getTargetApplications() {
 		return targetApplications;
 	}
 
-	public String getTitle() {
-		return title;
+	public final void setTargetApplications(
+			final List<String> targetApplications) {
+		if (targetApplications.isEmpty()) {
+			throw new IllegalArgumentException("No target applications");
+		}
+		this.targetApplications = targetApplications;
+	}
+
+	public void setSingleTargetApplication(final String targetApplication) {
+		targetApplications = Collections.singletonList(targetApplication);
+	}
+
+	public Map<String, ?> getMoreExtras() {
+		return moreExtras;
+	}
+
+	public final void addExtra(final String key, final Object value) {
+		moreExtras.put(key, value);
 	}
 
 	/**
@@ -369,48 +328,113 @@ public class IntentIntegrator {
 		return null;
 	}
 
-	public void setButtonNo(final String buttonNo) {
-		this.buttonNo = buttonNo;
+	/**
+	 * Start an activity. This method is defined to allow different methods of
+	 * activity starting for newer versions of Android and for compatibility
+	 * library.
+	 * 
+	 * @param intent
+	 *            Intent to start.
+	 * @param code
+	 *            Request code for the activity
+	 * @see android.app.Activity#startActivityForResult(Intent, int)
+	 * @see android.app.Fragment#startActivityForResult(Intent, int)
+	 */
+	protected void startActivityForResult(final Intent intent, final int code) {
+		activity.startActivityForResult(intent, code);
 	}
 
-	public void setButtonNoByID(final int buttonNoID) {
-		buttonNo = activity.getString(buttonNoID);
-	}
-
-	public void setButtonYes(final String buttonYes) {
-		this.buttonYes = buttonYes;
-	}
-
-	public void setButtonYesByID(final int buttonYesID) {
-		buttonYes = activity.getString(buttonYesID);
-	}
-
-	public void setMessage(final String message) {
-		this.message = message;
-	}
-
-	public void setMessageByID(final int messageID) {
-		message = activity.getString(messageID);
-	}
-
-	public void setSingleTargetApplication(final String targetApplication) {
-		targetApplications = Collections.singletonList(targetApplication);
-	}
-
-	public final void setTargetApplications(
-			final List<String> targetApplications) {
-		if (targetApplications.isEmpty()) {
-			throw new IllegalArgumentException("No target applications");
+	private String findTargetAppPackage(final Intent intent) {
+		final PackageManager pm = activity.getPackageManager();
+		final List<ResolveInfo> availableApps = pm.queryIntentActivities(
+				intent, PackageManager.MATCH_DEFAULT_ONLY);
+		if (availableApps != null) {
+			for (final String targetApp : targetApplications) {
+				if (contains(availableApps, targetApp)) {
+					return targetApp;
+				}
+			}
 		}
-		this.targetApplications = targetApplications;
+		return null;
 	}
 
-	public void setTitle(final String title) {
-		this.title = title;
+	private static boolean contains(final Iterable<ResolveInfo> availableApps,
+			final String targetApp) {
+		for (final ResolveInfo availableApp : availableApps) {
+			final String packageName = availableApp.activityInfo.packageName;
+			if (targetApp.equals(packageName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
-	public void setTitleByID(final int titleID) {
-		title = activity.getString(titleID);
+	private AlertDialog showDownloadDialog() {
+		final AlertDialog.Builder downloadDialog = new AlertDialog.Builder(
+				activity);
+		downloadDialog.setTitle(title);
+		downloadDialog.setMessage(message);
+		downloadDialog.setPositiveButton(buttonYes,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(final DialogInterface dialogInterface,
+							final int i) {
+						final String packageName = targetApplications.get(0);
+						final Uri uri = Uri.parse("market://details?id="
+								+ packageName);
+						final Intent intent = new Intent(Intent.ACTION_VIEW,
+								uri);
+						try {
+							activity.startActivity(intent);
+						} catch (final ActivityNotFoundException anfe) {
+							// Hmm, market is not installed
+							Log.w(TAG,
+									"Google Play is not installed; cannot install "
+											+ packageName);
+						}
+					}
+				});
+		downloadDialog.setNegativeButton(buttonNo,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(final DialogInterface dialogInterface,
+							final int i) {
+					}
+				});
+		return downloadDialog.show();
+	}
+
+	/**
+	 * <p>
+	 * Call this from your {@link Activity}'s
+	 * {@link Activity#onActivityResult(int, int, Intent)} method.
+	 * </p>
+	 * 
+	 * @return null if the event handled here was not related to this class, or
+	 *         else an {@link IntentResult} containing the result of the scan.
+	 *         If the user cancelled scanning, the fields will be null.
+	 */
+	public static IntentResult parseActivityResult(final int requestCode,
+			final int resultCode, final Intent intent) {
+		if (requestCode == REQUEST_CODE) {
+			if (resultCode == Activity.RESULT_OK) {
+				final String contents = intent.getStringExtra("SCAN_RESULT");
+				final String formatName = intent
+						.getStringExtra("SCAN_RESULT_FORMAT");
+				final byte[] rawBytes = intent
+						.getByteArrayExtra("SCAN_RESULT_BYTES");
+				final int intentOrientation = intent.getIntExtra(
+						"SCAN_RESULT_ORIENTATION", Integer.MIN_VALUE);
+				final Integer orientation = intentOrientation == Integer.MIN_VALUE ? null
+						: intentOrientation;
+				final String errorCorrectionLevel = intent
+						.getStringExtra("SCAN_RESULT_ERROR_CORRECTION_LEVEL");
+				return new IntentResult(contents, formatName, rawBytes,
+						orientation, errorCorrectionLevel);
+			}
+			return null;
+		}
+		return null;
 	}
 
 	/**
@@ -454,55 +478,31 @@ public class IntentIntegrator {
 		return null;
 	}
 
-	private AlertDialog showDownloadDialog() {
-		final AlertDialog.Builder downloadDialog = new AlertDialog.Builder(
-				activity);
-		downloadDialog.setTitle(title);
-		downloadDialog.setMessage(message);
-		downloadDialog.setPositiveButton(buttonYes,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(final DialogInterface dialogInterface,
-							final int i) {
-						final String packageName = targetApplications.get(0);
-						final Uri uri = Uri.parse("market://details?id="
-								+ packageName);
-						final Intent intent = new Intent(Intent.ACTION_VIEW,
-								uri);
-						try {
-							activity.startActivity(intent);
-						} catch (final ActivityNotFoundException anfe) {
-							// Hmm, market is not installed
-							Log.w(TAG,
-									"Google Play is not installed; cannot install "
-											+ packageName);
-						}
-					}
-				});
-		downloadDialog.setNegativeButton(buttonNo,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(final DialogInterface dialogInterface,
-							final int i) {
-					}
-				});
-		return downloadDialog.show();
+	private static List<String> list(final String... values) {
+		return Collections.unmodifiableList(Arrays.asList(values));
 	}
 
-	/**
-	 * Start an activity. This method is defined to allow different methods of
-	 * activity starting for newer versions of Android and for compatibility
-	 * library.
-	 * 
-	 * @param intent
-	 *            Intent to start.
-	 * @param code
-	 *            Request code for the activity
-	 * @see android.app.Activity#startActivityForResult(Intent, int)
-	 * @see android.app.Fragment#startActivityForResult(Intent, int)
-	 */
-	protected void startActivityForResult(final Intent intent, final int code) {
-		activity.startActivityForResult(intent, code);
+	private void attachMoreExtras(final Intent intent) {
+		for (final Map.Entry<String, Object> entry : moreExtras.entrySet()) {
+			final String key = entry.getKey();
+			final Object value = entry.getValue();
+			// Kind of hacky
+			if (value instanceof Integer) {
+				intent.putExtra(key, (Integer) value);
+			} else if (value instanceof Long) {
+				intent.putExtra(key, (Long) value);
+			} else if (value instanceof Boolean) {
+				intent.putExtra(key, (Boolean) value);
+			} else if (value instanceof Double) {
+				intent.putExtra(key, (Double) value);
+			} else if (value instanceof Float) {
+				intent.putExtra(key, (Float) value);
+			} else if (value instanceof Bundle) {
+				intent.putExtra(key, (Bundle) value);
+			} else {
+				intent.putExtra(key, value.toString());
+			}
+		}
 	}
 
 }

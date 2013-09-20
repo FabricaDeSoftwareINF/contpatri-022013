@@ -21,7 +21,6 @@ package br.ufg.inf.es.fs.contpatri.mobile.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,22 +28,24 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import br.ufg.inf.es.fs.contpatri.mobile.R;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
-import br.ufg.inf.es.fs.contpatri.mobile.tombamento.TombamentoDAO;
+import br.ufg.inf.es.fs.contpatri.mobile.util.Armazenamento;
 import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
 
 /**
- * Classe que adapta as informações do tombamento à um layout definido na pasta
- * res/layout para ser utilizado em uma lista. É inflado tal layout referido
- * para que possa ser adaptado à lista.
+ * Classe que adapta os dados à um layout definido na pasta res/layout para ser
+ * utilizado em uma lista.
  * 
  * @author Rogério Tristão Junior
  * 
  */
 public final class ListaColetaAdapter extends BaseAdapter {
 
+	private final LayoutInflater inflater;
+	private List<Tombamento> listaTombamento;
+	private ViewHolder holder;
+
 	/**
-	 * Design Pattern indicado pela Google para melhorar a performance na
-	 * visualização de uma lista.
+	 * Design Pattern indicado pela Google para melhorar a performance.
 	 * 
 	 * @author Rogério Tristão Junior
 	 * 
@@ -55,44 +56,35 @@ public final class ListaColetaAdapter extends BaseAdapter {
 		private TextView alteracao;
 	}
 
-	private final LayoutInflater inflater;
-	private TombamentoDAO tmbDAO;
-	private List<Tombamento> lista;
-
-	private ViewHolder holder;
-
 	/**
-	 * Construtor para instanciar o <code>Adapter</code> e inicializar as
-	 * variáveis necessárias para inflar o layout com os dados vindos do banco
-	 * de dados ou outra fonte emissora de informações.
+	 * Construtor para instanciar o Adapter e inicializar as variáveis.
 	 * 
 	 * @param contexto
 	 *            contexto usado para inicializar o redimensionador de layouts (
 	 *            <code>LayoutInflater</code>)
+	 * @param tombamentos
+	 *            lista de objetos do tipo <code>Tombamento</code> para que o
+	 *            adapter pegue os dados e adapte no layout
 	 */
-	public ListaColetaAdapter(final Context contexto) {
+	public ListaColetaAdapter(final Context contexto,
+			final List<Tombamento> tombamentos) {
 		inflater = LayoutInflater.from(contexto);
-		try {
-			tmbDAO = new TombamentoDAO(contexto);
-		} catch (final Exception e) {
-			Log.e(ListaColetaAdapter.class.getSimpleName(), "", e);
-		}
+		listaTombamento = tombamentos;
 	}
 
 	@Override
 	public int getCount() {
-		tmbDAO.abrirConexao();
-		lista = tmbDAO.getTodos();
-		tmbDAO.fecharConexao();
-		return lista.size();
+		return listaTombamento.size();
 	}
 
 	@Override
 	public Object getItem(final int paramInt) {
-		tmbDAO.abrirConexao();
-		lista = tmbDAO.getTodos();
-		tmbDAO.fecharConexao();
-		return lista.get(paramInt);
+		return listaTombamento.get(paramInt);
+	}
+
+	@Override
+	public long getItemId(final int id) {
+		return id;
 	}
 
 	@Override
@@ -119,11 +111,7 @@ public final class ListaColetaAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		tmbDAO.abrirConexao();
-		lista = tmbDAO.getTodos();
-		tmbDAO.fecharConexao();
-
-		final Tombamento tmb = lista.get(posicao);
+		final Tombamento tmb = listaTombamento.get(posicao);
 
 		holder.alteracao.setText(Conversores.longToDate(tmb
 				.getUltimaAlteracao()));
@@ -135,19 +123,8 @@ public final class ListaColetaAdapter extends BaseAdapter {
 
 	@Override
 	public void notifyDataSetChanged() {
-		/*
-		 * Esse método foi sobreescrito para recarregar a lista de forma mais
-		 * simplificada quando há alterações na lista de dados.
-		 */
-		tmbDAO.abrirConexao();
-		lista = tmbDAO.getTodos();
-		tmbDAO.fecharConexao();
+		listaTombamento = Armazenamento.Externo.getListaTombamentos();
 		super.notifyDataSetChanged();
-	}
-
-	@Override
-	public long getItemId(final int id) {
-		return id;
 	}
 
 }

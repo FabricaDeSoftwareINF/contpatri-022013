@@ -18,16 +18,34 @@
  */
 package br.ufg.inf.es.fs.contpatri.mobile.webservice;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
+import br.ufg.inf.es.fs.contpatri.mobile.nucleo.NucleoApp;
 import br.ufg.inf.es.fs.contpatri.mobile.tombamento.Tombamento;
+import br.ufg.inf.es.fs.contpatri.mobile.util.Conversores;
 
 /**
  * Classe que cria uma Thread para comunicar com o WebService e enviar todas as
@@ -40,7 +58,7 @@ public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 
 	private final int timeout = 10000;
 	private final ProgressDialog dialog;
-	private List<Tombamento> listaTombamento;
+	private final List<Tombamento> listaTombamento;
 
 	/**
 	 * Construtor padrão para instanciar e inicializar o objeto.
@@ -48,66 +66,9 @@ public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 	 * @param context
 	 *            contexto necessário para iniciar o <code>ProgressDialog</code>
 	 */
-	public EnviarColeta(final Context context) {
+	public EnviarColeta(final Context context, final List<Tombamento> lista) {
 		dialog = new ProgressDialog(context);
-	}
-
-	@Override
-	protected Void doInBackground(final Void... params) {
-		/*
-		 * final boolean sucesso; final String mensagem;
-		 * 
-		 * try {
-		 * 
-		 * 
-		 * Ajuste de timeout.
-		 */
-		final HttpParams httpParams = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
-		HttpConnectionParams.setSoTimeout(httpParams, timeout);
-
-		/*
-		 * Configurações iniciais para estabelecer uma conexão HTTP.
-		 * 
-		 * final DefaultHttpClient httpCliente = new DefaultHttpClient(
-		 * httpParams); final HttpPost httpPost = new
-		 * HttpPost(NucleoApp.URL_ENVIAR_COLETA);
-		 * 
-		 * 
-		 * 
-		 * /* Colocando o json do tombamento na requisição.
-		 */
-		/*
-		 * httpPost.setEntity(new ByteArrayEntity(listaTombamento.
-		 * .getBytes("UTF8"))); httpPost.setHeader("json", tombamento.toJson());
-		 * final ResponseHandler<String> handlerResposta = new
-		 * BasicResponseHandler(); final String responseBody =
-		 * httpCliente.execute(httpPost, handlerResposta);
-		 * 
-		 * /* Pega a resposta e transforma para JSON. Depois pega as TAG's para
-		 * que depois seja repassada para a tela de login.
-		 * 
-		 * final JSONObject json = new JSONObject(responseBody); sucesso =
-		 * json.getBoolean("sucesso"); mensagem = json.getString("mensagem");
-		 * 
-		 * publishProgress(1);
-		 * 
-		 * 
-		 * } catch (final UnsupportedEncodingException e) {
-		 * Log.e(Autenticar.class.getSimpleName(), "", e); } catch (final
-		 * ClientProtocolException e) { Log.e(Autenticar.class.getSimpleName(),
-		 * "", e); } catch (final IOException e) {
-		 * Log.e(Autenticar.class.getSimpleName(), "", e); } catch (final
-		 * JSONException e) { Log.e(Autenticar.class.getSimpleName(), "", e); }
-		 */
-
-		return null;
-	}
-
-	@Override
-	protected void onPostExecute(final Void result) {
-		super.onPostExecute(result);
-		dialog.dismiss();
+		listaTombamento = lista;
 	}
 
 	@Override
@@ -121,9 +82,72 @@ public final class EnviarColeta extends AsyncTask<Void, Integer, Void> {
 	}
 
 	@Override
+	protected Void doInBackground(final Void... params) {
+
+		boolean sucesso;
+		String mensagem;
+
+		try {
+
+			/*
+			 * Ajuste de timeout.
+			 */
+			HttpParams httpParams = new BasicHttpParams();
+			HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
+			HttpConnectionParams.setSoTimeout(httpParams, timeout);
+
+			/*
+			 * Configurações iniciais para estabelecer uma conexão HTTP.
+			 */
+			DefaultHttpClient httpCliente = new DefaultHttpClient(httpParams);
+			HttpPost httpPost = new HttpPost(NucleoApp.URL_ENVIAR_COLETA);
+
+			for (Tombamento tombamento : listaTombamento) {
+
+				/*
+				 * Colocando o json do tombamento na requisição.
+				 */
+				httpPost.setEntity(new ByteArrayEntity(tombamento.toJson()
+						.getBytes("UTF8")));
+				httpPost.setHeader("json", tombamento.toJson());
+				ResponseHandler<String> handlerResposta = new BasicResponseHandler();
+				String responseBody = httpCliente.execute(httpPost,
+						handlerResposta);
+
+				/*
+				 * Pega a resposta e transforma para JSON. Depois pega as TAG's
+				 * para que depois seja repassada para a tela de login.
+				 */
+				JSONObject json = new JSONObject(responseBody);
+				sucesso = json.getBoolean("sucesso");
+				mensagem = json.getString("mensagem");
+
+				publishProgress(1);
+			}
+
+		} catch (final UnsupportedEncodingException e) {
+			Log.e(Autenticar.class.getSimpleName(), "", e);
+		} catch (final ClientProtocolException e) {
+			Log.e(Autenticar.class.getSimpleName(), "", e);
+		} catch (final IOException e) {
+			Log.e(Autenticar.class.getSimpleName(), "", e);
+		} catch (final JSONException e) {
+			Log.e(Autenticar.class.getSimpleName(), "", e);
+		}
+
+		return null;
+	}
+
+	@Override
 	protected void onProgressUpdate(final Integer... progresso) {
 		dialog.setProgress(progresso[0]);
 		dialog.setMessage("Enviando item " + progresso[0]);
+	}
+
+	@Override
+	protected void onPostExecute(final Void result) {
+		super.onPostExecute(result);
+		dialog.dismiss();
 	}
 
 }

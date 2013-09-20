@@ -27,9 +27,6 @@ import br.ufg.inf.es.fs.contpatri.model.Inventario;
 import br.ufg.inf.es.fs.contpatri.model.TipoSituacao;
 
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -43,11 +40,10 @@ public class AnaliseTest {
 	public void criaAnaliseValido() {
 		Inventario inventario = mock(Inventario.class);
 		BemPatrimonial bemPatrimonial = mock(BemPatrimonial.class);
-		Analise analise = new Analise(bemPatrimonial, inventario, TipoSituacao.LOCALIZADO);
+		Analise analise = new Analise(bemPatrimonial, inventario, null);
 		assertEquals(inventario, analise.getInventario());
 		assertEquals(bemPatrimonial, analise.getBemPatrimonial());
-		assertEquals(TipoSituacao.LOCALIZADO, analise.getSituacao());
-		assertEquals("Localizado", analise.getSituacao().getDescricao());
+		assertEquals(null, analise.getSituacao());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -62,45 +58,5 @@ public class AnaliseTest {
 		BemPatrimonial bemPermanente = mock(BemPatrimonial.class);
 		new Analise(bemPermanente, null,
 			TipoSituacao.LOCALIZADO);
-	}
-	
-	@Test
-	/**
-	 * Testar análise com construtor vazio
-	 */
-	public void testarAnaliseConstrutorVazio() {
-		Long id = 1L;
-		Analise analise = new Analise();
-		analise.setId(id);
-		
-		assertNotNull(analise);
-		assertEquals(id, analise.getId());
-	}
-	
-	@Test
-	/**
-	 * Testar metodo equals
-	 */
-	public void testarEquals() {
-		Analise analise = mock(Analise.class);
-		
-		Inventario inventario1 = mock(Inventario.class);
-		BemPatrimonial bemPermanente1 = mock(BemPatrimonial.class);
-		Inventario inventario2 = mock(Inventario.class);
-		BemPatrimonial bemPermanente2 = mock(BemPatrimonial.class);
-		
-		Analise analise1 = new Analise(bemPermanente1, inventario1, null);
-		Analise analise2 = new Analise(bemPermanente1, inventario2, null);
-		Analise analise3 = new Analise(bemPermanente2, inventario1, null);
-		
-		Object o = new Object();
-		
-		assertFalse(analise1.equals(analise2));
-		assertFalse(analise1.equals(analise3));
-		assertFalse(analise1.equals(null));
-		assertFalse(analise1.equals(o));
-		assertTrue(analise1.equals(analise1));
-		assertNotNull(analise.hashCode());
-		assertEquals(0, new Analise().hashCode());
 	}
 }

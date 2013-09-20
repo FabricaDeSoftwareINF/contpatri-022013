@@ -6,7 +6,11 @@
     <color name="branco">#FFFFFF</color>
     <color name="preto">#000000</color>
     <color name="azulActionBar">#297994</color>
-    <color name="laranja">#FFBB33</color>
+
+    <!-- Cores Gradiente Background App -->
+    <color name="startColorGradiente">#828282</color>
+    <color name="endeColorGradiente">#B5B5B5</color>
+    <color name="centerColorGradiente">#E8E8E8</color>
     
     <!-- Cores Inf -->
     <color name="azulClaro">#DAECF8</color>
