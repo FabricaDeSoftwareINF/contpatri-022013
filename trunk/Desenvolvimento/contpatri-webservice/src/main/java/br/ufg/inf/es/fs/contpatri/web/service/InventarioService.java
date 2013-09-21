@@ -15,14 +15,24 @@ import java.util.List;
  * Time: 20:15
  */
 public class InventarioService {
+    private TombamentoDAO tombamentoDAO;
     private InventarioDAO inventarioDAO;
 
     public InventarioService() {
-        this.inventarioDAO = new InventarioDAO();
+        this(new InventarioDAO(), new TombamentoDAO());
     }
 
     public InventarioService(InventarioDAO inventarioDAO) {
+        this(inventarioDAO, new TombamentoDAO());
+    }
+
+    public InventarioService(TombamentoDAO tombamentoDAO) {
+        this(new InventarioDAO(), tombamentoDAO);
+    }
+
+    public InventarioService(InventarioDAO inventarioDAO, TombamentoDAO tombamentoDAO) {
         this.inventarioDAO = inventarioDAO;
+        this.tombamentoDAO = tombamentoDAO;
     }
 
     public Resultado exportar() {
@@ -48,7 +58,6 @@ public class InventarioService {
         Resultado resultado = new Resultado(true, "Coletas cadastradas com sucesso", HttpServletResponse.SC_OK);
 
         try {
-            TombamentoDAO tombamentoDAO = new TombamentoDAO();
             for (Tombamento tombamento : tombamentos) {
                 tombamentoDAO.create(tombamento);
             }
@@ -58,7 +67,7 @@ public class InventarioService {
             resultado.setSucesso(false);
             resultado.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resultado.setMensagem("Houve um erro ao tentar exportar os inventários");
-            resultado.setDado("exception", tombamentos);
+            resultado.setDado("exception", ex);
         }
 
         return resultado;
