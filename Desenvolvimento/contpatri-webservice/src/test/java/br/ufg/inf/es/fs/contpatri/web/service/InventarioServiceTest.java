@@ -1,7 +1,9 @@
 package br.ufg.inf.es.fs.contpatri.web.service;
 
 import br.ufg.inf.es.fs.contpatri.model.Inventario;
+import br.ufg.inf.es.fs.contpatri.model.Tombamento;
 import br.ufg.inf.es.fs.contpatri.persistencia.dao.InventarioDAO;
+import br.ufg.inf.es.fs.contpatri.persistencia.dao.TombamentoDAO;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -45,11 +47,41 @@ public class InventarioServiceTest extends TestCase {
         verify(inventarioDAOMock).findAll(Inventario.class);
     }
 
+    @Test
+    public void testImportarColetasDeveRetornarResultadoComSucessoCasoImporteCorretamenteOsTombamentos() {
+        TombamentoDAO tombamentoDAOMock = new TombamentoDAOMock();
+        List<Tombamento> tombamentosEsperados = new ArrayList<Tombamento>();
+        tombamentosEsperados.add(new Tombamento());
+        tombamentosEsperados.add(new Tombamento());
+
+        inventarioService = new InventarioService(tombamentoDAOMock);
+        assertEquals(tombamentosEsperados, inventarioService.importarColetas(tombamentosEsperados).getDado("tombamentos"));
+    }
+
+    @Test
+    public void testImportarColetasDeveRetornarResultadoComExcecaoCasoNaoImporteCorretamenteOsTombamentos() {
+        TombamentoDAO tombamentoDAOMock = spy(new TombamentoDAOMock());
+        List<Tombamento> tombamentosEsperados = new ArrayList<Tombamento>();
+        Exception ex = new RuntimeException();
+        tombamentosEsperados.add(new Tombamento());
+        tombamentosEsperados.add(new Tombamento());
+        doThrow(ex).when(tombamentoDAOMock).create(tombamentosEsperados.get(0));
+
+        inventarioService = new InventarioService(tombamentoDAOMock);
+        assertEquals(ex, inventarioService.importarColetas(tombamentosEsperados).getDado("exception"));
+    }
+
 }
 
 class InventarioDAOMock extends InventarioDAO {
     @Override
     public List findAll(Class clazz) {
         return new ArrayList();
+    }
+}
+
+class TombamentoDAOMock extends TombamentoDAO {
+    @Override
+    public void create(Tombamento entity) {
     }
 }
