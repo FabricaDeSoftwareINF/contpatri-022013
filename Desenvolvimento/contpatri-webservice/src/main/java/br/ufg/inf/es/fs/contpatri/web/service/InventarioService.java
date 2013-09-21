@@ -15,7 +15,17 @@ import java.util.List;
  * Time: 20:15
  */
 public class InventarioService {
-    public Resultado exportar(HttpServletResponse response) {
+    private InventarioDAO inventarioDAO;
+
+    public InventarioService() {
+        this.inventarioDAO = new InventarioDAO();
+    }
+
+    public InventarioService(InventarioDAO inventarioDAO) {
+        this.inventarioDAO = inventarioDAO;
+    }
+
+    public Resultado exportar() {
         Resultado resultado = new Resultado(
                 true,
                 "Lista de inventários gerada com sucesso",
@@ -23,7 +33,7 @@ public class InventarioService {
         );
 
         try {
-            List<Inventario> inventarios = new InventarioDAO().findAll(Inventario.class);
+            List<Inventario> inventarios = inventarioDAO.findAll(Inventario.class);
             resultado.setDado("inventarios", inventarios);
         } catch (Exception ex) {
             resultado.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
