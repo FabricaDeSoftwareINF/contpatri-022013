@@ -40,7 +40,7 @@ public class InventarioController extends AbstractController {
      */
     @RequestMapping(value = "/exportar", method = RequestMethod.GET)
     public void exportar(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Resultado resultado = inventarioService.exportar(response);
+        Resultado resultado = inventarioService.exportar();
         renderizeResultado(resultado, response);
     }
 
