@@ -1,0 +1,57 @@
+/*
+ * Esse documento é parte do código fonte e artefatos relacionados ao projeto
+ * CONTPATRI, em desenvolvimento pela Fábrica de Software da UFG.
+ * 
+ * Links relevantes: Fábrica de Software: http://fs.inf.ufg.br/ Instituto de
+ * Informática UFG: http://www.inf.ufg.br Projeto CONTPATRI DROPBOX:
+ * https://www.dropbox.com/home/CONTPATRI%20-%20012013 Projeto CONTPATRI
+ * REDMINE:
+ * 
+ * Copyleft © UFG.
+ * 
+ * Licenciado sobre a licença GNU-GPL v3
+ * 
+ * Você pode obter uma cópia da licença em http://www.gnu.org/licenses/gpl.html
+ * 
+ * A menos que especificado ou exigido por legislação local, o software é
+ * fornecido "da maneira que está", sem garantias ou condições de qualquer tipo,
+ * nem expressas nem implícitas. Em caso de dúvidas referir a licença GNU-GPL.
+ */
+package br.ufg.inf.es.fs.contpatri.persistencia;
+
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.IOException;
+import java.io.InputStream;
+import org.apache.commons.io.IOUtils;
+
+/**
+ *
+ * @author Guilherme de Paula
+ */
+public class JsonUtil {
+
+    Gson gson;
+
+    public JsonUtil() {
+        gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
+    }
+
+    public InputStream deJsonParaInputStream(Object objeto) throws IOException {
+        String json = gson.toJson(objeto);
+
+        InputStream is = IOUtils.toInputStream(json);
+
+        return is;
+    }
+
+   public Object deInputStreamParaJson(InputStream inputStream) throws IOException{
+       String json = IOUtils.toString(inputStream);
+       Object objeto = gson.fromJson(json, Object.class);
+       return objeto;
+   }
+}

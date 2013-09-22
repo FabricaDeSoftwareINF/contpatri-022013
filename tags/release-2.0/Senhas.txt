@@ -1,0 +1,8 @@
+Para os serviços do:
+- Hudson
+- Sonar
+- Artifactory
+
+os usuários e senhas cadastrados para o grupo são: 
+usuario: contpatri
+senha: contpatri!@

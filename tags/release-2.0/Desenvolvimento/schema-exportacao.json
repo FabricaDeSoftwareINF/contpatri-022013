@@ -1,0 +1,94 @@
+{
+	"type":"object",
+	"$schema": "http://json-schema.org/draft-03/schema",
+	"id": "contpatri",
+	"required":true,
+	"properties":{
+		"analises": {
+			"type":"array",
+			"id": "contpatri/analises",
+			"required":true,
+			"items":
+				{
+					"type":"object",
+					"id": "contpatri/analises/0",
+					"required":true,
+					"properties":{
+						"bemPatrimonial": {
+							"type":"object",
+							"id": "contpatri/analises/0/bemPatrimonial",
+							"required":true,
+							"properties":{
+								"codigoSicop": {
+									"type":"number",
+									"id": "contpatri/analises/0/bemPatrimonial/codigoSicop",
+									"required":true
+								},
+								"descricao": {
+									"type":"string",
+									"id": "contpatri/analises/0/bemPatrimonial/descricao",
+									"required":true
+								},
+								"subLocal": {
+									"type":"object",
+									"id": "contpatri/analises/0/bemPatrimonial/subLocal",
+									"required":true
+								}
+							}
+						},
+						"situacao": {
+							"type":"string",
+							"id": "contpatri/analises/0/situacao",
+							"required":true
+						}
+					}
+				}
+			
+
+		},
+		"coletas": {
+			"type":"array",
+			"id": "contpatri/coletas",
+			"required":true
+			"items":
+				{
+					"type":"object",
+					"id": "contpatri/coletas/0",
+					"required":true,
+					"properties":{
+						"bemPatrimonial": {
+							"type":"object",
+							"id": "contpatri/coletas/0/bemPatrimonial",
+							"required":true,
+							"properties":{
+								"codigoSicop": {
+									"type":"number",
+									"id": "contpatri/coletas/0/bemPatrimonial/codigoSicop",
+									"required":true
+								},
+								"descricao": {
+									"type":"string",
+									"id": "contpatri/coletas/0/bemPatrimonial/descricao",
+									"required":true
+								},
+								"subLocal": {
+									"type":"object",
+									"required":true
+								}
+							}
+						},
+						"situacao": {
+							"type":"string",
+							"id": "contpatri/analises/0/situacao",
+							"required":true
+						}
+					}
+				}
+		},
+		"idInventario": {
+			"type":"number",
+			"id": "contpatri/idInventario",
+			"required":true
+		}
+	}
+}

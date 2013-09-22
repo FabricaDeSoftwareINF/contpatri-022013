@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="nome_aplicativo">ContPatri</string>
+    <string name="coletar">Coletar</string>
+    <string name="relatorio">Relatório</string>
+    <string name="exibirColeta">Exibir coletas</string>
+
+    <string-array name="nomes_array">
+        <item>Localizado</item>
+        <item>Relocado</item>
+        <item>Extraviado</item>
+    </string-array>
+
+    <string name="logar">Logar</string>
+    <string name="senha">Senha</string>
+    <string name="login">Login</string>
+    <string name="sincronizar">Sincronizar</string>
+    <string name="acao">Ação</string>
+    
+    <!-- Tela Coleta -->
+    <string name="tombamentoHint">Tombamento</string>
+    <string name="ultimaAlteracaoHint">Ultima Alteração</string>
+    <string name="sublocalHint">Sub Local</string>
+    <string name="observacaoHint">Observações</string>
+    <string name="scanQrcode">QR Code</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="codigo">Código</string>
+    <string name="situacao">Situacao</string>
+    <string name="ultima_alteracao">Ultima Alteracao</string>
+    <string name="informacoes_do_tombamento">Informações do Tombamento</string>
+    <string name="scan_cancelado">Escaneamento Cancelado</string>
+    <string name="scan_invalido">QR Code inválido</string>
+    <string name="barra_tela_login">Instituto de Informática - UFG</string>
+    <string name="sobre">Sobre</string>
+    <string name="ajuda">Ajuda</string>
+    <string name="pagina_inf">Página do INF</string>
+
+</resources>

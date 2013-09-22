@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../template/layoutTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:cp="http://java.sun.com/jsf/composite/contpatri"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:param name="pagina" value="Exportar"/>
+
+    <ui:define name="conteudo">
+        <h:panelGroup class="container-centro" layout="block">
+            <h:form id="form-exportacao">
+                <cp:painel titulo="Exportação" id="painel-exportacao">
+                    <p:commandButton value="Iniciar exportação"
+                                     action="#{exportarBean.realizarExportacao()}"
+                                     style="margin-left: auto; margin-right: auto; display: block;"
+                                     rendered="#{!exportarBean.exportacaoIniciada}"
+                                     update=":form-exportacao"
+                                     onclick="PF('pbAjax').start()"/>
+                    <p:commandButton id="downloadLink" value="Download" ajax="false"  
+                                     rendered="#{exportarBean.exportacaoIniciada}"
+                                     style="margin-left: auto; margin-right: auto; display: block;">  
+                        <p:fileDownload value="#{exportarBean.arquivo}" />  
+                    </p:commandButton>  
+                </cp:painel>
+            </h:form>
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>
